@@ -1,7 +1,14 @@
-import {useCallback} from 'react'
+import {useCallback, useState} from 'react'
 import {fabric} from 'fabric'
+import useAutoResize from "@/features/editor/hooks/useAutoResize";
 
 export const useEditor = () => {
+
+    const [canvas, setCanvas] = useState<fabric.Canvas | null>(null)
+    const [container, setContainer] = useState<HTMLDivElement | null>(null)
+
+    useAutoResize({canvas, container})
+
     const init = useCallback((
         {
             initialCanvas,
@@ -12,6 +19,8 @@ export const useEditor = () => {
                 initialContainer: HTMLDivElement;
             }
     ) => {
+
+
         fabric.Object.prototype.set({
             cornerColor: "#fff",
             cornerStyle: "circle",
@@ -43,9 +52,15 @@ export const useEditor = () => {
         initialCanvas.setHeight(
             initialContainer.offsetHeight
         )
+
+
         initialCanvas.add(initialWorkspace)
         initialCanvas.centerObject(initialWorkspace)
         initialCanvas.clipPath = initialWorkspace
+
+        setCanvas(initialCanvas)
+        setContainer(initialContainer)
+
         const rec = new fabric.Rect({
             width: 100,
             height: 100,
