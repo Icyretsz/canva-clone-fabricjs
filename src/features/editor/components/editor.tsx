@@ -10,7 +10,7 @@ import Footer from "@/features/editor/components/footer";
 const Editor = () => {
     const canvasRef = useRef(null);
     const containerRef = useRef<HTMLDivElement>(null);
-
+    const [isExpanded, setExpanded] = React.useState(false);
     const {init} = useEditor()
 
     useEffect(() => {
@@ -28,13 +28,16 @@ const Editor = () => {
         };
     }, [init])
 
+
+
     return (
         <div className='flex flex-col h-full'>
             <Header/>
-            <Sidebar/>
+            <Sidebar isExpanded={isExpanded} setExpanded={setExpanded}/>
             <Toolbar/>
             <Footer/>
-            <div className='absolute h-[calc(100%-68px-48px-40px)] top-[calc(68px+48px)] left-[72px] w-[calc(100%-72px)] flex'>
+            <div className='absolute h-[calc(100%-68px-48px-40px)] top-[calc(68px+48px)] left-[72px] w-[calc(100%-72px)] flex'
+            >
                 <div className='h-full w-full flex-1 bg-gray-200' ref={containerRef}>
                     <canvas ref={canvasRef}/>
                 </div>
