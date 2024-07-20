@@ -2,12 +2,16 @@ import { create } from 'zustand'
 
 interface MenuExpandContext {
     isExpanded: boolean;
-    setExpanded: () => void;
+    setExpanded: (expanded : boolean) => void;
+    activeButton: string;
+    setActiveButton: (activeButton : string) => void;
 }
 
 const useMenuExpandStore = create<MenuExpandContext>((set) => ({
     isExpanded: false,
-    setExpanded: () => set((state) => ({ isExpanded: !state.isExpanded })),
+    setExpanded: (expanded) => set({ isExpanded: expanded }),
+    activeButton: '',
+    setActiveButton: (buttonId : string) => set({ activeButton : buttonId }),
 }));
 
 export default useMenuExpandStore;

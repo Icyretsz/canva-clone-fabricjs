@@ -3,7 +3,7 @@ import React, {useEffect, useRef} from 'react';
 import {useEditor} from "@/features/editor/hooks/useEditor";
 import {fabric} from "fabric";
 import Header from '@/features/editor/components/header'
-import Sidebar from '@/features/editor/components/sidebar'
+import Sidebar from '@/features/sidebar/components/sidebar'
 import Toolbar from "@/features/editor/components/toolbar";
 import Footer from "@/features/editor/components/footer";
 import useMenuExpandStore from "@/features/editor/contexts/isExpanded";
