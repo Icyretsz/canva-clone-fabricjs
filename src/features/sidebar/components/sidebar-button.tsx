@@ -1,7 +1,7 @@
 import React from 'react';
-import MenuExpandContext from "@/features/editor/contexts/isExpanded";
 import {LucideIcon} from "lucide-react";
 import {cn} from "@/lib/utils";
+import {Button} from "@/components/ui/button";
 
 interface SidebarButtonProps {
     icon : LucideIcon,
@@ -19,30 +19,19 @@ const SidebarButton = (
     } : SidebarButtonProps
 ) => {
 
-    const {setExpanded} = MenuExpandContext()
-    const {activeButton, setActiveButton} = MenuExpandContext()
-    const menuButtons = ['Shapes', 'Text', 'Upload']
-
-    const handleButtonClick = (index : string) => {
-        setActiveButton(index)
-        setExpanded(true)
-    }
-
-
-
-
     return (
-        <button
+        <Button
         className={cn(
-            "w-full h-16 flex flex-col py-1 justify-center items-center bg-[#18191b] hover:bg-[#252627]",
+            "w-full h-16 flex flex-col py-1 justify-center items-center bg-[#18191b] hover:bg-[#252627] rounded-none",
             isActive && 'bg-[#252627]'
         )}
+        onClick={onClick}
         >
             <Icon color='white' className='size-5 stroke-2 shrink-0'/>
             <span className='text-white text-xs'>
                 {label}
             </span>
-        </button>
+        </Button>
     );
 };
 
