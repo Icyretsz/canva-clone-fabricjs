@@ -6,7 +6,7 @@ import {
     ALargeSmall,
     Upload
 } from 'lucide-react'
-import MenuExpandContext from "@/features/editor/contexts/isExpanded";
+import MenuExpandContext from "@/features/sidebar/contexts/sidebar-store";
 
 
 const Sidebar = () => {

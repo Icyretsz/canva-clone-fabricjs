@@ -6,7 +6,7 @@ import Header from '@/features/editor/components/header'
 import Sidebar from '@/features/sidebar/components/sidebar'
 import Toolbar from "@/features/editor/components/toolbar";
 import Footer from "@/features/editor/components/footer";
-import useMenuExpandStore from "@/features/editor/contexts/isExpanded";
+import useMenuExpandStore from "@/features/sidebar/contexts/sidebar-store";
 
 const Editor = () => {
     const canvasRef = useRef(null);

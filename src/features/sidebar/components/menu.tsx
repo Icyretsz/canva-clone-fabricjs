@@ -1,5 +1,5 @@
 import React from 'react';
-import MenuExpandContext from "@/features/editor/contexts/isExpanded";
+import MenuExpandContext from "@/features/sidebar/contexts/sidebar-store";
 import ShapeMenu from '@/features/sidebar/components/shapeMenu'
 const Menu = () => {
     const {isExpanded, activeTool} = MenuExpandContext()

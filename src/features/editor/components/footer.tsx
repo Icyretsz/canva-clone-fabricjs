@@ -1,5 +1,5 @@
 import React from 'react';
-import useMenuExpandStore from '@/features/editor/contexts/isExpanded';
+import useMenuExpandStore from '@/features/sidebar/contexts/sidebar-store';
 
 const Footer = () => {
 
