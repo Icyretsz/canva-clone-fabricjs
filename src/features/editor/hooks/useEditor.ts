@@ -62,12 +62,21 @@ export const useEditor = () => {
         setContainer(initialContainer)
 
         const rec = new fabric.Rect({
+            width: 140,
+            height: 124,
+            fill: '#e6e7eb'
+
+
+        })
+        const rec1 = new fabric.Rect({
             width: 100,
             height: 100,
             fill: 'black'
+
         })
         initialCanvas.add(rec)
-        initialCanvas.centerObject(rec)
+        initialCanvas.add(rec1)
+
 
     }, [])
 
