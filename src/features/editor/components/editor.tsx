@@ -3,10 +3,10 @@ import React, {useEffect, useRef} from 'react';
 import {useEditor} from "@/features/editor/hooks/useEditor";
 import {fabric} from "fabric";
 import Header from '@/features/editor/components/header'
-import Sidebar from '@/features/sidebar/components/sidebar'
+import Sidebar from '@/features/editor/sidebar/components/sidebar'
 import Toolbar from "@/features/editor/components/toolbar";
 import Footer from "@/features/editor/components/footer";
-import useMenuExpandStore from "@/features/sidebar/contexts/sidebar-store";
+import useMenuExpandStore from "@/features/editor/sidebar/contexts/sidebar-store";
 
 const Editor = () => {
     const canvasRef = useRef(null);

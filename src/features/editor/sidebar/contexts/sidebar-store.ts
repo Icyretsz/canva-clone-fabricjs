@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import {ActiveTool} from "@/features/sidebar/types";
+import {ActiveTool} from "@/features/editor/sidebar/types";
 
 interface MenuExpandContext {
     isExpanded: boolean;

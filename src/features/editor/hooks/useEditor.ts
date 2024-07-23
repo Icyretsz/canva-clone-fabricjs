@@ -9,17 +9,23 @@ export const useEditor = () => {
 
     useAutoResize({canvas, container})
 
+
     const addShapes = (canvas : fabric.Canvas) => {
+
         return {
             addRect: () => {
                 const rect = new fabric.Rect({
                     width: 140,
                     height: 120,
-                    fill: '#000'
+                    fill: '#000',
+                    stroke: 'transparent',
+                    strokeWidth: 2,
                 })
                 canvas.add(rect)
                 canvas.centerObject(rect)
                 canvas.setActiveObject(rect)
+                canvas.renderAll();
+                rect.on('selected', () => {console.log('rect')});
             },
             addCircle: () => {
                 const circle = new fabric.Circle({
@@ -30,6 +36,8 @@ export const useEditor = () => {
                 canvas.add(circle)
                 canvas.centerObject(circle)
                 canvas.setActiveObject(circle)
+                canvas.renderAll();
+                circle.on('selected', (e) => {console.log('circle radius: ' + circle.getRadiusX())});
             },
             addTriangle: () => {
                 const triangle = new fabric.Triangle({
@@ -41,6 +49,8 @@ export const useEditor = () => {
                 canvas.add(triangle)
                 canvas.centerObject(triangle)
                 canvas.setActiveObject(triangle)
+                canvas.renderAll();
+                triangle.on('selected', () => {console.log('triangle')});
             },
             addPolygon: () => {
                 const polygon = new fabric.Polygon([
@@ -63,6 +73,8 @@ export const useEditor = () => {
                 canvas.add(polygon)
                 canvas.centerObject(polygon)
                 canvas.setActiveObject(polygon)
+                canvas.renderAll();
+                polygon.on('selected', () => {console.log('polygon')});
             }
         }
     }
@@ -90,7 +102,7 @@ export const useEditor = () => {
             cornerColor: "#fff",
             cornerStyle: "circle",
             borderColor: "#3b82f6",
-            borderScaleFactor: 1.5,
+            borderScaleFactor: 3,
             transparentCorners: false,
             borderOpacityWhenMoving: 1,
             cornerStrokeColor: "#3b82f6"

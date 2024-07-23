@@ -14,8 +14,8 @@ const UseAutoResize = ({canvas, container} : UseAutoResizeProps) => {
         const width = container.offsetWidth
         const height = container.offsetHeight
 
-        canvas.setWidth(width)
-        canvas.setHeight(height)
+        canvas?.setWidth(width)
+        canvas?.setHeight(height)
 
         const zoomRatio : number = 0.90 //to leave space between localWorkspace and canvas
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import useMenuExpandStore from '@/features/sidebar/contexts/sidebar-store';
+import useMenuExpandStore from '@/features/editor/sidebar/contexts/sidebar-store';
 
 const Toolbar = () => {
     const isExpanded = useMenuExpandStore((state) => state.isExpanded);

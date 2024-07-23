@@ -1,5 +1,5 @@
 import React from 'react';
-import MenuHeader from "@/features/sidebar/components/menuHeader";
+import MenuHeader from "@/features/editor/sidebar/components/menuHeader";
 import {MdRectangle, MdCircle} from "react-icons/md";
 import {IoTriangleSharp} from "react-icons/io5";
 import {BiSolidPolygon} from "react-icons/bi";

@@ -1,12 +1,12 @@
 import React from 'react';
-import SidebarButton from "@/features/sidebar/components/sidebar-button";
+import SidebarButton from "@/features/editor/sidebar/components/sidebar-button";
 import {
     Shapes,
     ALargeSmall,
     Upload
 } from 'lucide-react'
-import MenuExpandContext from "@/features/sidebar/contexts/sidebar-store";
-import ShapeMenu from "@/features/sidebar/components/shapeMenu";
+import MenuExpandContext from "@/features/editor/sidebar/contexts/sidebar-store";
+import ShapeMenu from "@/features/editor/sidebar/components/shapeMenu";
 
 interface SidebarProps {
     editor : any
