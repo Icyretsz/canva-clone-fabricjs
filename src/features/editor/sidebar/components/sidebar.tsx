@@ -5,7 +5,7 @@ import {
     ALargeSmall,
     Upload
 } from 'lucide-react'
-import MenuExpandContext from "@/features/editor/sidebar/contexts/sidebar-store";
+import MenuExpandContext from "@/features/editor/sidebar/stores/sidebar-store";
 import ShapeMenu from "@/features/editor/sidebar/components/shapeMenu";
 
 interface SidebarProps {

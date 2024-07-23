@@ -1,6 +1,6 @@
 import React from 'react';
 import Image from "next/image";
-import MenuExpandContext from "@/features/editor/sidebar/contexts/sidebar-store";
+import MenuExpandContext from "@/features/editor/sidebar/stores/sidebar-store";
 
 const MenuHeader = () => {
     const {setExpanded} = MenuExpandContext()

@@ -6,13 +6,13 @@ import Header from '@/features/editor/components/header'
 import Sidebar from '@/features/editor/sidebar/components/sidebar'
 import Toolbar from "@/features/editor/toolbar/components/toolbar";
 import Footer from "@/features/editor/components/footer";
-import useMenuExpandStore from "@/features/editor/sidebar/contexts/sidebar-store";
+import useMenuStore from "@/features/editor/sidebar/stores/sidebar-store";
 
 const Editor = () => {
     const canvasRef = useRef(null);
     const containerRef = useRef<HTMLDivElement>(null)
     const {init, editor} = useEditor()
-    const isExpanded = useMenuExpandStore((state) => state.isExpanded);
+    const isExpanded = useMenuStore((state) => state.isExpanded);
 
     useEffect(() => {
         const canvas = new fabric.Canvas(

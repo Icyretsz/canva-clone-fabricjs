@@ -1,9 +1,9 @@
 import React from 'react';
-import useMenuExpandStore from '@/features/editor/sidebar/contexts/sidebar-store';
+import useMenuStore from '@/features/editor/sidebar/stores/sidebar-store';
 
 const Footer = () => {
 
-    const isExpanded = useMenuExpandStore((state) => state.isExpanded);
+    const isExpanded = useMenuStore((state) => state.isExpanded);
 
     const style = isExpanded ? {width :'calc(100% - 72px - 350px)', left : 'calc(72px + 350px)'} :
         {width : 'calc(100% - 72px)', left : '72px'}
