@@ -4,7 +4,7 @@ import {useEditor} from "@/features/editor/hooks/useEditor";
 import {fabric} from "fabric";
 import Header from '@/features/editor/components/header'
 import Sidebar from '@/features/editor/sidebar/components/sidebar'
-import Toolbar from "@/features/editor/components/toolbar";
+import Toolbar from "@/features/editor/toolbar/components/toolbar";
 import Footer from "@/features/editor/components/footer";
 import useMenuExpandStore from "@/features/editor/sidebar/contexts/sidebar-store";
 
