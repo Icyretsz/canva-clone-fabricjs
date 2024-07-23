@@ -1,5 +1,4 @@
 import React from 'react';
-import Menu from '@/features/sidebar/components/menu'
 import SidebarButton from "@/features/sidebar/components/sidebar-button";
 import {
     Shapes,
@@ -7,10 +6,14 @@ import {
     Upload
 } from 'lucide-react'
 import MenuExpandContext from "@/features/sidebar/contexts/sidebar-store";
+import ShapeMenu from "@/features/sidebar/components/shapeMenu";
 
+interface SidebarProps {
+    editor : any
+}
 
-const Sidebar = () => {
-    const {activeTool, setActiveTool, setExpanded} = MenuExpandContext()
+const Sidebar = ({editor} : SidebarProps) => {
+    const {activeTool, setActiveTool, setExpanded, isExpanded} = MenuExpandContext()
 
     return (
         <div className='h-full'>
@@ -23,6 +26,7 @@ const Sidebar = () => {
                         setActiveTool('Shapes')
                         setExpanded(true)
                     }}
+
                 />
                 <SidebarButton
                     icon={ALargeSmall}
@@ -43,7 +47,9 @@ const Sidebar = () => {
                     }}
                 />
             </div>
-            <Menu/>
+            {isExpanded && <div className='left-[72px] absolute w-[350px] top-[68px] h-[calc(100%-68px)] bg-[#252627]'>
+                {activeTool === 'Shapes' && <ShapeMenu editor={editor}/>}
+            </div>}
         </div>
     );
 };

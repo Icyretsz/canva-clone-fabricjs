@@ -11,7 +11,7 @@ import useMenuExpandStore from "@/features/sidebar/contexts/sidebar-store";
 const Editor = () => {
     const canvasRef = useRef(null);
     const containerRef = useRef<HTMLDivElement>(null)
-    const {init} = useEditor()
+    const {init, editor} = useEditor()
     const isExpanded = useMenuExpandStore((state) => state.isExpanded);
 
     useEffect(() => {
@@ -38,7 +38,7 @@ const Editor = () => {
     return (
         <div className='flex flex-col h-full'>
             <Header/>
-            <Sidebar/>
+            <Sidebar editor={editor}/>
             <Toolbar/>
             <Footer/>
             <div className='absolute h-[calc(100%-68px-48px-40px)] top-[calc(68px+48px)] flex'
