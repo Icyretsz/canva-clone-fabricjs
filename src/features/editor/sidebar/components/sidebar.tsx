@@ -6,7 +6,8 @@ import {
     Upload
 } from 'lucide-react'
 import MenuExpandContext from "@/features/editor/sidebar/stores/sidebar-store";
-import ShapeMenu from "@/features/editor/sidebar/components/shapeMenu";
+import ShapeMenu from "@/features/editor/sidebar/components/shape-menu";
+import ColorMenu from "@/features/editor/sidebar/components/color-menu"
 
 interface SidebarProps {
     editor : any

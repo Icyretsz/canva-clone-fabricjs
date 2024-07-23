@@ -1,6 +1,6 @@
 import React from 'react';
 import useMenuStore from '@/features/editor/sidebar/stores/sidebar-store';
-import ToolbarShape from '@/features/editor/toolbar/components/toolbar-shape'
+import ShapeToolbar from '@/features/editor/toolbar/components/shape-toolbar'
 const Toolbar = () => {
     const isExpanded = useMenuStore((state) => state.isExpanded);
 
@@ -11,7 +11,7 @@ const Toolbar = () => {
 
     return (
         <div className='h-[48px] absolute top-[68px]' style={style}>
-            <ToolbarShape/>
+            <ShapeToolbar/>
         </div>
     );
 };

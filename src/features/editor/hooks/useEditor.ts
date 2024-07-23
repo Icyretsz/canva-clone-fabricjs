@@ -1,80 +1,109 @@
 import {useCallback, useMemo, useState} from 'react'
 import {fabric} from 'fabric'
 import useAutoResize from "@/features/editor/hooks/useAutoResize";
+import useToolbarStore from "@/features/editor/toolbar/stores/toolbar-store"
+import useMenuStore from "@/features/editor/sidebar/stores/sidebar-store";
+import {
+    FILL_COLOR,
+    STROKE_COLOR,
+    STROKE_WIDTH,
+    RECTANGLE_OPTIONS,
+    TRIANGLE_OPTIONS,
+    CIRCLE_OPTIONS,
+    OCTAGON_POINTS,
+    OCTAGON_OPTIONS
+} from "@/features/editor/sidebar/types";
 
 export const useEditor = () => {
 
     const [canvas, setCanvas] = useState<fabric.Canvas | null>(null)
     const [container, setContainer] = useState<HTMLDivElement | null>(null)
+    const {setCurrentObject} = useToolbarStore()
+    const {setActiveTool} = useMenuStore()
+    
+
 
     useAutoResize({canvas, container})
 
 
-    const addShapes = (canvas : fabric.Canvas) => {
+    const addShapes = (canvas: fabric.Canvas) => {
+
+        const getWorkspace = () => {
+            return canvas
+                .getObjects()
+                .find((object) => object.name === "clip")
+        }
+
+        const center = (object: fabric.Object) => {
+            const workspace = getWorkspace()
+            const center = workspace?.getCenterPoint()
+
+            if (!center) return
+
+            //@ts-ignore
+            canvas._centerObject(object, center)
+        }
+
+        const addProc = (object: fabric.Object) => {
+            center(object)
+            canvas.add(object)
+            canvas.setActiveObject(object)
+            canvas.renderAll();
+        }
 
         return {
             addRect: () => {
                 const rect = new fabric.Rect({
-                    width: 140,
-                    height: 120,
-                    fill: '#000',
-                    stroke: 'transparent',
-                    strokeWidth: 2,
+                    ...RECTANGLE_OPTIONS
                 })
-                canvas.add(rect)
-                canvas.centerObject(rect)
-                canvas.setActiveObject(rect)
-                canvas.renderAll();
-                rect.on('selected', () => {console.log('rect')});
+                addProc(rect)
+                rect.on('selected', () => {
+                    setCurrentObject(rect)
+                });
+                rect.on("deselected", () => {
+                    setCurrentObject(null)
+                    setActiveTool('Shapes')
+                })
             },
             addCircle: () => {
                 const circle = new fabric.Circle({
-                    radius: 60,
-                    fill: '#000',
-                    stroke: '#000',
+                    ...CIRCLE_OPTIONS
                 })
-                canvas.add(circle)
-                canvas.centerObject(circle)
-                canvas.setActiveObject(circle)
-                canvas.renderAll();
-                circle.on('selected', (e) => {console.log('circle radius: ' + circle.getRadiusX())});
+                addProc(circle)
+                circle.on('selected', (e) => {
+                    setCurrentObject(circle)
+                });
+                circle.on("deselected", () => {
+                    setCurrentObject(null)
+                    setActiveTool('Shapes')
+                })
             },
             addTriangle: () => {
                 const triangle = new fabric.Triangle({
-                    width: 120,
-                    height: 120,
-                    fill: '#000',
-                    stroke: '#000',
+                    ...TRIANGLE_OPTIONS
                 })
-                canvas.add(triangle)
-                canvas.centerObject(triangle)
-                canvas.setActiveObject(triangle)
-                canvas.renderAll();
-                triangle.on('selected', () => {console.log('triangle')});
+                addProc(triangle)
+                triangle.on('selected', (e) => {
+                    setCurrentObject(triangle)
+                });
+                triangle.on("deselected", () => {
+                    setCurrentObject(null)
+                    setActiveTool('Shapes')
+                })
             },
             addPolygon: () => {
-                const polygon = new fabric.Polygon([
-                    { x: 20, y: 52.73 },      // Top edge midpoint right vertex
-                    { x: 37.29, y: 37.29 },   // Top-right vertex
-                    { x: 52.73, y: 20 },      // Right-top vertex
-                    { x: 52.73, y: -20 },     // Right-bottom vertex
-                    { x: 37.29, y: -37.29 },  // Bottom-right vertex
-                    { x: 20, y: -52.73 },     // Bottom edge midpoint right vertex
-                    { x: -20, y: -52.73 },    // Bottom edge midpoint left vertex
-                    { x: -37.29, y: -37.29 }, // Bottom-left vertex
-                    { x: -52.73, y: -20 },    // Left-bottom vertex
-                    { x: -52.73, y: 20 },     // Left-top vertex
-                    { x: -37.29, y: 37.29 },  // Top-left vertex
-                    { x: -20, y: 52.73 }
-                ], {
-                    fill: '#000',
-                    stroke: '#000',
+                const octagon = new fabric.Polygon(
+                    OCTAGON_POINTS, {
+                        ...OCTAGON_OPTIONS
+                    });
+                addProc(octagon)
+                octagon.on('selected', (e) => {
+                    setCurrentObject(octagon)
                 });
-                canvas.add(polygon)
-                canvas.centerObject(polygon)
-                canvas.setActiveObject(polygon)
-                canvas.renderAll();
-                polygon.on('selected', () => {console.log('polygon')});
+                octagon.on("deselected", () => {
+                    setCurrentObject(null)
+                    setActiveTool('Shapes')
+                })
             }
         }
     }
@@ -108,12 +137,12 @@ export const useEditor = () => {
             cornerStrokeColor: "#3b82f6"
         })
         const initialWorkspace = new fabric.Rect({
-            width : 1200,
-            height : 900,
-            name : 'clip',
-            fill : 'white',
-            selectable : false,
-            hasControls : false,
+            width: 1200,
+            height: 900,
+            name: 'clip',
+            fill: 'white',
+            selectable: false,
+            hasControls: false,
             hoverCursor: 'default',
             shadow: new fabric.Shadow(
                 {

@@ -2,13 +2,17 @@ import React from 'react';
 import Image from "next/image";
 import MenuExpandContext from "@/features/editor/sidebar/stores/sidebar-store";
 
-const MenuHeader = () => {
+interface MenuHeaderProps {
+    type : string
+}
+
+const MenuHeaderDark = ({type} : MenuHeaderProps) => {
     const {setExpanded} = MenuExpandContext()
     return (
         <div className='flex justify-between items-center h-[48px] px-4'>
-            <div className='text-white '>Shapes</div>
+            <div className='text-white'>{type}</div>
             <Image className='cursor-pointer'
-                   src='/icons-close.svg'
+                   src='/icons-close-dark.svg'
                    width='16'
                    height='16'
                    alt='close icon'
@@ -18,4 +22,4 @@ const MenuHeader = () => {
     );
 };
 
-export default MenuHeader;
+export default MenuHeaderDark;
