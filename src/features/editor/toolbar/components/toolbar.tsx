@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from 'react';
+
 import useMenuStore from '@/features/editor/stores/store';
-import {fabric} from "fabric";
+
 import {Editor} from '@/features/editor/sidebar/types'
 
 interface ToolbarProps {
@@ -19,8 +19,6 @@ const Toolbar = ({editor} : ToolbarProps) => {
     }
 
     const fillColor = getProperty('fill')
-
-    const [properties, setProperties] = useState({fillColor})
 
     const style = isExpanded ? {
                 width: 'calc(100% - 72px - 350px)', left: 'calc(72px + 350px)'

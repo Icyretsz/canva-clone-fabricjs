@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+
 import MenuHeaderLight from "@/features/editor/sidebar/components/menu-header-light";
 import {HexColorPicker} from "react-colorful";
 import useMenuStore from "@/features/editor/stores/store";
@@ -11,9 +11,8 @@ interface ColorMenuProps {
 const ColorMenu = ({editor}: ColorMenuProps) => {
 
     const {currentObject} = useMenuStore();
-
-
     currentObject?.canvas?.renderAll()
+
     return (
         <div className='fixed w-[350px] top-[68px] h-[calc(100%-68px)] bg-white'>
             <div className='h-full w-full bg-white border-r-[1px] border-gray-200'>

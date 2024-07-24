@@ -88,6 +88,7 @@ export const useEditor = () => {
                 canvas.getActiveObjects().forEach((object) => {
                     object.set({fill: value})
                 })
+                canvas.renderAll();
             },
             setStrokeColor: (value: string) => {
                 setStrokeColor(value)
@@ -98,6 +99,7 @@ export const useEditor = () => {
                     }
                     object.set({stroke: value})
                 })
+                canvas.renderAll();
             },
             setStrokeWidth: (value: number) => {
                 setStrokeWidth(value)
@@ -105,6 +107,7 @@ export const useEditor = () => {
 
                     object.set({strokeWidth: value})
                 })
+                canvas.renderAll();
             },
             addRect: () => {
                 const rect = new fabric.Rect({...RECTANGLE_OPTIONS});
