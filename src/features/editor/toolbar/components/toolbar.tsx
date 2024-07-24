@@ -1,5 +1,11 @@
 
 import useMenuStore from '@/features/editor/stores/store';
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from "@/components/ui/tooltip"
 
 import {Editor} from '@/features/editor/sidebar/types'
 
@@ -29,13 +35,23 @@ const Toolbar = ({editor} : ToolbarProps) => {
 
     return (
         <div className='h-[48px] absolute top-[68px] flex items-center px-2' style={style}>
-            <div className='size-10 rounded-full'
-            style = {{backgroundColor:fillColor}} onClick={() => {
-                setActiveTool('ColorPicker')
-                setExpanded(true)
-                console.log('clicked')
-            }}
-            ></div>
+            <TooltipProvider>
+                <Tooltip>
+                    <TooltipTrigger asChild>
+                        <div className='size-10 rounded-full'
+                             style={{backgroundColor: fillColor}} onClick={() => {
+                            setActiveTool('ColorPicker')
+                            setExpanded(true)
+                            console.log('clicked')
+                        }}
+                        ></div>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                        <p>Color Picker</p>
+                    </TooltipContent>
+                </Tooltip>
+            </TooltipProvider>
+
         </div>
     );
 };

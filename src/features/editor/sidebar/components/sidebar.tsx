@@ -10,6 +10,7 @@ import ShapeMenu from "@/features/editor/sidebar/components/shape-menu";
 import ColorMenu from "@/features/editor/sidebar/components/color-menu"
 import {Editor} from "@/features/editor/sidebar/types";
 
+
 interface SidebarProps {
     editor : Editor | undefined
 }
