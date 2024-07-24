@@ -5,12 +5,13 @@ import {
     ALargeSmall,
     Upload
 } from 'lucide-react'
-import MenuExpandContext from "@/features/editor/sidebar/stores/sidebar-store";
+import MenuExpandContext from "@/features/editor/stores/store";
 import ShapeMenu from "@/features/editor/sidebar/components/shape-menu";
 import ColorMenu from "@/features/editor/sidebar/components/color-menu"
+import {Editor} from "@/features/editor/sidebar/types";
 
 interface SidebarProps {
-    editor : any
+    editor : Editor | undefined
 }
 
 const Sidebar = ({editor} : SidebarProps) => {
@@ -50,6 +51,7 @@ const Sidebar = ({editor} : SidebarProps) => {
             </div>
             {isExpanded && <div className='left-[72px] absolute w-[350px] top-[68px] h-[calc(100%-68px)] bg-[#252627]'>
                 {activeTool === 'Shapes' && <ShapeMenu editor={editor}/>}
+                {activeTool === 'ColorPicker' && <ColorMenu editor={editor}/>}
             </div>}
         </div>
     );

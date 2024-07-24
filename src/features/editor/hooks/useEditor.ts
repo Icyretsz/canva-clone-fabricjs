@@ -1,8 +1,7 @@
 import {useCallback, useMemo, useState} from 'react'
 import {fabric} from 'fabric'
 import useAutoResize from "@/features/editor/hooks/useAutoResize";
-import useToolbarStore from "@/features/editor/toolbar/stores/toolbar-store"
-import useMenuStore from "@/features/editor/sidebar/stores/sidebar-store";
+import useMenuStore from "@/features/editor/stores/store";
 import {
     FILL_COLOR,
     STROKE_COLOR,
@@ -11,109 +10,142 @@ import {
     TRIANGLE_OPTIONS,
     CIRCLE_OPTIONS,
     OCTAGON_POINTS,
-    OCTAGON_OPTIONS
+    OCTAGON_OPTIONS,
+    BuildEditor
 } from "@/features/editor/sidebar/types";
+import {isTextType} from "@/features/editor/utils"
+import useCanvasEvents from "@/features/editor/hooks/useObjectEvents";
 
 export const useEditor = () => {
 
     const [canvas, setCanvas] = useState<fabric.Canvas | null>(null)
     const [container, setContainer] = useState<HTMLDivElement | null>(null)
-    const {setCurrentObject} = useToolbarStore()
-    const {setActiveTool} = useMenuStore()
-    
+    const {setActiveTool, setCurrentObject} = useMenuStore()
+    const [fillColor, setFillColor] = useState(FILL_COLOR)
+    const [strokeColor, setStrokeColor] = useState(STROKE_COLOR)
+    const [strokeWidth, setStrokeWidth] = useState(STROKE_WIDTH)
+    const [selectedObjects, setSelectedObjects] = useState<fabric.Object[]>([])
 
 
     useAutoResize({canvas, container})
+    useCanvasEvents({canvas, selectedObjects, setSelectedObjects})
 
 
-    const addShapes = (canvas: fabric.Canvas) => {
-
+    const buildEditor = ({
+                             canvas,
+                             fillColor,
+                             setFillColor,
+                             strokeColor,
+                             setStrokeColor,
+                             strokeWidth,
+                             setStrokeWidth
+                         }: BuildEditor) => {
         const getWorkspace = () => {
-            return canvas
-                .getObjects()
-                .find((object) => object.name === "clip")
-        }
+            return canvas.getObjects().find((object) => object.name === "clip");
+        };
 
         const center = (object: fabric.Object) => {
-            const workspace = getWorkspace()
-            const center = workspace?.getCenterPoint()
+            const workspace = getWorkspace();
+            const center = workspace?.getCenterPoint();
 
-            if (!center) return
+            if (!center) return;
 
-            //@ts-ignore
-            canvas._centerObject(object, center)
-        }
+            // @ts-ignore
+            canvas._centerObject(object, center);
+        };
 
         const addProc = (object: fabric.Object) => {
-            center(object)
-            canvas.add(object)
-            canvas.setActiveObject(object)
+            center(object);
+            canvas.add(object);
+            canvas.setActiveObject(object);
             canvas.renderAll();
-        }
+        };
+
+        const registerEvents = (object: fabric.Object) => {
+            const handleSelected = () => setCurrentObject(object);
+            const handleDeselected = () => {
+                setCurrentObject(null);
+                setActiveTool('Shapes');
+            };
+
+            object.on('selected', handleSelected);
+            object.on('deselected', handleDeselected);
+
+            // Return a function to remove the event listeners
+            return () => {
+                object.off('selected', handleSelected);
+                object.off('deselected', handleDeselected);
+            };
+        };
 
         return {
+            canvas,
+            fillColor,
+            strokeColor,
+            strokeWidth,
+            setFillColor: (value: string) => {
+                setFillColor(value)
+                canvas.getActiveObjects().forEach((object) => {
+                    object.set({fill: value})
+                })
+            },
+            setStrokeColor: (value: string) => {
+                setStrokeColor(value)
+                canvas.getActiveObjects().forEach((object) => {
+                    if (isTextType(object.type)) {
+                        object.set({fill: value})
+                        return
+                    }
+                    object.set({stroke: value})
+                })
+            },
+            setStrokeWidth: (value: number) => {
+                setStrokeWidth(value)
+                canvas.getActiveObjects().forEach((object) => {
+
+                    object.set({strokeWidth: value})
+                })
+            },
             addRect: () => {
-                const rect = new fabric.Rect({
-                    ...RECTANGLE_OPTIONS
-                })
-                addProc(rect)
-                rect.on('selected', () => {
-                    setCurrentObject(rect)
-                });
-                rect.on("deselected", () => {
-                    setCurrentObject(null)
-                    setActiveTool('Shapes')
-                })
+                const rect = new fabric.Rect({...RECTANGLE_OPTIONS});
+                addProc(rect);
+                return registerEvents(rect);
             },
             addCircle: () => {
-                const circle = new fabric.Circle({
-                    ...CIRCLE_OPTIONS
-                })
-                addProc(circle)
-                circle.on('selected', (e) => {
-                    setCurrentObject(circle)
-                });
-                circle.on("deselected", () => {
-                    setCurrentObject(null)
-                    setActiveTool('Shapes')
-                })
+                const circle = new fabric.Circle({...CIRCLE_OPTIONS});
+                addProc(circle);
+                return registerEvents(circle);
             },
             addTriangle: () => {
-                const triangle = new fabric.Triangle({
-                    ...TRIANGLE_OPTIONS
-                })
-                addProc(triangle)
-                triangle.on('selected', (e) => {
-                    setCurrentObject(triangle)
-                });
-                triangle.on("deselected", () => {
-                    setCurrentObject(null)
-                    setActiveTool('Shapes')
-                })
+                const triangle = new fabric.Triangle({...TRIANGLE_OPTIONS});
+                addProc(triangle);
+                return registerEvents(triangle);
             },
             addPolygon: () => {
-                const octagon = new fabric.Polygon(
-                    OCTAGON_POINTS, {
-                        ...OCTAGON_OPTIONS
-                    });
-                addProc(octagon)
-                octagon.on('selected', (e) => {
-                    setCurrentObject(octagon)
-                });
-                octagon.on("deselected", () => {
-                    setCurrentObject(null)
-                    setActiveTool('Shapes')
-                })
-            }
-        }
-    }
+                const octagon = new fabric.Polygon(OCTAGON_POINTS, {...OCTAGON_OPTIONS});
+                addProc(octagon);
+                return registerEvents(octagon);
+            },
+        };
+    };
+
 
     const editor = useMemo(() => {
         if (canvas) {
-            return addShapes(canvas)
+            return buildEditor(
+                {
+                    canvas,
+                    fillColor,
+                    setFillColor,
+                    strokeColor,
+                    setStrokeColor,
+                    strokeWidth,
+                    setStrokeWidth
+                }
+            )
         }
         return undefined
-    }, [canvas])
+    }, [canvas, fillColor])
 
     const init = useCallback((
         {

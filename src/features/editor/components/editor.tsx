@@ -6,13 +6,14 @@ import Header from '@/features/editor/components/header'
 import Sidebar from '@/features/editor/sidebar/components/sidebar'
 import Toolbar from "@/features/editor/toolbar/components/toolbar";
 import Footer from "@/features/editor/components/footer";
-import useMenuStore from "@/features/editor/sidebar/stores/sidebar-store";
+import useMenuStore from "@/features/editor/stores/store";
 
 const Editor = () => {
     const canvasRef = useRef(null);
     const containerRef = useRef<HTMLDivElement>(null)
     const {init, editor} = useEditor()
     const isExpanded = useMenuStore((state) => state.isExpanded);
+
 
     useEffect(() => {
         const canvas = new fabric.Canvas(
@@ -39,12 +40,12 @@ const Editor = () => {
         <div className='flex flex-col h-full'>
             <Header/>
             <Sidebar editor={editor}/>
-            <Toolbar/>
+            <Toolbar editor={editor}/>
             <Footer/>
             <div className='absolute h-[calc(100%-68px-48px-40px)] top-[calc(68px+48px)] flex'
                  style = {menuExpandedStyle}
             >
-                <div className='h-full w-full flex-1 bg-gray-200' ref={containerRef}>
+                <div className='h-full w-full flex-1 bg-gray-200'  ref={containerRef}>
                     <canvas ref={canvasRef}/>
                 </div>
             </div>

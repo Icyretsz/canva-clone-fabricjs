@@ -1,5 +1,5 @@
 import React from 'react';
-import useMenuStore from '@/features/editor/sidebar/stores/sidebar-store';
+import useMenuStore from '@/features/editor/stores/store';
 
 const Footer = () => {
 

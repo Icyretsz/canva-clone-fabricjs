@@ -3,19 +3,15 @@ import MenuHeaderDark from "@/features/editor/sidebar/components/menu-header-dar
 import {MdRectangle, MdCircle} from "react-icons/md";
 import {IoTriangleSharp} from "react-icons/io5";
 import {BiSolidPolygon} from "react-icons/bi";
+import {Editor} from "@/features/editor/sidebar/types";
 
 
 interface ShapeMenuProps {
-    editor : {
-        addRect : () => void,
-        addCircle : () => void,
-        addTriangle : () => void,
-        addPolygon : () => void
-    }
+    editor : Editor | undefined
 }
 
 
-const ShapeMenu = ({editor} : ShapeMenuProps) => {
+const ShapeMenu = ({ editor } : ShapeMenuProps) => {
 
     return (
         <div className='flex flex-col h-full w-full'>

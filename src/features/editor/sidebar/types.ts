@@ -7,8 +7,8 @@ export type ActiveTool =
     | "Upload"
     | "ColorPicker"
 
-export const FILL_COLOR = '#E5E7EB'
-export const STROKE_COLOR = '#E5E7EB'
+export const FILL_COLOR = '#D1D5DB'
+export const STROKE_COLOR = '#D1D5DB'
 export const STROKE_WIDTH = 2
 
 export const RECTANGLE_OPTIONS = {
@@ -52,4 +52,28 @@ export const OCTAGON_OPTIONS = {
     fill: FILL_COLOR,
     stroke: STROKE_COLOR,
     strokeWidth: STROKE_WIDTH
+}
+
+export interface Editor {
+    canvas: fabric.Canvas,
+    fillColor: string,
+    strokeColor: string,
+    strokeWidth: number,
+    setFillColor: (value: string) => void,
+    setStrokeColor: (value: string) => void,
+    setStrokeWidth: (value: number) => void,
+    addRect: () => void,
+    addCircle: () => void,
+    addTriangle: () => void,
+    addPolygon: () => void
+}
+
+export interface BuildEditor {
+    canvas: fabric.Canvas,
+    fillColor: string,
+    strokeColor: string,
+    strokeWidth: number,
+    setFillColor: (value: string) => void,
+    setStrokeColor: (value: string) => void,
+    setStrokeWidth: (value: number) => void,
 }
