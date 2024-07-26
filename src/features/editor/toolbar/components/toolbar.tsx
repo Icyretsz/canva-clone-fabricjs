@@ -1,20 +1,4 @@
 import useMenuStore from '@/features/editor/stores/store';
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipProvider,
-    TooltipTrigger,
-} from "@/components/ui/tooltip"
-
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-
 import {Editor} from '@/features/editor/sidebar/types'
 import ColorPicker from "@/features/editor/toolbar/components/color-picker";
 import StrokeWidthPicker from "@/features/editor/toolbar/components/stroke-width-picker";
@@ -27,10 +11,6 @@ interface ToolbarProps {
 const Toolbar = ({editor}: ToolbarProps) => {
     const isExpanded = useMenuStore((state) => state.isExpanded);
 
-
-
-
-
     const style = isExpanded ? {
                 width: 'calc(100% - 72px - 350px)', left: 'calc(72px + 350px)'
             } :
@@ -41,7 +21,7 @@ const Toolbar = ({editor}: ToolbarProps) => {
 
 
     return (
-        <div className='h-[48px] absolute top-[68px] flex items-center px-2' style={style}>
+        <div className='h-[48px] absolute top-[68px] flex items-center gap-1 px-2' style={style}>
         <ColorPicker editor={editor}/>
         <StrokeWidthPicker/>
     </div>
