@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/tooltip"
 
 import {Editor} from '@/features/editor/sidebar/types'
-import {useState} from "react";
+import {useEffect} from "react";
 
 interface ToolbarProps {
     editor: Editor | undefined;
@@ -27,13 +27,17 @@ const Toolbar = ({editor}: ToolbarProps) => {
 
 
     const colors = editor?.activeColors
+    useEffect(()=> {
 
+    })
 
     const style = isExpanded ? {
                 width: 'calc(100% - 72px - 350px)', left: 'calc(72px + 350px)'
             } :
             {width: 'calc(100% - 72px)', left: '72px'}
     ;
+
+
 
     return (
         <div className='h-[48px] absolute top-[68px] flex items-center px-2' style={style}>

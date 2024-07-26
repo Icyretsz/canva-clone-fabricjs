@@ -30,7 +30,7 @@ export const useEditor = () => {
 
     useAutoResize({canvas, container})
     useCanvasEvents({canvas, selectedObjects, setSelectedObjects})
-    useGetActiveColor(selectedObjects, activeColors, setActiveColors)
+    useGetActiveColor(selectedObjects, setActiveColors)
 
     const buildEditor = ({
                              selectedObjects,
@@ -93,6 +93,7 @@ export const useEditor = () => {
                 canvas.getActiveObjects().forEach((object) => {
                     object.set({fill: value})
                 })
+                setActiveColors([value])
                 canvas.renderAll();
             },
             setStrokeColor: (value: string) => {

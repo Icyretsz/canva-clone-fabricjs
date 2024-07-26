@@ -1,4 +1,5 @@
 import {fabric} from "fabric";
+import {Dispatch, SetStateAction} from "react";
 
 export type ActiveTool =
     | "Select"
@@ -56,7 +57,7 @@ export const OCTAGON_OPTIONS = {
 
 export interface Editor {
     activeColors : string[],
-    setActiveColors : React.Dispatch<string[]>,
+    setActiveColors : Dispatch<SetStateAction<string[]>>,
     selectedObjects : fabric.Object[]
     canvas: fabric.Canvas,
     fillColor: string,
@@ -73,7 +74,7 @@ export interface Editor {
 
 export interface BuildEditor {
     activeColors : string[],
-    setActiveColors : React.Dispatch<string[]>,
+    setActiveColors : Dispatch<SetStateAction<string[]>> ,
     selectedObjects : fabric.Object[]
     canvas: fabric.Canvas,
     fillColor: string,

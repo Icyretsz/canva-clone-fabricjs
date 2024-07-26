@@ -1,10 +1,9 @@
 import {fabric} from "fabric";
-import {useEffect, useState} from "react";
+import {Dispatch, SetStateAction, useEffect} from "react";
 
 const useGetActiveColor = (
     selectedObjects : fabric.Object[] | undefined,
-    activeColors : string[],
-    setActiveColors : React.Dispatch<string[]>
+    setActiveColors : Dispatch<SetStateAction<string[]> >
 ) => {
 
     useEffect(() => {
