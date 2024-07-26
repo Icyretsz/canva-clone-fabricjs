@@ -82,6 +82,7 @@ export const useEditor = () => {
         };
 
         return {
+            setActiveFillColor,
             activeFillColor,
             selectedObjects,
             canvas,
