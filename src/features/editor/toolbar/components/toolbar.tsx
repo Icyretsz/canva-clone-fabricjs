@@ -17,7 +17,8 @@ import {
 
 import {Editor} from '@/features/editor/sidebar/types'
 import ColorPicker from "@/features/editor/toolbar/components/color-picker";
-import {DropdownMenuCheckboxes} from "@/features/editor/toolbar/components/stroke-width-picker";
+import StrokeWidthPicker from "@/features/editor/toolbar/components/stroke-width-picker";
+
 
 interface ToolbarProps {
     editor: Editor | undefined;
@@ -42,7 +43,7 @@ const Toolbar = ({editor}: ToolbarProps) => {
     return (
         <div className='h-[48px] absolute top-[68px] flex items-center px-2' style={style}>
         <ColorPicker editor={editor}/>
-        <DropdownMenuCheckboxes/>
+        <StrokeWidthPicker/>
     </div>
 
     );
