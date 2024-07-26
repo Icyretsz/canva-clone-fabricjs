@@ -1,7 +1,7 @@
 import {fabric} from "fabric";
 import {Dispatch, SetStateAction, useEffect} from "react";
 
-const useGetActiveColor = (
+const useGetActiveFill = (
     selectedObjects : fabric.Object[] | undefined,
     setActiveColors : Dispatch<SetStateAction<string[]> >
 ) => {
@@ -19,4 +19,4 @@ const useGetActiveColor = (
     }, [selectedObjects])
 };
 
-export default useGetActiveColor;
+export default useGetActiveFill;

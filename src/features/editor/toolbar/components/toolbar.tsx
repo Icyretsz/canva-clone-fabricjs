@@ -26,7 +26,7 @@ const Toolbar = ({editor}: ToolbarProps) => {
     const fillColor = getProperty('fill')
 
 
-    const colors = editor?.activeColors
+    const colors = editor?.activeFillColor
     useEffect(()=> {
 
     })
