@@ -8,7 +8,7 @@ export type ActiveTool =
     | "ColorPicker"
 
 export const FILL_COLOR = '#D1D5DB'
-export const STROKE_COLOR = '#D1D5DB'
+export const STROKE_COLOR = '#000'
 export const STROKE_WIDTH = 2
 
 export const RECTANGLE_OPTIONS = {

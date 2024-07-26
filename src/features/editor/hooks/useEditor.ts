@@ -16,6 +16,7 @@ import {
 import {isTextType} from "@/features/editor/utils"
 import useCanvasEvents from "@/features/editor/hooks/useObjectEvents";
 import useGetActiveFill from "@/features/editor/hooks/useGetActiveFill";
+import useGetActiveStrokeWidth from "@/features/editor/hooks/useGetStrokeWidth";
 
 export const useEditor = () => {
 
@@ -24,12 +25,13 @@ export const useEditor = () => {
     const {setActiveTool, setCurrentObject} = useMenuStore()
     const [fillColor, setFillColor] = useState<string[]>([])
     const [strokeColor, setStrokeColor] = useState(STROKE_COLOR)
-    const [strokeWidth, setStrokeWidth] = useState(STROKE_WIDTH)
+    const [strokeWidth, setStrokeWidth] = useState<number>(STROKE_WIDTH)
     const [selectedObjects, setSelectedObjects] = useState<fabric.Object[]>([])
 
     useAutoResize({canvas, container})
     useCanvasEvents({canvas, selectedObjects, setSelectedObjects})
     useGetActiveFill(selectedObjects, setFillColor)
+    useGetActiveStrokeWidth(selectedObjects, setStrokeWidth)
 
     const buildEditor = ({
                              selectedObjects,
@@ -107,8 +109,8 @@ export const useEditor = () => {
             setStrokeWidth: (value: number) => {
                 setStrokeWidth(value)
                 canvas.getActiveObjects().forEach((object) => {
-
-                    object.set({strokeWidth: value})
+                    object.set({strokeWidth: value,
+                        strokeUniform: true})
                 })
                 canvas.renderAll();
             },

@@ -17,13 +17,11 @@ const Toolbar = ({editor}: ToolbarProps) => {
             {width: 'calc(100% - 72px)', left: '72px'}
     ;
 
-    const objectSelected = editor?.canvas.isEmpty()
-
 
     return (
         <div className='h-[48px] absolute top-[68px] flex items-center gap-1 px-2' style={style}>
         <ColorPicker editor={editor}/>
-        <StrokeWidthPicker/>
+        <StrokeWidthPicker editor={editor}/>
     </div>
 
     );
