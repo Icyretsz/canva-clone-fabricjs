@@ -1,4 +1,3 @@
-
 import useMenuStore from '@/features/editor/stores/store';
 import {
     Tooltip,
@@ -11,15 +10,15 @@ import {Editor} from '@/features/editor/sidebar/types'
 import {useState} from "react";
 
 interface ToolbarProps {
-    editor : Editor | undefined;
+    editor: Editor | undefined;
 }
 
-const Toolbar = ({editor} : ToolbarProps) => {
+const Toolbar = ({editor}: ToolbarProps) => {
     const isExpanded = useMenuStore((state) => state.isExpanded);
     const {setActiveTool, setExpanded} = useMenuStore()
     const selectedObjects = editor?.canvas.getActiveObjects()
 
-    const getProperty = (property:any) => {
+    const getProperty = (property: any) => {
         if (!selectedObjects || selectedObjects.length === 0) return null
         return selectedObjects[0].get(property)
     }
@@ -41,25 +40,42 @@ const Toolbar = ({editor} : ToolbarProps) => {
             <TooltipProvider>
                 <Tooltip>
                     <TooltipTrigger asChild>
-                        <div className='size-10 rounded-full'
-                             style={{backgroundColor: fillColor}} onClick={() => {
-                            setActiveTool('ColorPicker')
-                            setExpanded(true)
-                        }}
-                        ></div>
+                        {colors?.length === 1 ? <div className='size-10 rounded-full'
+                                                     style={{backgroundColor: fillColor}} onClick={() => {
+                                setActiveTool('ColorPicker')
+                                setExpanded(true)
+                            }}
+                            ></div> :
+                            <div className='flex rounded-full size-10 relative overflow-hidden'
+                                 onClick={() => {
+                                     setActiveTool('ColorPicker')
+                                     setExpanded(true)
+                                 }}
+                            >
+                                {(colors && colors.length > 0) && <div className="flex w-full h-full relative">
+                                    {colors.map((color, index) => {
+                                        return (
+                                            <div
+                                                key={index}
+                                                className="absolute top-0 h-full"
+                                                style={{
+                                                    backgroundColor: color,
+                                                    width: `${100 / colors.length}%`,
+                                                    left: `${(100 / colors.length) * index}%`
+                                                }}
+                                            ></div>
+                                        );
+                                    })}
+                                </div>}
+                            </div>
+                        }
                     </TooltipTrigger>
                     <TooltipContent>
                         <p>Color Picker</p>
                     </TooltipContent>
                 </Tooltip>
             </TooltipProvider>
-            <div className='flex'>
-                {(colors && colors.length > 0) && <div>{colors.map((color, index) => {
-                    return (
-                        <div key={index}>{color}</div>
-                    )
-                })}</div>}
-            </div>
+
         </div>
     );
 };

@@ -1,6 +1,5 @@
 
 import MenuHeaderLight from "@/features/editor/sidebar/components/menu-header-light";
-import {HexColorPicker} from "react-colorful";
 import useMenuStore from "@/features/editor/stores/store";
 import {Editor} from "@/features/editor/sidebar/types";
 import { ChromePicker, CirclePicker } from 'react-color';
