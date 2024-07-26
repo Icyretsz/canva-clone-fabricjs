@@ -55,6 +55,9 @@ export const OCTAGON_OPTIONS = {
 }
 
 export interface Editor {
+    activeColors : string[],
+    setActiveColors : React.Dispatch<string[]>,
+    selectedObjects : fabric.Object[]
     canvas: fabric.Canvas,
     fillColor: string,
     strokeColor: string,
@@ -69,6 +72,9 @@ export interface Editor {
 }
 
 export interface BuildEditor {
+    activeColors : string[],
+    setActiveColors : React.Dispatch<string[]>,
+    selectedObjects : fabric.Object[]
     canvas: fabric.Canvas,
     fillColor: string,
     strokeColor: string,

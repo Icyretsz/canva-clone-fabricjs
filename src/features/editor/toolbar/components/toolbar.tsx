@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/tooltip"
 
 import {Editor} from '@/features/editor/sidebar/types'
+import {useState} from "react";
 
 interface ToolbarProps {
     editor : Editor | undefined;
@@ -16,7 +17,6 @@ interface ToolbarProps {
 const Toolbar = ({editor} : ToolbarProps) => {
     const isExpanded = useMenuStore((state) => state.isExpanded);
     const {setActiveTool, setExpanded} = useMenuStore()
-
     const selectedObjects = editor?.canvas.getActiveObjects()
 
     const getProperty = (property:any) => {
@@ -26,12 +26,15 @@ const Toolbar = ({editor} : ToolbarProps) => {
 
     const fillColor = getProperty('fill')
 
+
+    const colors = editor?.activeColors
+
+
     const style = isExpanded ? {
                 width: 'calc(100% - 72px - 350px)', left: 'calc(72px + 350px)'
             } :
             {width: 'calc(100% - 72px)', left: '72px'}
     ;
-
 
     return (
         <div className='h-[48px] absolute top-[68px] flex items-center px-2' style={style}>
@@ -42,7 +45,6 @@ const Toolbar = ({editor} : ToolbarProps) => {
                              style={{backgroundColor: fillColor}} onClick={() => {
                             setActiveTool('ColorPicker')
                             setExpanded(true)
-                            console.log('clicked')
                         }}
                         ></div>
                     </TooltipTrigger>
@@ -51,7 +53,13 @@ const Toolbar = ({editor} : ToolbarProps) => {
                     </TooltipContent>
                 </Tooltip>
             </TooltipProvider>
-
+            <div className='flex'>
+                {(colors && colors.length > 0) && <div>{colors.map((color, index) => {
+                    return (
+                        <div key={index}>{color}</div>
+                    )
+                })}</div>}
+            </div>
         </div>
     );
 };

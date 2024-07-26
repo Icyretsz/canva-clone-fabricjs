@@ -15,6 +15,7 @@ import {
 } from "@/features/editor/sidebar/types";
 import {isTextType} from "@/features/editor/utils"
 import useCanvasEvents from "@/features/editor/hooks/useObjectEvents";
+import useGetActiveColor from "@/features/editor/hooks/useGetActiveColor";
 
 export const useEditor = () => {
 
@@ -25,20 +26,22 @@ export const useEditor = () => {
     const [strokeColor, setStrokeColor] = useState(STROKE_COLOR)
     const [strokeWidth, setStrokeWidth] = useState(STROKE_WIDTH)
     const [selectedObjects, setSelectedObjects] = useState<fabric.Object[]>([])
-
+    const [activeColors, setActiveColors] = useState<string[]>([])
 
     useAutoResize({canvas, container})
     useCanvasEvents({canvas, selectedObjects, setSelectedObjects})
-
+    useGetActiveColor(selectedObjects, activeColors, setActiveColors)
 
     const buildEditor = ({
+                             selectedObjects,
                              canvas,
                              fillColor,
                              setFillColor,
                              strokeColor,
                              setStrokeColor,
                              strokeWidth,
-                             setStrokeWidth
+                             setStrokeWidth,
+                             activeColors
                          }: BuildEditor) => {
         const getWorkspace = () => {
             return canvas.getObjects().find((object) => object.name === "clip");
@@ -79,6 +82,8 @@ export const useEditor = () => {
         };
 
         return {
+            activeColors,
+            selectedObjects,
             canvas,
             fillColor,
             strokeColor,
@@ -137,18 +142,21 @@ export const useEditor = () => {
         if (canvas) {
             return buildEditor(
                 {
+                    selectedObjects,
                     canvas,
                     fillColor,
                     setFillColor,
                     strokeColor,
                     setStrokeColor,
                     strokeWidth,
-                    setStrokeWidth
+                    setStrokeWidth,
+                    activeColors,
+                    setActiveColors
                 }
             )
         }
         return undefined
-    }, [canvas, fillColor])
+    }, [canvas, fillColor, strokeColor, strokeWidth, selectedObjects, activeColors])
 
     const init = useCallback((
         {
