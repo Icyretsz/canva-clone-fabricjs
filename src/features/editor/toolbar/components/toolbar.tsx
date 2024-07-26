@@ -19,10 +19,13 @@ const Toolbar = ({editor}: ToolbarProps) => {
 
 
     return (
+
         <div className='h-[48px] absolute top-[68px] flex items-center gap-1 px-2' style={style}>
-        <ColorPicker editor={editor}/>
-        <StrokeWidthPicker editor={editor}/>
-    </div>
+            {editor?.selectedObjects && editor?.selectedObjects.length > 0 &&
+                <><ColorPicker editor={editor}/>
+                    <StrokeWidthPicker editor={editor}/></>
+            }
+        </div>
 
     );
 };
