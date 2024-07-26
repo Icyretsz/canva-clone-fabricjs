@@ -3,7 +3,7 @@ import {Dispatch, SetStateAction, useEffect} from "react";
 
 const useGetActiveFill = (
     selectedObjects : fabric.Object[] | undefined,
-    setActiveColors : Dispatch<SetStateAction<string[]> >
+    setFillColor : Dispatch<SetStateAction<string[]> >
 ) => {
 
     useEffect(() => {
@@ -15,7 +15,7 @@ const useGetActiveFill = (
                 colors.push(fillColor)
             }
         })}
-        setActiveColors(colors)
+        setFillColor(colors)
     }, [selectedObjects])
 };
 

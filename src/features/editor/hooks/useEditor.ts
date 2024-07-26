@@ -22,15 +22,14 @@ export const useEditor = () => {
     const [canvas, setCanvas] = useState<fabric.Canvas | null>(null)
     const [container, setContainer] = useState<HTMLDivElement | null>(null)
     const {setActiveTool, setCurrentObject} = useMenuStore()
-    const [fillColor, setFillColor] = useState(FILL_COLOR)
+    const [fillColor, setFillColor] = useState<string[]>([])
     const [strokeColor, setStrokeColor] = useState(STROKE_COLOR)
     const [strokeWidth, setStrokeWidth] = useState(STROKE_WIDTH)
     const [selectedObjects, setSelectedObjects] = useState<fabric.Object[]>([])
-    const [activeFillColor, setActiveFillColor] = useState<string[]>([])
 
     useAutoResize({canvas, container})
     useCanvasEvents({canvas, selectedObjects, setSelectedObjects})
-    useGetActiveFill(selectedObjects, setActiveFillColor)
+    useGetActiveFill(selectedObjects, setFillColor)
 
     const buildEditor = ({
                              selectedObjects,
@@ -41,7 +40,6 @@ export const useEditor = () => {
                              setStrokeColor,
                              strokeWidth,
                              setStrokeWidth,
-                             activeFillColor
                          }: BuildEditor) => {
         const getWorkspace = () => {
             return canvas.getObjects().find((object) => object.name === "clip");
@@ -82,19 +80,17 @@ export const useEditor = () => {
         };
 
         return {
-            setActiveFillColor,
-            activeFillColor,
             selectedObjects,
             canvas,
             fillColor,
             strokeColor,
             strokeWidth,
-            setFillColor: (value: string) => {
-                setFillColor(value)
+            changeFillColor: (value: string) => {
+                setFillColor([value])
                 canvas.getActiveObjects().forEach((object) => {
                     object.set({fill: value})
                 })
-                setActiveFillColor([value])
+                //setActiveFillColor([value])
                 canvas.renderAll();
             },
             setStrokeColor: (value: string) => {
@@ -151,14 +147,12 @@ export const useEditor = () => {
                     strokeColor,
                     setStrokeColor,
                     strokeWidth,
-                    setStrokeWidth,
-                    activeFillColor,
-                    setActiveFillColor
+                    setStrokeWidth
                 }
             )
         }
         return undefined
-    }, [canvas, fillColor, strokeColor, strokeWidth, selectedObjects, activeFillColor])
+    }, [canvas, fillColor, strokeColor, strokeWidth, selectedObjects])
 
     const init = useCallback((
         {

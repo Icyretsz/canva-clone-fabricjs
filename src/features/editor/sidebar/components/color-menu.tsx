@@ -14,8 +14,8 @@ const ColorMenu = ({ editor }: ColorMenuProps) => {
     currentObject?.canvas?.renderAll();
 
     const handleChangeComplete = (color: ColorResult) => {
-        if (editor && editor.setFillColor) {
-            editor.setFillColor(color.hex);
+        if (editor && editor.changeFillColor) {
+            editor.changeFillColor(color.hex);
         }
     };
 
@@ -24,8 +24,8 @@ const ColorMenu = ({ editor }: ColorMenuProps) => {
             <div className="h-full w-full bg-white border-r-[1px] border-gray-200">
                 <MenuHeaderLight type="Color" />
                 <div className="h-full w-full flex flex-col items-center gap-5">
-                    <ChromePicker color={editor?.fillColor} onChange={handleChangeComplete} />
-                    <CirclePicker color={editor?.fillColor} onChange={handleChangeComplete} />
+                    <ChromePicker color={editor?.fillColor[0]} onChange={handleChangeComplete} />
+                    <CirclePicker color={editor?.fillColor[0]} onChange={handleChangeComplete} />
                 </div>
             </div>
         </div>
