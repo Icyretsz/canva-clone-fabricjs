@@ -26,6 +26,7 @@ export const useEditor = () => {
     const [fillColor, setFillColor] = useState<string[]>([])
     const [strokeColor, setStrokeColor] = useState(STROKE_COLOR)
     const [strokeWidth, setStrokeWidth] = useState<number>(STROKE_WIDTH)
+    const [strokeType, setStrokeType] = useState<string>("")
     const [selectedObjects, setSelectedObjects] = useState<fabric.Object[]>([])
 
     useAutoResize({canvas, container})
