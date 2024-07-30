@@ -6,7 +6,7 @@ import {Slider} from "@nextui-org/slider";
 import {BsBorderWidth} from "react-icons/bs";
 import {Editor} from "@/features/editor/sidebar/types";
 import {Toggle} from "@/components/ui/toggle";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
+import {ToggleGroup, ToggleGroupItem} from "@/components/ui/toggle-group"
 import {Popover, PopoverTrigger, PopoverContent} from "@nextui-org/react";
 
 import {AiOutlineStop} from "react-icons/ai";
@@ -52,10 +52,6 @@ const StrokeWidthPicker = ({editor}: StrokeWidthProps) => {
         }
     };
 
-    const handleToggleChange = (type: StrokeToggleType) => {
-        setStrokeToggle(type)
-    }
-
     return (
         <TooltipProvider>
             <Tooltip delayDuration={200}>
@@ -74,44 +70,27 @@ const StrokeWidthPicker = ({editor}: StrokeWidthProps) => {
                             <PopoverContent>
                                 <div className="w-[300px] flex flex-col p-4 gap-4 justify-center'">
 
-                                    <div className='flex gap-2 justify-between'>
-                                        <Toggle variant="outline" aria-label="stroke-none"
-                                                className='w-[56px] h-[40px]'
-
-                                                onPressedChange={() => {
-                                                    handleToggleChange("stroke-none");
-                                                }}
-                                                pressed={strokeToggle === "stroke-none"}
+                                    <div className='flex justify-center'>
+                                        <ToggleGroup variant="outline"
+                                                     className='flex justify-between gap-4'
+                                                     type="single"
+                                                     onValueChange={(value: StrokeToggleType) => {
+                                                         if (value) setStrokeToggle(value);
+                                                     }}
                                         >
-                                            <AiOutlineStop className='w-[56px] h-[40px]'/>
-                                        </Toggle>
-                                        <Toggle variant="outline" aria-label="stroke-solid"
-                                                className='w-[56px] h-[40px]'
-
-                                                onPressedChange={() => {
-                                                    handleToggleChange("stroke-solid");
-                                                }}
-                                                pressed={strokeToggle === "stroke-solid"}>
-                                            <GoDash className='w-[56px] h-[40px]'/>
-                                        </Toggle>
-                                        <Toggle variant="outline" aria-label="stroke-dash-1"
-                                                className='w-[56px] h-[40px]'
-
-                                                onPressedChange={() => {
-                                                    handleToggleChange("stroke-dash-1");
-                                                }}
-                                                pressed={strokeToggle === "stroke-dash-1"}>
-                                            <CgBorderStyleDashed className='w-[56px] h-[40px]'/>
-                                        </Toggle>
-                                        <Toggle variant="outline" aria-label="stroke-dash-2"
-                                                className='w-[56px] h-[40px]'
-
-                                                onPressedChange={() => {
-                                                    handleToggleChange("stroke-dash-2");
-                                                }}
-                                                pressed={strokeToggle === "stroke-dash-2"}>
-                                            <AiOutlineSmallDash className='w-[56px] h-[40px]'/>
-                                        </Toggle>
+                                            <ToggleGroupItem className='h-[40px] w-[56px]' value="stroke-none">
+                                                <AiOutlineStop className='h-[40px] w-[56px]'/>
+                                            </ToggleGroupItem>
+                                            <ToggleGroupItem className='h-[40px] w-[56px]' value="stroke-solid">
+                                                <GoDash className='h-[40px] w-[56px]'/>
+                                            </ToggleGroupItem>
+                                            <ToggleGroupItem className='h-[40px] w-[56px]' value="stroke-dash-1">
+                                                <CgBorderStyleDashed className='h-[40px] w-[56px]'/>
+                                            </ToggleGroupItem>
+                                            <ToggleGroupItem className='h-[40px] w-[56px]' value="stroke-dash-2">
+                                                <AiOutlineSmallDash className='h-[40px] w-[56px]'/>
+                                            </ToggleGroupItem>
+                                        </ToggleGroup>
                                     </div>
 
                                     <Slider
