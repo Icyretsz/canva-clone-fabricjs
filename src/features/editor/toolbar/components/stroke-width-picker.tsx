@@ -6,6 +6,7 @@ import {Slider} from "@nextui-org/slider";
 import {BsBorderWidth} from "react-icons/bs";
 import {Editor} from "@/features/editor/sidebar/types";
 import {Toggle} from "@/components/ui/toggle";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
 import {Popover, PopoverTrigger, PopoverContent} from "@nextui-org/react";
 
 import {AiOutlineStop} from "react-icons/ai";
@@ -76,35 +77,39 @@ const StrokeWidthPicker = ({editor}: StrokeWidthProps) => {
                                     <div className='flex gap-2 justify-between'>
                                         <Toggle variant="outline" aria-label="stroke-none"
                                                 className='w-[56px] h-[40px]'
-                                                pressed={strokeToggle === "stroke-none"}
+
                                                 onPressedChange={() => {
                                                     handleToggleChange("stroke-none");
                                                 }}
+                                                pressed={strokeToggle === "stroke-none"}
                                         >
                                             <AiOutlineStop className='w-[56px] h-[40px]'/>
                                         </Toggle>
                                         <Toggle variant="outline" aria-label="stroke-solid"
                                                 className='w-[56px] h-[40px]'
-                                                pressed={strokeToggle === "stroke-solid"}
+
                                                 onPressedChange={() => {
                                                     handleToggleChange("stroke-solid");
-                                                }}>
+                                                }}
+                                                pressed={strokeToggle === "stroke-solid"}>
                                             <GoDash className='w-[56px] h-[40px]'/>
                                         </Toggle>
                                         <Toggle variant="outline" aria-label="stroke-dash-1"
                                                 className='w-[56px] h-[40px]'
-                                                pressed={strokeToggle === "stroke-dash-1"}
+
                                                 onPressedChange={() => {
                                                     handleToggleChange("stroke-dash-1");
-                                                }}>
+                                                }}
+                                                pressed={strokeToggle === "stroke-dash-1"}>
                                             <CgBorderStyleDashed className='w-[56px] h-[40px]'/>
                                         </Toggle>
                                         <Toggle variant="outline" aria-label="stroke-dash-2"
                                                 className='w-[56px] h-[40px]'
-                                                pressed={strokeToggle === "stroke-dash-2"}
+
                                                 onPressedChange={() => {
                                                     handleToggleChange("stroke-dash-2");
-                                                }}>
+                                                }}
+                                                pressed={strokeToggle === "stroke-dash-2"}>
                                             <AiOutlineSmallDash className='w-[56px] h-[40px]'/>
                                         </Toggle>
                                     </div>
