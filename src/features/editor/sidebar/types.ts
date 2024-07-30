@@ -10,6 +10,11 @@ export type ActiveTool =
 export const FILL_COLOR = '#D1D5DB'
 export const STROKE_COLOR = '#000'
 export const STROKE_WIDTH = 2
+export const STROKE_PATTERNS = {
+    SOLID: undefined,
+    DASH: [20,10],
+    DOT: [1,1]
+}
 
 export const RECTANGLE_OPTIONS = {
     width: 140,
@@ -60,9 +65,11 @@ export interface Editor {
     fillColor: string[],
     strokeColor: string,
     strokeWidth: number,
+    strokeType: StrokeType,
+    changeStrokeType: (value:StrokeType) => void,
     changeFillColor: (value: string) => void,
-    setStrokeColor: (value: string) => void,
-    setStrokeWidth: (value: number) => void,
+    changeStrokeColor: (value: string) => void,
+    changeStrokeWidth: (value: number) => void,
     addRect: () => void,
     addCircle: () => void,
     addTriangle: () => void,
@@ -75,7 +82,11 @@ export interface BuildEditor {
     fillColor: string[],
     strokeColor: string,
     strokeWidth: number,
+    strokeType: StrokeType,
+    setStrokeType: (value:StrokeType) => void,
     setFillColor: (value: string[]) => void,
     setStrokeColor: (value: string) => void,
     setStrokeWidth: (value: number) => void,
 }
+
+export type StrokeType = "stroke-none" | "stroke-solid" | "stroke-dash" | "stroke-dot";

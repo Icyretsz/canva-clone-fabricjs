@@ -3,7 +3,7 @@ import {fabric} from 'fabric'
 import useAutoResize from "@/features/editor/hooks/useAutoResize";
 import useMenuStore from "@/features/editor/stores/store";
 import {
-    FILL_COLOR,
+    StrokeType,
     STROKE_COLOR,
     STROKE_WIDTH,
     RECTANGLE_OPTIONS,
@@ -11,12 +11,14 @@ import {
     CIRCLE_OPTIONS,
     OCTAGON_POINTS,
     OCTAGON_OPTIONS,
+    STROKE_PATTERNS,
     BuildEditor
 } from "@/features/editor/sidebar/types";
 import {isTextType} from "@/features/editor/utils"
 import useCanvasEvents from "@/features/editor/hooks/useObjectEvents";
 import useGetActiveFill from "@/features/editor/hooks/useGetActiveFill";
-import useGetActiveStrokeWidth from "@/features/editor/hooks/useGetStrokeWidth";
+import useGetStrokeWidth from "@/features/editor/hooks/useGetStrokeWidth";
+import useGetStrokeType from "@/features/editor/hooks/useGetStrokeType";
 
 export const useEditor = () => {
 
@@ -26,13 +28,14 @@ export const useEditor = () => {
     const [fillColor, setFillColor] = useState<string[]>([])
     const [strokeColor, setStrokeColor] = useState(STROKE_COLOR)
     const [strokeWidth, setStrokeWidth] = useState<number>(STROKE_WIDTH)
-    const [strokeType, setStrokeType] = useState<string>("")
+    const [strokeType, setStrokeType] = useState<StrokeType>("stroke-none")
     const [selectedObjects, setSelectedObjects] = useState<fabric.Object[]>([])
 
     useAutoResize({canvas, container})
     useCanvasEvents({canvas, selectedObjects, setSelectedObjects})
     useGetActiveFill(selectedObjects, setFillColor)
-    useGetActiveStrokeWidth(selectedObjects, setStrokeWidth)
+    useGetStrokeWidth(selectedObjects, setStrokeWidth)
+    useGetStrokeType(selectedObjects, setStrokeType)
 
     const buildEditor = ({
                              selectedObjects,
@@ -43,6 +46,8 @@ export const useEditor = () => {
                              setStrokeColor,
                              strokeWidth,
                              setStrokeWidth,
+                             strokeType,
+                             setStrokeType
                          }: BuildEditor) => {
         const getWorkspace = () => {
             return canvas.getObjects().find((object) => object.name === "clip");
@@ -88,15 +93,15 @@ export const useEditor = () => {
             fillColor,
             strokeColor,
             strokeWidth,
+            strokeType,
             changeFillColor: (value: string) => {
                 setFillColor([value])
                 canvas.getActiveObjects().forEach((object) => {
                     object.set({fill: value})
                 })
-                //setActiveFillColor([value])
                 canvas.renderAll();
             },
-            setStrokeColor: (value: string) => {
+            changeStrokeColor: (value: string) => {
                 setStrokeColor(value)
                 canvas.getActiveObjects().forEach((object) => {
                     if (isTextType(object.type)) {
@@ -107,11 +112,35 @@ export const useEditor = () => {
                 })
                 canvas.renderAll();
             },
-            setStrokeWidth: (value: number) => {
+            changeStrokeWidth: (value: number) => {
                 setStrokeWidth(value)
                 canvas.getActiveObjects().forEach((object) => {
-                    object.set({strokeWidth: value,
-                        strokeUniform: true})
+                    object.set({
+                        strokeWidth: value,
+                        strokeUniform: true
+                    })
+                })
+                canvas.renderAll();
+            },
+            changeStrokeType: (value: StrokeType) => {
+                setStrokeType(value)
+                canvas.getActiveObjects().forEach((object) => {
+                    switch (value) {
+                        case 'stroke-none':
+                            object.set({stroke: undefined, strokeDashArray: undefined});
+                            break;
+                        case 'stroke-solid':
+                            object.set({strokeDashArray: STROKE_PATTERNS.SOLID});
+                            break;
+                        case 'stroke-dash':
+                            object.set({strokeDashArray: STROKE_PATTERNS.DASH});
+                            break;
+                        case 'stroke-dot':
+                            object.set({strokeDashArray: STROKE_PATTERNS.DOT});
+                            break;
+                        default:
+                            break;
+                    }
                 })
                 canvas.renderAll();
             },
@@ -150,7 +179,9 @@ export const useEditor = () => {
                     strokeColor,
                     setStrokeColor,
                     strokeWidth,
-                    setStrokeWidth
+                    setStrokeWidth,
+                    strokeType,
+                    setStrokeType
                 }
             )
         }

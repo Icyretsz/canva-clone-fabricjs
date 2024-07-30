@@ -1,11 +1,9 @@
-import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem} from "@nextui-org/dropdown";
 import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip";
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {Button} from "@/components/ui/button";
 import {Slider} from "@nextui-org/slider";
 import {BsBorderWidth} from "react-icons/bs";
 import {Editor} from "@/features/editor/sidebar/types";
-import {Toggle} from "@/components/ui/toggle";
 import {ToggleGroup, ToggleGroupItem} from "@/components/ui/toggle-group"
 import {Popover, PopoverTrigger, PopoverContent} from "@nextui-org/react";
 
@@ -19,17 +17,17 @@ interface StrokeWidthProps {
     editor: Editor | undefined;
 }
 
-type StrokeToggleType = "stroke-none" | "stroke-solid" | "stroke-dash-1" | "stroke-dash-2";
+type StrokeTypes = "stroke-none" | "stroke-solid" | "stroke-dash" | "stroke-dot";
 
 
 const StrokeWidthPicker = ({editor}: StrokeWidthProps) => {
 
-    const [strokeToggle, setStrokeToggle] = useState<StrokeToggleType>("stroke-none")
-
+    const strokeType = editor?.strokeType
+    const changeStrokeType = editor?.changeStrokeType
 
     const handleOnChange = (value: number | number[]) => {
         if (Array.isArray(value)) {
-            editor?.setStrokeWidth(value[0]);
+            editor?.changeStrokeWidth(value[0]);
         } else {
             const strokeWidth = value;
 
@@ -38,7 +36,7 @@ const StrokeWidthPicker = ({editor}: StrokeWidthProps) => {
                 const objTop = element.get('top') ?? 0;
                 const currentStrokeWidth = element.get('strokeWidth') ?? 0;
                 const strokeWidthDifference = strokeWidth - currentStrokeWidth;
-                editor?.setStrokeWidth(strokeWidth);
+                editor?.changeStrokeWidth(strokeWidth);
                 const objNewLeft = objLeft - strokeWidthDifference / 2;
                 const objNewTop = objTop - strokeWidthDifference / 2;
 
@@ -51,6 +49,12 @@ const StrokeWidthPicker = ({editor}: StrokeWidthProps) => {
             editor?.canvas.renderAll()
         }
     };
+
+    const handleToggleChange = (value : StrokeTypes) => {
+        if (strokeType && changeStrokeType ) {
+            changeStrokeType(value)
+        }
+    }
 
     return (
         <TooltipProvider>
@@ -74,8 +78,8 @@ const StrokeWidthPicker = ({editor}: StrokeWidthProps) => {
                                         <ToggleGroup variant="outline"
                                                      className='flex justify-between gap-4'
                                                      type="single"
-                                                     onValueChange={(value: StrokeToggleType) => {
-                                                         if (value) setStrokeToggle(value);
+                                                     onValueChange={(value: StrokeTypes) => {
+                                                         handleToggleChange(value)
                                                      }}
                                         >
                                             <ToggleGroupItem className='h-[40px] w-[56px]' value="stroke-none">
@@ -84,10 +88,10 @@ const StrokeWidthPicker = ({editor}: StrokeWidthProps) => {
                                             <ToggleGroupItem className='h-[40px] w-[56px]' value="stroke-solid">
                                                 <GoDash className='h-[40px] w-[56px]'/>
                                             </ToggleGroupItem>
-                                            <ToggleGroupItem className='h-[40px] w-[56px]' value="stroke-dash-1">
+                                            <ToggleGroupItem className='h-[40px] w-[56px]' value="stroke-dash">
                                                 <CgBorderStyleDashed className='h-[40px] w-[56px]'/>
                                             </ToggleGroupItem>
-                                            <ToggleGroupItem className='h-[40px] w-[56px]' value="stroke-dash-2">
+                                            <ToggleGroupItem className='h-[40px] w-[56px]' value="stroke-dot">
                                                 <AiOutlineSmallDash className='h-[40px] w-[56px]'/>
                                             </ToggleGroupItem>
                                         </ToggleGroup>

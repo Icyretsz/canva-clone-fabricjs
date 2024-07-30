@@ -1,6 +1,5 @@
 
 import MenuHeaderLight from "@/features/editor/sidebar/components/menu-header-light";
-import useMenuStore from "@/features/editor/stores/store";
 import {Editor} from "@/features/editor/sidebar/types";
 import { ChromePicker, CirclePicker } from 'react-color';
 import { ColorResult } from 'react-color';
@@ -10,8 +9,6 @@ interface ColorMenuProps {
 }
 
 const ColorMenu = ({ editor }: ColorMenuProps) => {
-    const { currentObject } = useMenuStore();
-    currentObject?.canvas?.renderAll();
 
     const handleChangeComplete = (color: ColorResult) => {
         if (editor && editor.changeFillColor) {
