@@ -50,8 +50,11 @@ const StrokeWidthPicker = ({editor}: StrokeWidthProps) => {
         }
     };
 
-    const handleToggleChange = (value : StrokeTypes) => {
-        if (strokeType && changeStrokeType ) {
+    const handleToggleChange = (value: StrokeTypes) => {
+        if (strokeType && changeStrokeType && value === 'stroke-none') {
+            editor?.changeStrokeWidth(0)
+            changeStrokeType(value)
+        } else if (strokeType && changeStrokeType) {
             changeStrokeType(value)
         }
     }
@@ -98,7 +101,7 @@ const StrokeWidthPicker = ({editor}: StrokeWidthProps) => {
                                     </div>
 
                                     <Slider
-                                        isDisabled={editor?.selectedObjects.length === 0}
+                                        isDisabled={editor?.strokeWidth === 0}
                                         label="Stroke width"
                                         size='sm'
                                         step={1}
@@ -110,16 +113,16 @@ const StrokeWidthPicker = ({editor}: StrokeWidthProps) => {
                                     />
 
                                     <Slider
-                                        isDisabled={editor?.selectedObjects.length === 0}
+                                        isDisabled={strokeType === 'stroke-none'}
                                         label="Border radius"
                                         size='sm'
                                         step={1}
                                         maxValue={100}
                                         minValue={0}
-                                        defaultValue={editor?.strokeWidth}
-                                        onChange={handleOnChange}
+                                        value={editor?.strokeWidth}
                                         className="max-w-md"
                                     />
+
                                 </div>
                             </PopoverContent>
                         </Popover>

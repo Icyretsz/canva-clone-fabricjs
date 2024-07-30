@@ -5,15 +5,16 @@ export type ActiveTool =
     | "Shapes"
     | "Text"
     | "Upload"
-    | "ColorPicker"
+    | "ShapeFill"
+    | "StrokeColor"
 
 export const FILL_COLOR = '#D1D5DB'
 export const STROKE_COLOR = '#000'
 export const STROKE_WIDTH = 2
 export const STROKE_PATTERNS = {
     SOLID: undefined,
-    DASH: [20,10],
-    DOT: [1,1]
+    DASH: [20, 10],
+    DOT: [1, 1]
 }
 
 export const RECTANGLE_OPTIONS = {
@@ -60,13 +61,13 @@ export const OCTAGON_OPTIONS = {
 }
 
 export interface Editor {
-    selectedObjects : fabric.Object[]
+    selectedObjects: fabric.Object[]
     canvas: fabric.Canvas,
     fillColor: string[],
-    strokeColor: string,
+    strokeColor: string[],
     strokeWidth: number,
     strokeType: StrokeType,
-    changeStrokeType: (value:StrokeType) => void,
+    changeStrokeType: (value: StrokeType) => void,
     changeFillColor: (value: string) => void,
     changeStrokeColor: (value: string) => void,
     changeStrokeWidth: (value: number) => void,
@@ -77,15 +78,15 @@ export interface Editor {
 }
 
 export interface BuildEditor {
-    selectedObjects : fabric.Object[]
+    selectedObjects: fabric.Object[]
     canvas: fabric.Canvas,
     fillColor: string[],
-    strokeColor: string,
+    strokeColor: string[],
     strokeWidth: number,
     strokeType: StrokeType,
-    setStrokeType: (value:StrokeType) => void,
+    setStrokeType: (value: StrokeType) => void,
     setFillColor: (value: string[]) => void,
-    setStrokeColor: (value: string) => void,
+    setStrokeColor: (value: string[]) => void,
     setStrokeWidth: (value: number) => void,
 }
 

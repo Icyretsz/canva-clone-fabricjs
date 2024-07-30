@@ -1,7 +1,7 @@
 import useMenuStore from '@/features/editor/stores/store';
 import {Editor} from '@/features/editor/sidebar/types'
-import ColorPicker from "@/features/editor/toolbar/components/color-picker";
 import StrokeWidthPicker from "@/features/editor/toolbar/components/stroke-width-picker";
+import ColorPicker from "@/features/editor/toolbar/components/color-picker";
 
 
 interface ToolbarProps {
@@ -20,10 +20,14 @@ const Toolbar = ({editor}: ToolbarProps) => {
 
     return (
 
-        <div className='h-[48px] absolute top-[68px] flex items-center gap-1 px-2' style={style}>
+        <div className='h-[48px] absolute top-[68px] flex items-center gap-2 px-2' style={style}>
             {editor?.selectedObjects && editor?.selectedObjects.length > 0 &&
-                <><ColorPicker editor={editor}/>
-                    <StrokeWidthPicker editor={editor}/></>
+                <>
+                    <ColorPicker editor={editor} type='fill'/>
+                    <ColorPicker editor={editor} type='stroke'/>
+                    <StrokeWidthPicker editor={editor}/>
+
+                </>
             }
         </div>
 

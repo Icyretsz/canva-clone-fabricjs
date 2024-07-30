@@ -19,6 +19,7 @@ import useCanvasEvents from "@/features/editor/hooks/useObjectEvents";
 import useGetActiveFill from "@/features/editor/hooks/useGetActiveFill";
 import useGetStrokeWidth from "@/features/editor/hooks/useGetStrokeWidth";
 import useGetStrokeType from "@/features/editor/hooks/useGetStrokeType";
+import useGetStrokeColor from "@/features/editor/hooks/useGetStrokeColor";
 
 export const useEditor = () => {
 
@@ -26,7 +27,7 @@ export const useEditor = () => {
     const [container, setContainer] = useState<HTMLDivElement | null>(null)
     const {setActiveTool, setCurrentObject} = useMenuStore()
     const [fillColor, setFillColor] = useState<string[]>([])
-    const [strokeColor, setStrokeColor] = useState(STROKE_COLOR)
+    const [strokeColor, setStrokeColor] = useState<string[]>([])
     const [strokeWidth, setStrokeWidth] = useState<number>(STROKE_WIDTH)
     const [strokeType, setStrokeType] = useState<StrokeType>("stroke-none")
     const [selectedObjects, setSelectedObjects] = useState<fabric.Object[]>([])
@@ -36,6 +37,7 @@ export const useEditor = () => {
     useGetActiveFill(selectedObjects, setFillColor)
     useGetStrokeWidth(selectedObjects, setStrokeWidth)
     useGetStrokeType(selectedObjects, setStrokeType)
+    useGetStrokeColor(selectedObjects, setStrokeColor)
 
     const buildEditor = ({
                              selectedObjects,
@@ -102,7 +104,7 @@ export const useEditor = () => {
                 canvas.renderAll();
             },
             changeStrokeColor: (value: string) => {
-                setStrokeColor(value)
+                setStrokeColor([value])
                 canvas.getActiveObjects().forEach((object) => {
                     if (isTextType(object.type)) {
                         object.set({fill: value})
@@ -127,16 +129,16 @@ export const useEditor = () => {
                 canvas.getActiveObjects().forEach((object) => {
                     switch (value) {
                         case 'stroke-none':
-                            object.set({stroke: undefined, strokeDashArray: undefined});
+                            object.set({strokeDashArray: undefined});
                             break;
                         case 'stroke-solid':
-                            object.set({strokeDashArray: STROKE_PATTERNS.SOLID});
+                            object.set({stroke: 'black', strokeDashArray: STROKE_PATTERNS.SOLID});
                             break;
                         case 'stroke-dash':
-                            object.set({strokeDashArray: STROKE_PATTERNS.DASH});
+                            object.set({stroke: 'black',strokeDashArray: STROKE_PATTERNS.DASH});
                             break;
                         case 'stroke-dot':
-                            object.set({strokeDashArray: STROKE_PATTERNS.DOT});
+                            object.set({stroke: 'black',strokeDashArray: STROKE_PATTERNS.DOT});
                             break;
                         default:
                             break;
@@ -186,7 +188,7 @@ export const useEditor = () => {
             )
         }
         return undefined
-    }, [canvas, fillColor, strokeColor, strokeWidth, selectedObjects])
+    }, [canvas, fillColor, strokeColor, strokeWidth, selectedObjects, strokeType])
 
     const init = useCallback((
         {
