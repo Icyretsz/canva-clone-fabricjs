@@ -53,7 +53,7 @@ const Sidebar = ({editor} : SidebarProps) => {
             {isExpanded && <div className='left-[72px] absolute w-[350px] top-[68px] h-[calc(100%-68px)] bg-[#252627]'>
                 {activeTool === 'Shapes' && <ShapeMenu editor={editor}/>}
                 {(activeTool === 'ShapeFill') && <ColorMenu editor={editor} type='Fill'/>}
-                {(activeTool === 'StrokeColor') && <ColorMenu editor={editor} type='Stroke Color'/>}
+                {(activeTool === 'StrokeColor') &&  <ColorMenu editor={editor} type='Stroke Color'/>}
             </div>}
         </div>
     );

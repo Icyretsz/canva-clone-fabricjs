@@ -14,7 +14,7 @@ export const STROKE_WIDTH = 2
 export const STROKE_PATTERNS = {
     SOLID: undefined,
     DASH: [20, 10],
-    DOT: [1, 1]
+    DOT: [3, 3]
 }
 
 export const RECTANGLE_OPTIONS = {

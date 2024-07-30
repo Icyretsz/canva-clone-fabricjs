@@ -126,19 +126,19 @@ export const useEditor = () => {
             },
             changeStrokeType: (value: StrokeType) => {
                 setStrokeType(value)
-                canvas.getActiveObjects().forEach((object) => {
+                canvas.getActiveObjects().forEach((object, index) => {
                     switch (value) {
                         case 'stroke-none':
                             object.set({strokeDashArray: undefined});
                             break;
                         case 'stroke-solid':
-                            object.set({stroke: 'black', strokeDashArray: STROKE_PATTERNS.SOLID});
+                            object.set({stroke: strokeColor[index], strokeDashArray: STROKE_PATTERNS.SOLID});
                             break;
                         case 'stroke-dash':
-                            object.set({stroke: 'black',strokeDashArray: STROKE_PATTERNS.DASH});
+                            object.set({stroke: strokeColor[index],strokeDashArray: STROKE_PATTERNS.DASH});
                             break;
                         case 'stroke-dot':
-                            object.set({stroke: 'black',strokeDashArray: STROKE_PATTERNS.DOT});
+                            object.set({stroke: strokeColor[index],strokeDashArray: STROKE_PATTERNS.DOT});
                             break;
                         default:
                             break;

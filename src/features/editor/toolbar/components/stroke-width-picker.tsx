@@ -101,7 +101,6 @@ const StrokeWidthPicker = ({editor}: StrokeWidthProps) => {
                                     </div>
 
                                     <Slider
-                                        isDisabled={editor?.strokeWidth === 0}
                                         label="Stroke width"
                                         size='sm'
                                         step={1}
@@ -109,17 +108,6 @@ const StrokeWidthPicker = ({editor}: StrokeWidthProps) => {
                                         minValue={0}
                                         defaultValue={editor?.strokeWidth}
                                         onChange={handleOnChange}
-                                        className="max-w-md"
-                                    />
-
-                                    <Slider
-                                        isDisabled={strokeType === 'stroke-none'}
-                                        label="Border radius"
-                                        size='sm'
-                                        step={1}
-                                        maxValue={100}
-                                        minValue={0}
-                                        value={editor?.strokeWidth}
                                         className="max-w-md"
                                     />
 

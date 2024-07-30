@@ -24,7 +24,7 @@ const Toolbar = ({editor}: ToolbarProps) => {
             {editor?.selectedObjects && editor?.selectedObjects.length > 0 &&
                 <>
                     <ColorPicker editor={editor} type='fill'/>
-                    <ColorPicker editor={editor} type='stroke'/>
+                    {editor?.strokeWidth > 0 && <ColorPicker editor={editor} type='stroke'/>}
                     <StrokeWidthPicker editor={editor}/>
 
                 </>
