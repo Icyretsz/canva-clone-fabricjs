@@ -3,6 +3,7 @@ import {Editor} from '@/features/editor/sidebar/types'
 import StrokeWidthPicker from "@/features/editor/toolbar/components/stroke-width-picker";
 import ColorPicker from "@/features/editor/toolbar/components/color-picker";
 import FontSizePicker from "@/features/editor/toolbar/components/font-size-picker";
+import AlignmentPicker from "@/features/editor/toolbar/components/alignment-picker";
 
 
 interface ToolbarProps {
@@ -18,7 +19,7 @@ const Toolbar = ({editor}: ToolbarProps) => {
             {width: 'calc(100% - 72px)', left: '72px'}
     ;
 
-    const isContainTextbox = () : boolean => {
+    const isContainsTextbox = () : boolean => {
         const selected = editor?.selectedObjects
         if (selected) {
             for (let i = 0; i < selected.length; i++) {
@@ -37,10 +38,11 @@ const Toolbar = ({editor}: ToolbarProps) => {
         <div className='h-[48px] absolute top-[68px] flex items-center gap-2 px-2' style={style}>
             {editor?.selectedObjects && editor?.selectedObjects.length > 0 &&
                 <>
+                    {isContainsTextbox() && <FontSizePicker editor={editor}/>}
                     <ColorPicker editor={editor} type='fill'/>
                     {editor?.strokeWidth > 0 && <ColorPicker editor={editor} type='stroke'/>}
                     <StrokeWidthPicker editor={editor}/>
-                    {isContainTextbox() && <FontSizePicker editor={editor}/>}
+                    {isContainsTextbox() && <AlignmentPicker editor={editor}/>}
                 </>
             }
         </div>

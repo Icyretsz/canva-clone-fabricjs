@@ -71,7 +71,7 @@ const StrokeWidthPicker = ({editor}: StrokeWidthProps) => {
                                     size='sm'
                                     className='outline-none'
                                 >
-                                    <BsBorderWidth className='size-7'/>
+                                    <BsBorderWidth className='size-5'/>
                                 </Button>
                             </PopoverTrigger>
                             <PopoverContent>

@@ -1,6 +1,5 @@
 import {create} from 'zustand'
 import {ActiveTool} from "@/features/editor/sidebar/types";
-import {fabric} from 'fabric'
 
 interface MenuStore {
     isExpanded: boolean;

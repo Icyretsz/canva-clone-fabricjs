@@ -74,6 +74,8 @@ export const OCTAGON_OPTIONS = {
     strokeWidth: STROKE_WIDTH
 }
 
+export type StrokeType = "stroke-none" | "stroke-solid" | "stroke-dash" | "stroke-dot";
+
 export interface Editor {
     selectedObjects: fabric.Object[]
     canvas: fabric.Canvas,
@@ -82,12 +84,14 @@ export interface Editor {
     strokeWidth: number,
     strokeType: StrokeType,
     fontSize: number[],
+    textAlignment: string,
     changeStrokeType: (value: StrokeType) => void,
     changeFillColor: (value: string) => void,
     changeStrokeColor: (value: string) => void,
     changeStrokeWidth: (value: number) => void,
     changeFontSize: (value: number) => void,
     incrementFontSize: (type : '+' | '-') => void,
+    changeTextAlignment: (alignment : string) => void,
     addRect: () => void,
     addCircle: () => void,
     addTriangle: () => void,
@@ -103,11 +107,12 @@ export interface BuildEditor {
     strokeWidth: number,
     strokeType: StrokeType,
     fontSize: number[],
+    textAlignment: string,
     setFontSize: (value: number[]) => void,
     setStrokeType: (value: StrokeType) => void,
     setFillColor: (value: string[]) => void,
     setStrokeColor: (value: string[]) => void,
     setStrokeWidth: (value: number) => void,
+    setTextAlignment: (alignment : string) => void,
 }
 
-export type StrokeType = "stroke-none" | "stroke-solid" | "stroke-dash" | "stroke-dot";

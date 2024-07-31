@@ -1,5 +1,6 @@
 import React, {useEffect} from 'react';
 import {fabric} from "fabric";
+import useMenuStore from "@/features/editor/stores/store"
 
 interface UseCanvasEventsProps {
     canvas: fabric.Canvas | null,
@@ -12,6 +13,9 @@ const useCanvasEvents = ({
                              selectedObjects,
                              setSelectedObjects
                          }: UseCanvasEventsProps) => {
+
+    const {activeTool, setActiveTool} = useMenuStore()
+
     useEffect(() => {
         if (canvas) {
             canvas.on('selection:created', (e) => {
@@ -21,7 +25,7 @@ const useCanvasEvents = ({
                 setSelectedObjects(e.selected || [])
             })
             canvas.on('selection:cleared', () => {
-                setSelectedObjects( [])
+                setSelectedObjects([])
             })
         }
         return () => {

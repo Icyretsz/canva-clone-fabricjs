@@ -19,6 +19,7 @@ import useGetStrokeWidth from "@/features/editor/hooks/useGetStrokeWidth";
 import useGetStrokeType from "@/features/editor/hooks/useGetStrokeType";
 import useGetStrokeColor from "@/features/editor/hooks/useGetStrokeColor";
 import useGetFontSize from "@/features/editor/hooks/useGetFontSize";
+import useGetTextAlignment from "@/features/editor/hooks/useGetTextAlignment";
 
 export const useEditor = () => {
 
@@ -30,6 +31,7 @@ export const useEditor = () => {
     const [strokeType, setStrokeType] = useState<StrokeType>("stroke-none")
     const [fontSize, setFontSize] = useState<number[]>([])
     const [selectedObjects, setSelectedObjects] = useState<fabric.Object[]>([])
+    const [textAlignment, setTextAlignment] = useState<string>('center')
 
     useAutoResize({canvas, container})
     useCanvasEvents({canvas, selectedObjects, setSelectedObjects})
@@ -38,6 +40,7 @@ export const useEditor = () => {
     useGetStrokeType(selectedObjects, setStrokeType)
     useGetStrokeColor(selectedObjects, setStrokeColor)
     useGetFontSize(selectedObjects, setFontSize)
+    useGetTextAlignment(selectedObjects, setTextAlignment)
 
     const buildEditor = ({
                              selectedObjects,
@@ -51,7 +54,9 @@ export const useEditor = () => {
                              strokeType,
                              setStrokeType,
                              fontSize,
-                             setFontSize
+                             setFontSize,
+                             textAlignment,
+                             setTextAlignment
                          }: BuildEditor) => {
         const getWorkspace = () => {
             return canvas.getObjects().find((object) => object.name === "clip");
@@ -103,6 +108,7 @@ export const useEditor = () => {
             strokeWidth,
             strokeType,
             fontSize,
+            textAlignment,
             changeFillColor: (value: string) => {
                 setFillColor([value])
                 canvas.getActiveObjects().forEach((object) => {
@@ -158,7 +164,7 @@ export const useEditor = () => {
                 })
                 canvas.renderAll();
             },
-            incrementFontSize: (type : '+' | '-') => {
+            incrementFontSize: (type: '+' | '-') => {
                 editor?.canvas.getActiveObjects().forEach((object) => {
                     if (object.type === 'textbox') {
                         const size = (object as fabric.Textbox).get('fontSize')
@@ -167,6 +173,15 @@ export const useEditor = () => {
                         } else if (size && type === '-') {
                             (object as fabric.Textbox).set('fontSize', size - 1);
                         }
+                    }
+                })
+                canvas.renderAll();
+            },
+            changeTextAlignment: (alignment: string) => {
+                setTextAlignment(alignment)
+                canvas.getActiveObjects().forEach((object) => {
+                    if (object.type === 'textbox') {
+                        (object as fabric.Textbox).set({'textAlign': alignment})
                     }
                 })
                 canvas.renderAll();
@@ -219,12 +234,14 @@ export const useEditor = () => {
                     strokeType,
                     setStrokeType,
                     fontSize,
-                    setFontSize
+                    setFontSize,
+                    textAlignment,
+                    setTextAlignment
                 }
             )
         }
         return undefined
-    }, [canvas, fillColor, strokeColor, strokeWidth, selectedObjects, strokeType, fontSize])
+    }, [canvas, fillColor, strokeColor, strokeWidth, selectedObjects, strokeType, fontSize, textAlignment])
 
     const init = useCallback((
         {
