@@ -9,6 +9,7 @@ import MenuExpandContext from "@/features/editor/stores/store";
 import ShapeMenu from "@/features/editor/sidebar/components/shape-menu";
 import ColorMenu from "@/features/editor/sidebar/components/color-menu"
 import {Editor} from "@/features/editor/sidebar/types";
+import TextMenu from "@/features/editor/sidebar/components/textbox-menu";
 
 
 interface SidebarProps {
@@ -54,6 +55,7 @@ const Sidebar = ({editor} : SidebarProps) => {
                 {activeTool === 'Shapes' && <ShapeMenu editor={editor}/>}
                 {(activeTool === 'ShapeFill') && <ColorMenu editor={editor} type='Fill'/>}
                 {(activeTool === 'StrokeColor') &&  <ColorMenu editor={editor} type='Stroke Color'/>}
+                {(activeTool === 'Text') &&  <TextMenu editor={editor}/>}
             </div>}
         </div>
     );

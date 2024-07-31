@@ -132,13 +132,13 @@ export const useEditor = () => {
                             object.set({strokeDashArray: undefined});
                             break;
                         case 'stroke-solid':
-                            object.set({stroke: strokeColor[index], strokeDashArray: STROKE_PATTERNS.SOLID});
+                            object.set({ strokeDashArray: STROKE_PATTERNS.SOLID});
                             break;
                         case 'stroke-dash':
-                            object.set({stroke: strokeColor[index],strokeDashArray: STROKE_PATTERNS.DASH});
+                            object.set({strokeDashArray: STROKE_PATTERNS.DASH});
                             break;
                         case 'stroke-dot':
-                            object.set({stroke: strokeColor[index],strokeDashArray: STROKE_PATTERNS.DOT});
+                            object.set({strokeDashArray: STROKE_PATTERNS.DOT});
                             break;
                         default:
                             break;
@@ -166,6 +166,18 @@ export const useEditor = () => {
                 addProc(octagon);
                 return registerEvents(octagon);
             },
+            addTextbox: () => {
+                const textbox = new fabric.Textbox('This is a Textbox.', {
+                    left: 50,
+                    top: 200,
+                    width: 300,
+                    fontFamily: 'Arial',
+                    fontSize: 24,
+                    fill: 'black'
+                });
+                addProc(textbox);
+                return registerEvents(textbox);
+            }
         };
     };
 

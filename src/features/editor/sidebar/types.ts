@@ -75,6 +75,7 @@ export interface Editor {
     addCircle: () => void,
     addTriangle: () => void,
     addPolygon: () => void
+    addTextbox: () => void
 }
 
 export interface BuildEditor {
