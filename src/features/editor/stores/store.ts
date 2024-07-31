@@ -7,8 +7,6 @@ interface MenuStore {
     setExpanded: (expanded: boolean) => void;
     activeTool: ActiveTool;
     setActiveTool: (activeTool: ActiveTool) => void;
-    currentObject: fabric.Object | null;
-    setCurrentObject: (currentObject: fabric.Object | null) => void;
 }
 
 const useMenuStore = create<MenuStore>((set) => ({
@@ -16,8 +14,6 @@ const useMenuStore = create<MenuStore>((set) => ({
     setExpanded: (expanded) => set({isExpanded: expanded}),
     activeTool: 'Select',
     setActiveTool: (activeTool: ActiveTool) => set({activeTool}),
-    currentObject: null,
-    setCurrentObject: (currentObject) => set({ currentObject }),
 }));
 
 export default useMenuStore;

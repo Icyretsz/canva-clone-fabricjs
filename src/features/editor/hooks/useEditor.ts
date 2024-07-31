@@ -25,7 +25,7 @@ export const useEditor = () => {
 
     const [canvas, setCanvas] = useState<fabric.Canvas | null>(null)
     const [container, setContainer] = useState<HTMLDivElement | null>(null)
-    const {setActiveTool, setCurrentObject} = useMenuStore()
+    const {setActiveTool} = useMenuStore()
     const [fillColor, setFillColor] = useState<string[]>([])
     const [strokeColor, setStrokeColor] = useState<string[]>([])
     const [strokeWidth, setStrokeWidth] = useState<number>(STROKE_WIDTH)
@@ -73,18 +73,13 @@ export const useEditor = () => {
         };
 
         const registerEvents = (object: fabric.Object) => {
-            const handleSelected = () => setCurrentObject(object);
             const handleDeselected = () => {
-                setCurrentObject(null);
-                setActiveTool('Shapes');
+
             };
 
-            object.on('selected', handleSelected);
             object.on('deselected', handleDeselected);
 
-            // Return a function to remove the event listeners
             return () => {
-                object.off('selected', handleSelected);
                 object.off('deselected', handleDeselected);
             };
         };
