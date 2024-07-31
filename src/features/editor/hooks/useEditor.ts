@@ -71,6 +71,27 @@ export const useEditor = () => {
             canvas.renderAll();
         };
 
+        const typeProperties = {
+            heading: {
+                content: 'Add a heading',
+                width: 850,
+                fontSize: 120,
+                fontWeight: 800
+            },
+            subheading: {
+                content: 'Add a subheading',
+                width: 630,
+                fontSize: 70,
+                fontWeight: 600
+            },
+            content: {
+                content: 'Add a little bit of body text',
+                width: 470,
+                fontSize: 40,
+                fontWeight: 400
+            }
+        };
+
         return {
             selectedObjects,
             canvas,
@@ -88,10 +109,6 @@ export const useEditor = () => {
             changeStrokeColor: (value: string) => {
                 setStrokeColor([value])
                 canvas.getActiveObjects().forEach((object) => {
-                    if (isTextType(object.type)) {
-                        object.set({fill: value})
-                        return
-                    }
                     object.set({stroke: value})
                 })
                 canvas.renderAll();
@@ -114,7 +131,7 @@ export const useEditor = () => {
                             object.set({strokeDashArray: undefined});
                             break;
                         case 'stroke-solid':
-                            object.set({ strokeDashArray: STROKE_PATTERNS.SOLID});
+                            object.set({strokeDashArray: STROKE_PATTERNS.SOLID});
                             break;
                         case 'stroke-dash':
                             object.set({strokeDashArray: STROKE_PATTERNS.DASH});
@@ -144,15 +161,17 @@ export const useEditor = () => {
                 const octagon = new fabric.Polygon(OCTAGON_POINTS, {...OCTAGON_OPTIONS});
                 addProc(octagon);
             },
-            addTextbox: () => {
-                const textbox = new fabric.Textbox('This is a Textbox.', {
-                    left: 50,
-                    top: 200,
-                    width: 300,
-                    fontFamily: 'Arial',
-                    fontSize: 24,
-                    fill: 'black'
-                });
+            addTextbox: (type: 'heading' | 'subheading' | 'content') => {
+                const {content, width, fontSize, fontWeight} = typeProperties[type];
+                const textbox = new fabric.Textbox(content, {
+                        width: width,
+                        fontFamily: 'Arial',
+                        fontSize: fontSize,
+                        fontWeight: fontWeight,
+                        textAlign: 'center',
+                        fill: 'black'
+                    })
+                ;
                 addProc(textbox);
             }
         };

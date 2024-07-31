@@ -38,6 +38,20 @@ export const TRIANGLE_OPTIONS = {
     strokeWidth: STROKE_WIDTH
 }
 
+export const TEXT_HEADING = {
+    fontSize: 28,
+    fontWeight: 'bold',
+}
+
+export const TEXT_SUBHEADING = {
+    fontSize: 16.8,
+}
+
+export const TEXT_CONTENT = {
+    fontSize: 12,
+    fontWeight: 'light',
+}
+
 export const OCTAGON_POINTS = [
     new fabric.Point(20, 52.73),
     new fabric.Point(37.29, 37.29),
@@ -75,7 +89,7 @@ export interface Editor {
     addCircle: () => void,
     addTriangle: () => void,
     addPolygon: () => void
-    addTextbox: () => void
+    addTextbox: (type : 'heading' | 'subheading' | 'content') => void
 }
 
 export interface BuildEditor {
