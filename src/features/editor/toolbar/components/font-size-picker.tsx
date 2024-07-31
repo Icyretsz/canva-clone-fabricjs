@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Editor } from "@/features/editor/sidebar/types";
 import { FaCheck } from "react-icons/fa6";
+import {fabric} from "fabric";
 
 interface FontSizePickerProps {
     editor: Editor | undefined;
@@ -17,11 +18,33 @@ const FontSizePicker = ({ editor }: FontSizePickerProps) => {
     };
 
     const incrementFontSize = () => {
-        editor?.changeFontSize((editor?.fontSize || 0) + 1);
+        if (editor?.selectedObjects.length && editor?.selectedObjects.length > 1) {
+            editor?.incrementFontSize('+')
+        } else {
+            editor?.canvas.getActiveObjects().forEach((object) => {
+                if (object.type === 'textbox') {
+                    const size = (object as fabric.Textbox).get('fontSize')
+                    if (size) {
+                        editor?.changeFontSize(size + 1)
+                    }
+                }
+            })
+        }
     };
 
     const decreaseFontSize = () => {
-        editor?.changeFontSize((editor?.fontSize || 0) - 1);
+        if (editor?.selectedObjects.length && editor?.selectedObjects.length > 1) {
+            editor?.incrementFontSize('-')
+        } else {
+            editor?.canvas.getActiveObjects().forEach((object) => {
+                if (object.type === 'textbox') {
+                    const size = (object as fabric.Textbox).get('fontSize')
+                    if (size) {
+                        editor?.changeFontSize(size - 1)
+                    }
+                }
+            })
+        }
     };
 
     const fontPickerStyle = 'px-4 flex hover:bg-[#f2f3f5] transition-all duration-100 ease-linear h-[40px] w-full items-center';
@@ -41,7 +64,7 @@ const FontSizePicker = ({ editor }: FontSizePickerProps) => {
                      hover:bg-[#f2f3f5] transition-all duration-100 ease-linear'
                     onClick={() => setOpened(!isOpened)}
                 >
-                    {editor?.fontSize}
+                    {(editor?.fontSize && editor?.fontSize.length > 1) ? '--' : editor?.fontSize[0]}
                 </div>
                 <div
                     className='flex flex-1 justify-center items-center cursor-pointer border-y border-r border-gray-400 rounded-r-md
@@ -56,7 +79,7 @@ const FontSizePicker = ({ editor }: FontSizePickerProps) => {
                     {fontSizes.map(size => (
                         <div key={size} className={fontPickerStyle} onClick={() => handleClickPicker(size)}>
               <span className='flex w-full items-center justify-between'>
-                {size} {editor?.fontSize === size && <FaCheck />}
+                {size} {editor?.fontSize[0] === size && editor?.fontSize.length === 1  && <FaCheck />}
               </span>
                         </div>
                     ))}

@@ -3,18 +3,22 @@ import {Dispatch, SetStateAction, useEffect} from "react";
 
 const useGetFontSize = (
     selectedObjects: fabric.Object[] | undefined,
-    setFontSize: Dispatch<SetStateAction<number>>
+    setFontSize: Dispatch<SetStateAction<number[]>>
 ) => {
 
     useEffect(() => {
-            if (selectedObjects && selectedObjects.length > 1) return
-            if (selectedObjects && selectedObjects.length == 1) {
-                const fontSize = (selectedObjects[0] as fabric.Textbox).get("fontSize")
-                setFontSize(fontSize || 0)
-            }
-        }
-        , [selectedObjects]
-    )
+        const sizes : number[] = []
+        if (selectedObjects && selectedObjects.length > 0) {
+            selectedObjects.forEach((object) => {
+                if (object.type === 'textbox') {
+                    const fontSize = (object as fabric.Textbox).get('fontSize')
+                    if (fontSize && !sizes.includes(fontSize)) {
+                        sizes.push(fontSize)
+                    }
+                }
+            })}
+        setFontSize(sizes)
+    }, [selectedObjects])
 };
 
 export default useGetFontSize;

@@ -1,7 +1,6 @@
 import {useCallback, useMemo, useState} from 'react'
 import {fabric} from 'fabric'
 import useAutoResize from "@/features/editor/hooks/useAutoResize";
-import useMenuStore from "@/features/editor/stores/store";
 import {
     StrokeType,
     STROKE_COLOR,
@@ -14,7 +13,6 @@ import {
     STROKE_PATTERNS,
     BuildEditor
 } from "@/features/editor/sidebar/types";
-import {isTextType} from "@/features/editor/utils"
 import useCanvasEvents from "@/features/editor/hooks/useObjectEvents";
 import useGetActiveFill from "@/features/editor/hooks/useGetActiveFill";
 import useGetStrokeWidth from "@/features/editor/hooks/useGetStrokeWidth";
@@ -30,7 +28,7 @@ export const useEditor = () => {
     const [strokeColor, setStrokeColor] = useState<string[]>([])
     const [strokeWidth, setStrokeWidth] = useState<number>(STROKE_WIDTH)
     const [strokeType, setStrokeType] = useState<StrokeType>("stroke-none")
-    const [fontSize, setFontSize] = useState<number>(0)
+    const [fontSize, setFontSize] = useState<number[]>([])
     const [selectedObjects, setSelectedObjects] = useState<fabric.Object[]>([])
 
     useAutoResize({canvas, container})
@@ -152,10 +150,23 @@ export const useEditor = () => {
                 canvas.renderAll();
             },
             changeFontSize: (value: number) => {
-                setFontSize(value)
+                setFontSize([value])
                 canvas.getActiveObjects().forEach((object) => {
                     if (object.type === 'textbox') {
                         (object as fabric.Textbox).set('fontSize', value);
+                    }
+                })
+                canvas.renderAll();
+            },
+            incrementFontSize: (type : '+' | '-') => {
+                editor?.canvas.getActiveObjects().forEach((object) => {
+                    if (object.type === 'textbox') {
+                        const size = (object as fabric.Textbox).get('fontSize')
+                        if (size && type === '+') {
+                            (object as fabric.Textbox).set('fontSize', size + 1);
+                        } else if (size && type === '-') {
+                            (object as fabric.Textbox).set('fontSize', size - 1);
+                        }
                     }
                 })
                 canvas.renderAll();
