@@ -116,7 +116,7 @@ const StrokeWidthPicker = ({editor}: StrokeWidthProps) => {
                         </Popover>
                     </div>
                 </TooltipTrigger>
-                <TooltipContent>
+                <TooltipContent side="bottom" sideOffset={10}>
                     <p>Stroke width</p>
                 </TooltipContent>
             </Tooltip>

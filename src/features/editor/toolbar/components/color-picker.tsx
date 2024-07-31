@@ -46,7 +46,7 @@ const ColorPicker = ({ editor, type }: ColorPickerProps) => {
                     </div>
                     </div>
                 </TooltipTrigger>
-                <TooltipContent>
+                <TooltipContent side="bottom" sideOffset={10}>
                     <p>{type === 'fill' ? 'Color Picker' : 'Stroke Color'}</p>
                 </TooltipContent>
             </Tooltip>
