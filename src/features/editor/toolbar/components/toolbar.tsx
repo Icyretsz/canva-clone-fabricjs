@@ -2,6 +2,7 @@ import useMenuStore from '@/features/editor/stores/store';
 import {Editor} from '@/features/editor/sidebar/types'
 import StrokeWidthPicker from "@/features/editor/toolbar/components/stroke-width-picker";
 import ColorPicker from "@/features/editor/toolbar/components/color-picker";
+import FontSizePicker from "@/features/editor/toolbar/components/font-size-picker";
 
 
 interface ToolbarProps {
@@ -17,6 +18,19 @@ const Toolbar = ({editor}: ToolbarProps) => {
             {width: 'calc(100% - 72px)', left: '72px'}
     ;
 
+    const isContainTextbox = () : boolean => {
+        const selected = editor?.selectedObjects
+        if (selected) {
+            for (let i = 0; i < selected.length; i++) {
+                const object = selected[i];
+                if (object.type==='textbox') {
+                    return true
+                }
+            }
+        }
+        return false
+    }
+
 
     return (
 
@@ -26,7 +40,7 @@ const Toolbar = ({editor}: ToolbarProps) => {
                     <ColorPicker editor={editor} type='fill'/>
                     {editor?.strokeWidth > 0 && <ColorPicker editor={editor} type='stroke'/>}
                     <StrokeWidthPicker editor={editor}/>
-
+                    {isContainTextbox() && <FontSizePicker editor={editor}/>}
                 </>
             }
         </div>

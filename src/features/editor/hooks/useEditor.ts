@@ -20,6 +20,7 @@ import useGetActiveFill from "@/features/editor/hooks/useGetActiveFill";
 import useGetStrokeWidth from "@/features/editor/hooks/useGetStrokeWidth";
 import useGetStrokeType from "@/features/editor/hooks/useGetStrokeType";
 import useGetStrokeColor from "@/features/editor/hooks/useGetStrokeColor";
+import useGetFontSize from "@/features/editor/hooks/useGetFontSize";
 
 export const useEditor = () => {
 
@@ -29,6 +30,7 @@ export const useEditor = () => {
     const [strokeColor, setStrokeColor] = useState<string[]>([])
     const [strokeWidth, setStrokeWidth] = useState<number>(STROKE_WIDTH)
     const [strokeType, setStrokeType] = useState<StrokeType>("stroke-none")
+    const [fontSize, setFontSize] = useState<number>(0)
     const [selectedObjects, setSelectedObjects] = useState<fabric.Object[]>([])
 
     useAutoResize({canvas, container})
@@ -37,6 +39,7 @@ export const useEditor = () => {
     useGetStrokeWidth(selectedObjects, setStrokeWidth)
     useGetStrokeType(selectedObjects, setStrokeType)
     useGetStrokeColor(selectedObjects, setStrokeColor)
+    useGetFontSize(selectedObjects, setFontSize)
 
     const buildEditor = ({
                              selectedObjects,
@@ -48,7 +51,9 @@ export const useEditor = () => {
                              strokeWidth,
                              setStrokeWidth,
                              strokeType,
-                             setStrokeType
+                             setStrokeType,
+                             fontSize,
+                             setFontSize
                          }: BuildEditor) => {
         const getWorkspace = () => {
             return canvas.getObjects().find((object) => object.name === "clip");
@@ -99,6 +104,7 @@ export const useEditor = () => {
             strokeColor,
             strokeWidth,
             strokeType,
+            fontSize,
             changeFillColor: (value: string) => {
                 setFillColor([value])
                 canvas.getActiveObjects().forEach((object) => {
@@ -141,6 +147,15 @@ export const useEditor = () => {
                             break;
                         default:
                             break;
+                    }
+                })
+                canvas.renderAll();
+            },
+            changeFontSize: (value: number) => {
+                setFontSize(value)
+                canvas.getActiveObjects().forEach((object) => {
+                    if (object.type === 'textbox') {
+                        (object as fabric.Textbox).set('fontSize', value);
                     }
                 })
                 canvas.renderAll();
@@ -191,12 +206,14 @@ export const useEditor = () => {
                     strokeWidth,
                     setStrokeWidth,
                     strokeType,
-                    setStrokeType
+                    setStrokeType,
+                    fontSize,
+                    setFontSize
                 }
             )
         }
         return undefined
-    }, [canvas, fillColor, strokeColor, strokeWidth, selectedObjects, strokeType])
+    }, [canvas, fillColor, strokeColor, strokeWidth, selectedObjects, strokeType, fontSize])
 
     const init = useCallback((
         {
