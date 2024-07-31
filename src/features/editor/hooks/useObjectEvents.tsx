@@ -14,7 +14,7 @@ const useCanvasEvents = ({
                              setSelectedObjects
                          }: UseCanvasEventsProps) => {
 
-    const {activeTool, setActiveTool} = useMenuStore()
+    const {activeTool, setActiveTool, isExpanded, setExpanded} = useMenuStore()
 
     useEffect(() => {
         if (canvas) {
@@ -26,6 +26,10 @@ const useCanvasEvents = ({
             })
             canvas.on('selection:cleared', () => {
                 setSelectedObjects([])
+                if (activeTool !== "Shapes" && activeTool !== "Text" && activeTool !== "Upload") {
+                    setActiveTool("")
+                    setExpanded(false)
+                }
             })
         }
         return () => {

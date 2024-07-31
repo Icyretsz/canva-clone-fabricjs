@@ -5,11 +5,12 @@ import {
     ALargeSmall,
     Upload
 } from 'lucide-react'
-import MenuExpandContext from "@/features/editor/stores/store";
+import useMenuStore from "@/features/editor/stores/store";
 import ShapeMenu from "@/features/editor/sidebar/components/shape-menu";
 import ColorMenu from "@/features/editor/sidebar/components/color-menu"
 import {Editor} from "@/features/editor/sidebar/types";
 import TextMenu from "@/features/editor/sidebar/components/textbox-menu";
+import FontMenu from "@/features/editor/sidebar/components/font-menu";
 
 
 interface SidebarProps {
@@ -17,7 +18,7 @@ interface SidebarProps {
 }
 
 const Sidebar = ({editor} : SidebarProps) => {
-    const {activeTool, setActiveTool, setExpanded, isExpanded} = MenuExpandContext()
+    const {activeTool, setActiveTool, setExpanded, isExpanded} = useMenuStore()
 
     return (
         <div className='h-full'>
@@ -56,6 +57,7 @@ const Sidebar = ({editor} : SidebarProps) => {
                 {(activeTool === 'ShapeFill') && <ColorMenu editor={editor} type='Fill'/>}
                 {(activeTool === 'StrokeColor') &&  <ColorMenu editor={editor} type='Stroke Color'/>}
                 {(activeTool === 'Text') &&  <TextMenu editor={editor}/>}
+                {(activeTool === 'Font') &&  <FontMenu editor={editor}/>}
             </div>}
         </div>
     );

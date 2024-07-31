@@ -11,7 +11,7 @@ interface MenuStore {
 const useMenuStore = create<MenuStore>((set) => ({
     isExpanded: false,
     setExpanded: (expanded) => set({isExpanded: expanded}),
-    activeTool: 'Select',
+    activeTool: "Select",
     setActiveTool: (activeTool: ActiveTool) => set({activeTool}),
 }));
 

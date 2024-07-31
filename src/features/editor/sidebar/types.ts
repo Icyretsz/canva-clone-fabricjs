@@ -7,6 +7,8 @@ export type ActiveTool =
     | "Upload"
     | "ShapeFill"
     | "StrokeColor"
+    | "Font"
+    | ""
 
 export const FILL_COLOR = '#D1D5DB'
 export const STROKE_COLOR = '#000'
@@ -85,18 +87,20 @@ export interface Editor {
     strokeType: StrokeType,
     fontSize: number[],
     textAlignment: string,
+    fontFamily: string,
     changeStrokeType: (value: StrokeType) => void,
     changeFillColor: (value: string) => void,
     changeStrokeColor: (value: string) => void,
     changeStrokeWidth: (value: number) => void,
     changeFontSize: (value: number) => void,
-    incrementFontSize: (type : '+' | '-') => void,
-    changeTextAlignment: (alignment : string) => void,
+    incrementFontSize: (type: '+' | '-') => void,
+    changeTextAlignment: (alignment: string) => void,
+    changeFontFamily: (value: string) => void,
     addRect: () => void,
     addCircle: () => void,
     addTriangle: () => void,
     addPolygon: () => void
-    addTextbox: (type : 'heading' | 'subheading' | 'content') => void
+    addTextbox: (type: 'heading' | 'subheading' | 'content') => void
 }
 
 export interface BuildEditor {
@@ -108,11 +112,13 @@ export interface BuildEditor {
     strokeType: StrokeType,
     fontSize: number[],
     textAlignment: string,
+    fontFamily: string,
     setFontSize: (value: number[]) => void,
     setStrokeType: (value: StrokeType) => void,
     setFillColor: (value: string[]) => void,
     setStrokeColor: (value: string[]) => void,
     setStrokeWidth: (value: number) => void,
-    setTextAlignment: (alignment : string) => void,
+    setTextAlignment: (alignment: string) => void,
+    setFontFamily: (value: string) => void
 }
 

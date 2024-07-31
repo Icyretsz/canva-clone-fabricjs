@@ -4,6 +4,7 @@ import StrokeWidthPicker from "@/features/editor/toolbar/components/stroke-width
 import ColorPicker from "@/features/editor/toolbar/components/color-picker";
 import FontSizePicker from "@/features/editor/toolbar/components/font-size-picker";
 import AlignmentPicker from "@/features/editor/toolbar/components/alignment-picker";
+import FontPicker from "@/features/editor/toolbar/components/font-picker";
 
 
 interface ToolbarProps {
@@ -38,6 +39,7 @@ const Toolbar = ({editor}: ToolbarProps) => {
         <div className='h-[48px] absolute top-[68px] flex items-center gap-2 px-2' style={style}>
             {editor?.selectedObjects && editor?.selectedObjects.length > 0 &&
                 <>
+                    {isContainsTextbox() && <FontPicker editor={editor}/>}
                     {isContainsTextbox() && <FontSizePicker editor={editor}/>}
                     <ColorPicker editor={editor} type='fill'/>
                     {editor?.strokeWidth > 0 && <ColorPicker editor={editor} type='stroke'/>}

@@ -20,6 +20,7 @@ import useGetStrokeType from "@/features/editor/hooks/useGetStrokeType";
 import useGetStrokeColor from "@/features/editor/hooks/useGetStrokeColor";
 import useGetFontSize from "@/features/editor/hooks/useGetFontSize";
 import useGetTextAlignment from "@/features/editor/hooks/useGetTextAlignment";
+import useGetFontFamily from "@/features/editor/hooks/useGetFontFamlily";
 
 export const useEditor = () => {
 
@@ -32,6 +33,7 @@ export const useEditor = () => {
     const [fontSize, setFontSize] = useState<number[]>([])
     const [selectedObjects, setSelectedObjects] = useState<fabric.Object[]>([])
     const [textAlignment, setTextAlignment] = useState<string>('center')
+    const [fontFamily, setFontFamily] = useState<string>('Arial')
 
     useAutoResize({canvas, container})
     useCanvasEvents({canvas, selectedObjects, setSelectedObjects})
@@ -41,6 +43,7 @@ export const useEditor = () => {
     useGetStrokeColor(selectedObjects, setStrokeColor)
     useGetFontSize(selectedObjects, setFontSize)
     useGetTextAlignment(selectedObjects, setTextAlignment)
+    useGetFontFamily(selectedObjects, setFontFamily)
 
     const buildEditor = ({
                              selectedObjects,
@@ -56,7 +59,9 @@ export const useEditor = () => {
                              fontSize,
                              setFontSize,
                              textAlignment,
-                             setTextAlignment
+                             setTextAlignment,
+                             fontFamily,
+                             setFontFamily
                          }: BuildEditor) => {
         const getWorkspace = () => {
             return canvas.getObjects().find((object) => object.name === "clip");
@@ -109,6 +114,7 @@ export const useEditor = () => {
             strokeType,
             fontSize,
             textAlignment,
+            fontFamily,
             changeFillColor: (value: string) => {
                 setFillColor([value])
                 canvas.getActiveObjects().forEach((object) => {
@@ -186,6 +192,15 @@ export const useEditor = () => {
                 })
                 canvas.renderAll();
             },
+            changeFontFamily: (value: string) => {
+                setFontFamily(value)
+                canvas.getActiveObjects().forEach((object) => {
+                    if (object.type === 'textbox') {
+                        (object as fabric.Textbox).set({'fontFamily': value})
+                    }
+                })
+                canvas.renderAll();
+            },
             addRect: () => {
                 const rect = new fabric.Rect({...RECTANGLE_OPTIONS});
                 addProc(rect);
@@ -236,12 +251,14 @@ export const useEditor = () => {
                     fontSize,
                     setFontSize,
                     textAlignment,
-                    setTextAlignment
+                    setTextAlignment,
+                    fontFamily,
+                    setFontFamily
                 }
             )
         }
         return undefined
-    }, [canvas, fillColor, strokeColor, strokeWidth, selectedObjects, strokeType, fontSize, textAlignment])
+    }, [canvas, fillColor, strokeColor, strokeWidth, selectedObjects, strokeType, fontSize, textAlignment, fontFamily])
 
     const init = useCallback((
         {
