@@ -25,7 +25,6 @@ export const useEditor = () => {
 
     const [canvas, setCanvas] = useState<fabric.Canvas | null>(null)
     const [container, setContainer] = useState<HTMLDivElement | null>(null)
-    const {setActiveTool} = useMenuStore()
     const [fillColor, setFillColor] = useState<string[]>([])
     const [strokeColor, setStrokeColor] = useState<string[]>([])
     const [strokeWidth, setStrokeWidth] = useState<number>(STROKE_WIDTH)
@@ -72,18 +71,6 @@ export const useEditor = () => {
             canvas.renderAll();
         };
 
-        const registerEvents = (object: fabric.Object) => {
-            const handleDeselected = () => {
-
-            };
-
-            object.on('deselected', handleDeselected);
-
-            return () => {
-                object.off('deselected', handleDeselected);
-            };
-        };
-
         return {
             selectedObjects,
             canvas,
@@ -121,7 +108,7 @@ export const useEditor = () => {
             },
             changeStrokeType: (value: StrokeType) => {
                 setStrokeType(value)
-                canvas.getActiveObjects().forEach((object, index) => {
+                canvas.getActiveObjects().forEach((object) => {
                     switch (value) {
                         case 'stroke-none':
                             object.set({strokeDashArray: undefined});
@@ -144,22 +131,18 @@ export const useEditor = () => {
             addRect: () => {
                 const rect = new fabric.Rect({...RECTANGLE_OPTIONS});
                 addProc(rect);
-                return registerEvents(rect);
             },
             addCircle: () => {
                 const circle = new fabric.Circle({...CIRCLE_OPTIONS});
                 addProc(circle);
-                return registerEvents(circle);
             },
             addTriangle: () => {
                 const triangle = new fabric.Triangle({...TRIANGLE_OPTIONS});
                 addProc(triangle);
-                return registerEvents(triangle);
             },
             addPolygon: () => {
                 const octagon = new fabric.Polygon(OCTAGON_POINTS, {...OCTAGON_OPTIONS});
                 addProc(octagon);
-                return registerEvents(octagon);
             },
             addTextbox: () => {
                 const textbox = new fabric.Textbox('This is a Textbox.', {
@@ -171,7 +154,6 @@ export const useEditor = () => {
                     fill: 'black'
                 });
                 addProc(textbox);
-                return registerEvents(textbox);
             }
         };
     };
