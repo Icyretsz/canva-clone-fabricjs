@@ -17,7 +17,7 @@ const FontMenu = ({editor} : FontMenuProps) => {
             <div className="h-full w-full bg-white border-r-[1px] border-gray-200">
                 <MenuHeaderLight type={'Fonts'}/>
                 <div className="h-full w-full flex flex-col items-center gap-5">
-                    <div >
+                    <div className='h-[40px] flex flex-col px-4 w-full hover:bg-[#f2f3f5] transition-all duration-100 ease-linear' >
                         <span className={`${montserrat.className} text-black text-[28px]`}>Montserrat</span>
                     </div>
                 </div>
