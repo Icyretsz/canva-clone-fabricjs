@@ -21,8 +21,6 @@ const FontPicker = ({editor}: FontPickerProps) => {
             fontName = 'Roboto'
         } else if (editor?.fontFamily.includes('Bellota')) {
             fontName = 'Bellota'
-        } else {
-            fontName = 'Arial'
         }
     } else {
         fontName = 'Multiple fonts'

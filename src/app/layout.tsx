@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import { Inter, Montserrat, Roboto } from "next/font/google";
+import { Inter, Nunito, Roboto } from "next/font/google";
 import "./globals.css";
 import {NextUIProvider} from "@nextui-org/react";
 
 const inter = Inter({ subsets: ["latin"] });
-
+const nunito = Nunito({ subsets: ["latin", "vietnamese"] });
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -18,7 +18,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={nunito.className}>
       <NextUIProvider>
       {children}
       </NextUIProvider>

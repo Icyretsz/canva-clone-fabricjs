@@ -21,6 +21,12 @@ import useGetStrokeColor from "@/features/editor/hooks/useGetStrokeColor";
 import useGetFontSize from "@/features/editor/hooks/useGetFontSize";
 import useGetTextAlignment from "@/features/editor/hooks/useGetTextAlignment";
 import useGetFontFamily from "@/features/editor/hooks/useGetFontFamlily";
+import { Montserrat } from "next/font/google";
+
+const montserrat = Montserrat({
+    subsets: ['latin', 'vietnamese'],
+    weight: '400'
+});
 
 export const useEditor = () => {
 
@@ -34,6 +40,8 @@ export const useEditor = () => {
     const [selectedObjects, setSelectedObjects] = useState<fabric.Object[]>([])
     const [textAlignment, setTextAlignment] = useState<string>('center')
     const [fontFamily, setFontFamily] = useState<string>('Arial')
+
+
 
     useAutoResize({canvas, container})
     useCanvasEvents({canvas, selectedObjects, setSelectedObjects})
@@ -223,7 +231,7 @@ export const useEditor = () => {
                 const {content, width, fontSize, fontWeight} = typeProperties[type];
                 const textbox = new fabric.Textbox(content, {
                         width: width,
-                        fontFamily: 'Arial',
+                        fontFamily: montserrat.style.fontFamily,
                         fontSize: fontSize,
                         fontWeight: fontWeight,
                         textAlign: 'center',
