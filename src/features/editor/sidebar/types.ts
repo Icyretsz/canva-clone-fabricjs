@@ -42,16 +42,17 @@ export const TRIANGLE_OPTIONS = {
 
 export const TEXT_HEADING = {
     fontSize: 28,
-    fontWeight: 'bold',
+    fontWeight: 700,
 }
 
 export const TEXT_SUBHEADING = {
     fontSize: 16.8,
+    fontWeight: 400,
 }
 
 export const TEXT_CONTENT = {
     fontSize: 12,
-    fontWeight: 'light',
+    fontWeight: 300,
 }
 
 export const OCTAGON_POINTS = [

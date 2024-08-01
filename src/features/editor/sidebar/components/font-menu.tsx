@@ -38,7 +38,7 @@ const robotoNormal = Roboto({
 });
 const robotoBold = Roboto({
     subsets: ['latin', 'vietnamese'],
-    weight: '700',
+    weight: ['400', '700'],
 });
 const bellotaLight = Bellota({
     subsets: ['latin', 'vietnamese'],

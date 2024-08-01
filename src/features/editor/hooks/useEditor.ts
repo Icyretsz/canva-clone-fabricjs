@@ -23,7 +23,6 @@ import useGetFontProperties from "@/features/editor/hooks/useGetFontProperties";
 
 const montserrat = Montserrat({
     subsets: ['latin', 'vietnamese'],
-    weight: '400'
 });
 
 export const useEditor = () => {
@@ -105,21 +104,21 @@ export const useEditor = () => {
         const typeProperties = {
             heading: {
                 content: 'Add a heading',
-                width: 850,
+                width: 930,
                 fontSize: 120,
-                fontWeight: 800
+                fontWeight: 700
             },
             subheading: {
                 content: 'Add a subheading',
-                width: 630,
+                width: 650,
                 fontSize: 70,
-                fontWeight: 600
+                fontWeight: 400
             },
             content: {
                 content: 'Add a little bit of body text',
-                width: 470,
+                width: 530,
                 fontSize: 40,
-                fontWeight: 400
+                fontWeight: 300
             }
         };
 

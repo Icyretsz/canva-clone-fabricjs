@@ -24,7 +24,7 @@ const useGetFontProperties = (
                 setTextAlignment(alignment || 'center')
 
                 const weight = (selectedObjects[0] as fabric.Textbox).get('fontWeight')
-                setFontWeight(weight || 'normal')
+                setFontWeight(weight || '')
 
                 const style = (selectedObjects[0] as fabric.Textbox).get('fontStyle')
                 setFontStyle(style || 'normal')
