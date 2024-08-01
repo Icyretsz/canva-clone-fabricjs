@@ -78,6 +78,8 @@ export const OCTAGON_OPTIONS = {
 
 export type StrokeType = "stroke-none" | "stroke-solid" | "stroke-dash" | "stroke-dot";
 
+export type fontStyle = "" | "normal" | "italic" | "oblique" | undefined
+
 export interface Editor {
     selectedObjects: fabric.Object[]
     canvas: fabric.Canvas,
@@ -88,6 +90,10 @@ export interface Editor {
     fontSize: number[],
     textAlignment: string,
     fontFamily: string,
+    fontWeight: number | string,
+    fontStyle: fontStyle,
+    isUnderlined: boolean,
+    linethrough: boolean,
     changeStrokeType: (value: StrokeType) => void,
     changeFillColor: (value: string) => void,
     changeStrokeColor: (value: string) => void,
@@ -96,6 +102,10 @@ export interface Editor {
     incrementFontSize: (type: '+' | '-') => void,
     changeTextAlignment: (alignment: string) => void,
     changeFontFamily: (value: string) => void,
+    changeFontWeight: (value: string | number) => void,
+    changeFontStyle: (value: fontStyle) => void,
+    changeUnderline: (value: boolean) => void,
+    changeLinethrough: (value: boolean) => void,
     addRect: () => void,
     addCircle: () => void,
     addTriangle: () => void,
@@ -113,6 +123,14 @@ export interface BuildEditor {
     fontSize: number[],
     textAlignment: string,
     fontFamily: string,
+    fontWeight: number | string,
+    fontStyle: fontStyle,
+    isUnderlined: boolean,
+    linethrough: boolean,
+    setFontWeight: (value : number | string) => void,
+    setFontStyle: (value : fontStyle) => void,
+    setUnderlined: (value : boolean) => void,
+    setLinethrough: (value : boolean) => void,
     setFontSize: (value: number[]) => void,
     setStrokeType: (value: StrokeType) => void,
     setFillColor: (value: string[]) => void,

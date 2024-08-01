@@ -11,17 +11,15 @@ import {
     OCTAGON_POINTS,
     OCTAGON_OPTIONS,
     STROKE_PATTERNS,
-    BuildEditor
+    BuildEditor, fontStyle
 } from "@/features/editor/sidebar/types";
 import useCanvasEvents from "@/features/editor/hooks/useObjectEvents";
 import useGetActiveFill from "@/features/editor/hooks/useGetActiveFill";
 import useGetStrokeWidth from "@/features/editor/hooks/useGetStrokeWidth";
 import useGetStrokeType from "@/features/editor/hooks/useGetStrokeType";
 import useGetStrokeColor from "@/features/editor/hooks/useGetStrokeColor";
-import useGetFontSize from "@/features/editor/hooks/useGetFontSize";
-import useGetTextAlignment from "@/features/editor/hooks/useGetTextAlignment";
-import useGetFontFamily from "@/features/editor/hooks/useGetFontFamlily";
 import { Montserrat } from "next/font/google";
+import useGetFontProperties from "@/features/editor/hooks/useGetFontProperties";
 
 const montserrat = Montserrat({
     subsets: ['latin', 'vietnamese'],
@@ -40,6 +38,10 @@ export const useEditor = () => {
     const [selectedObjects, setSelectedObjects] = useState<fabric.Object[]>([])
     const [textAlignment, setTextAlignment] = useState<string>('center')
     const [fontFamily, setFontFamily] = useState<string>('Arial')
+    const [fontStyle, setFontStyle] = useState<fontStyle>('normal')
+    const [fontWeight, setFontWeight] = useState<number | string>('normal')
+    const [isUnderlined, setUnderlined] = useState<boolean>(false)
+    const [linethrough, setLinethrough] = useState<boolean>(false)
 
 
 
@@ -51,9 +53,7 @@ export const useEditor = () => {
     useGetStrokeType(selectedObjects, setStrokeType)
     useGetStrokeColor(selectedObjects, setStrokeColor)
 
-    useGetFontSize(selectedObjects, setFontSize)
-    useGetTextAlignment(selectedObjects, setTextAlignment)
-    useGetFontFamily(selectedObjects, setFontFamily)
+    useGetFontProperties(selectedObjects, setFontFamily, setTextAlignment, setFontSize, setFontWeight, setFontStyle, setLinethrough, setUnderlined)
 
     const buildEditor = ({
                              selectedObjects,
@@ -71,7 +71,15 @@ export const useEditor = () => {
                              textAlignment,
                              setTextAlignment,
                              fontFamily,
-                             setFontFamily
+                             setFontFamily,
+                             fontWeight,
+                             setFontWeight,
+                             fontStyle,
+                             setFontStyle,
+                             isUnderlined,
+                             setUnderlined,
+                             linethrough,
+                             setLinethrough
                          }: BuildEditor) => {
         const getWorkspace = () => {
             return canvas.getObjects().find((object) => object.name === "clip");
@@ -125,6 +133,10 @@ export const useEditor = () => {
             fontSize,
             textAlignment,
             fontFamily,
+            fontWeight,
+            fontStyle,
+            isUnderlined,
+            linethrough,
             changeFillColor: (value: string) => {
                 setFillColor([value])
                 canvas.getActiveObjects().forEach((object) => {
@@ -211,6 +223,42 @@ export const useEditor = () => {
                 })
                 canvas.renderAll();
             },
+            changeFontWeight: (value: string | number) => {
+                setFontWeight(value)
+                canvas.getActiveObjects().forEach((object) => {
+                    if (object.type === 'textbox') {
+                        (object as fabric.Textbox).set('fontWeight', value)
+                    }
+                })
+                canvas.renderAll();
+            },
+            changeFontStyle: (value: fontStyle) => {
+                setFontStyle(value)
+                canvas.getActiveObjects().forEach((object) => {
+                    if (object.type === 'textbox') {
+                        (object as fabric.Textbox).set('fontStyle', value)
+                    }
+                })
+                canvas.renderAll();
+            },
+            changeUnderline: (value: boolean) => {
+                setUnderlined(value)
+                canvas.getActiveObjects().forEach((object) => {
+                    if (object.type === 'textbox') {
+                        (object as fabric.Textbox).set('underline', value)
+                    }
+                })
+                canvas.renderAll();
+            },
+            changeLinethrough: (value: boolean) => {
+                setLinethrough(value)
+                canvas.getActiveObjects().forEach((object) => {
+                    if (object.type === 'textbox') {
+                        (object as fabric.Textbox).set('linethrough', value)
+                    }
+                })
+                canvas.renderAll();
+            },
             addRect: () => {
                 const rect = new fabric.Rect({...RECTANGLE_OPTIONS});
                 addProc(rect);
@@ -265,12 +313,20 @@ export const useEditor = () => {
                     textAlignment,
                     setTextAlignment,
                     fontFamily,
-                    setFontFamily
+                    setFontFamily,
+                    fontWeight,
+                    setFontWeight,
+                    fontStyle,
+                    setFontStyle,
+                    isUnderlined,
+                    setUnderlined,
+                    linethrough,
+                    setLinethrough
                 }
             )
         }
         return undefined
-    }, [canvas, fillColor, strokeColor, strokeWidth, selectedObjects, strokeType, fontSize, textAlignment, fontFamily])
+    }, [canvas, fillColor, strokeColor, strokeWidth, selectedObjects, strokeType, fontSize, textAlignment, fontFamily, fontWeight, fontStyle, isUnderlined, linethrough])
 
     const init = useCallback((
         {
