@@ -5,7 +5,7 @@ import ColorPicker from "@/features/editor/toolbar/components/color-picker";
 import FontSizePicker from "@/features/editor/toolbar/components/font-size-picker";
 import AlignmentPicker from "@/features/editor/toolbar/components/alignment-picker";
 import FontPicker from "@/features/editor/toolbar/components/font-picker";
-import FontWeightPicker from "@/features/editor/toolbar/components/font-weight-picker";
+import FontBoldToggle from "@/features/editor/toolbar/components/font-bold-toggle";
 
 
 interface ToolbarProps {
@@ -46,7 +46,7 @@ const Toolbar = ({editor}: ToolbarProps) => {
                     {editor?.strokeWidth > 0 && <ColorPicker editor={editor} type='stroke'/>}
                     <StrokeWidthPicker editor={editor}/>
                     {isContainsTextbox() && <AlignmentPicker editor={editor}/>}
-                    {isContainsTextbox() && <FontWeightPicker editor={editor}/>}
+                    {isContainsTextbox() && <FontBoldToggle editor={editor}/>}
                 </>
             }
         </div>

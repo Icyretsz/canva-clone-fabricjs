@@ -8,7 +8,7 @@ interface FontWeightPickerProps {
     editor: Editor | undefined;
 }
 
-const FontWeightPicker = ({editor}: FontWeightPickerProps) => {
+const FontBoldToggle = ({editor}: FontWeightPickerProps) => {
 
     const handleOnClick = () => {
 
@@ -39,4 +39,4 @@ const FontWeightPicker = ({editor}: FontWeightPickerProps) => {
     );
 };
 
-export default FontWeightPicker;
+export default FontBoldToggle;
