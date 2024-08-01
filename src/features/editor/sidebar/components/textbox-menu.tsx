@@ -2,10 +2,15 @@ import React from 'react';
 import MenuHeaderDark from "@/features/editor/sidebar/components/menu-header-dark";
 import {Editor} from "@/features/editor/sidebar/types";
 import {Button} from "@/components/ui/button"
+import {Montserrat} from "next/font/google";
 
 interface ShapeMenuProps {
     editor: Editor | undefined
 }
+
+const montserrat = Montserrat({
+    subsets: ['latin', 'vietnamese'],
+});
 
 
 const TextMenu = ({editor}: ShapeMenuProps) => {
@@ -24,17 +29,17 @@ const TextMenu = ({editor}: ShapeMenuProps) => {
                     <div onClick={() => editor?.addTextbox('heading')}
                          className='w-full h-[64px] border border-gray-400 rounded-lg flex items-center cursor-pointer
                          px-[15px] hover:bg-[#343536] transition-all duration-100 ease-linear'>
-                        <span className='text-white text-[28px]'>Add a heading</span>
+                        <span className={`${montserrat.className} font-bold text-white text-[28px]`}>Add a heading</span>
                     </div>
                     <div onClick={() => editor?.addTextbox('subheading')}
                          className='w-full h-[52.8px] border border-gray-400 rounded-lg flex items-center cursor-pointer
                          px-[15px] hover:bg-[#343536] transition-all duration-100 ease-linear'>
-                        <span className='text-white text-[16.8px]'>Add a subheading</span>
+                        <span className={`${montserrat.className} font-normal text-white text-[16.8px]`}>Add a subheading</span>
                     </div>
                     <div onClick={() => editor?.addTextbox('content')}
                          className='w-full h-[48px] border border-gray-400 rounded-lg flex items-center cursor-pointer
                          px-[15px] hover:bg-[#343536] transition-all duration-100 ease-linear'>
-                        <span className='text-white text-[12px]'>Add  little bit of body text</span>
+                        <span className={`${montserrat.className} font-light text-white text-[12px]`}>Add  little bit of body text</span>
                     </div>
                 </div>
             </div>
