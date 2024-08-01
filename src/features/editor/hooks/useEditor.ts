@@ -196,7 +196,7 @@ export const useEditor = () => {
                 setFontFamily(value)
                 canvas.getActiveObjects().forEach((object) => {
                     if (object.type === 'textbox') {
-                        (object as fabric.Textbox).set({'fontFamily': value})
+                        (object as fabric.Textbox).set('fontFamily', value)
                     }
                 })
                 canvas.renderAll();
@@ -225,7 +225,9 @@ export const useEditor = () => {
                         fontSize: fontSize,
                         fontWeight: fontWeight,
                         textAlign: 'center',
-                        fill: 'black'
+                        fill: 'black',
+                        strokeWidth: STROKE_WIDTH,
+                        stroke: STROKE_COLOR
                     })
                 ;
                 addProc(textbox);

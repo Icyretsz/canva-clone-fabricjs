@@ -12,7 +12,7 @@ export type ActiveTool =
 
 export const FILL_COLOR = '#D1D5DB'
 export const STROKE_COLOR = '#000'
-export const STROKE_WIDTH = 2
+export const STROKE_WIDTH = 0
 export const STROKE_PATTERNS = {
     SOLID: undefined,
     DASH: [20, 10],

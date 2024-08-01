@@ -16,19 +16,18 @@ const Editor = () => {
 
 
     useEffect(() => {
-        const canvas = new fabric.Canvas(
-            canvasRef.current,
-            {
+            const canvas = new fabric.Canvas(canvasRef.current, {
                 controlsAboveOverlay: true,
-                preserveObjectStacking: true
-            }
-        )
-        init({initialCanvas: canvas, initialContainer: containerRef.current!})
+                preserveObjectStacking: true,
+            })
 
-        return () => {
-            canvas.dispose();
-        };
-    }, [init])
+            init({ initialCanvas: canvas, initialContainer: containerRef.current! });
+
+            return () => {
+                canvas.dispose();
+            };
+
+    }, [init]);
 
     const menuExpandedStyle = isExpanded ?
         {width : 'calc(100% - 72px - 350px',
