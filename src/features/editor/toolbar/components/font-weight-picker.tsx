@@ -27,7 +27,7 @@ const FontWeightPicker = ({editor}: FontWeightPickerProps) => {
                     <Button onClick={handleOnClick}
                             variant='ghost'
                             size='sm'
-                            className='outline-none'>
+                            className={`${editor?.fontWeight === 700 ? 'bg-gray-200' : ''} outline-none`}>
                         <FaBold/>
                     </Button>
                 </TooltipTrigger>
