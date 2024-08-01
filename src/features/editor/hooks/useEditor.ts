@@ -36,7 +36,7 @@ export const useEditor = () => {
     const [fontSize, setFontSize] = useState<number[]>([])
     const [selectedObjects, setSelectedObjects] = useState<fabric.Object[]>([])
     const [textAlignment, setTextAlignment] = useState<string>('center')
-    const [fontFamily, setFontFamily] = useState<string>('Arial')
+    const [fontFamily, setFontFamily] = useState<string>('Montserrat')
     const [fontStyle, setFontStyle] = useState<fontStyle>('normal')
     const [fontWeight, setFontWeight] = useState<number | string>('normal')
     const [isUnderlined, setUnderlined] = useState<boolean>(false)

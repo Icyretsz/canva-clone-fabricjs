@@ -15,12 +15,12 @@ const FontPicker = ({editor}: FontPickerProps) => {
     let fontName
 
     if (textboxFonts(editor).size === 1) {
-        if (editor?.fontFamily.includes('Montserrat')) {
+        if (editor?.fontFamily?.includes('Montserrat')) {
             fontName = 'Montserrat'
-        } else if (editor?.fontFamily.includes('Roboto')) {
-            fontName = 'Roboto'
-        } else if (editor?.fontFamily.includes('Bellota')) {
-            fontName = 'Bellota'
+        } else if (editor?.fontFamily?.includes('Gluten')) {
+            fontName = 'Gluten'
+        } else if (editor?.fontFamily?.includes('Bitter')) {
+            fontName = 'Bitter'
         }
     } else {
         fontName = 'Multiple fonts'

@@ -18,7 +18,7 @@ const useGetFontProperties = (
             if (selectedObjects && selectedObjects.length == 1  && selectedObjects[0].type === 'textbox') {
 
                 const font = (selectedObjects[0] as fabric.Textbox).get('fontFamily')
-                setFontFamily(font || 'Arial')
+                setFontFamily(font || 'Montserrat')
 
                 const alignment = (selectedObjects[0] as fabric.Textbox).get('textAlign')
                 setTextAlignment(alignment || 'center')
