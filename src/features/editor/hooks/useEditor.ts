@@ -37,10 +37,12 @@ export const useEditor = () => {
 
     useAutoResize({canvas, container})
     useCanvasEvents({canvas, selectedObjects, setSelectedObjects})
+
     useGetActiveFill(selectedObjects, setFillColor)
     useGetStrokeWidth(selectedObjects, setStrokeWidth)
     useGetStrokeType(selectedObjects, setStrokeType)
     useGetStrokeColor(selectedObjects, setStrokeColor)
+
     useGetFontSize(selectedObjects, setFontSize)
     useGetTextAlignment(selectedObjects, setTextAlignment)
     useGetFontFamily(selectedObjects, setFontFamily)

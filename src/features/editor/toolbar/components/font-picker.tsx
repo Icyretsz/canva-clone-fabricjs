@@ -2,6 +2,8 @@ import React from 'react';
 import {Editor} from "@/features/editor/sidebar/types";
 import useMenuStore from "@/features/editor/stores/store";
 import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip";
+import {textboxFonts} from "@/features/editor/utils";
+
 
 interface FontPickerProps {
     editor: Editor | undefined;
@@ -11,33 +13,41 @@ interface FontPickerProps {
 const FontPicker = ({editor}: FontPickerProps) => {
     const {setActiveTool, setExpanded} = useMenuStore();
     let fontName
-    if (editor?.fontFamily.includes('Montserrat')) {
-        fontName = 'Montserrat'
-    } else if (editor?.fontFamily.includes('Roboto')) {
-        fontName = 'Roboto'
+
+    if (textboxFonts(editor).size === 1) {
+        if (editor?.fontFamily.includes('Montserrat')) {
+            fontName = 'Montserrat'
+        } else if (editor?.fontFamily.includes('Roboto')) {
+            fontName = 'Roboto'
+        } else if (editor?.fontFamily.includes('Bellota')) {
+            fontName = 'Bellota'
+        } else {
+            fontName = 'Arial'
+        }
     } else {
-        fontName = 'Bellota'
+        fontName = 'Multiple fonts'
     }
 
-    return (
-        <TooltipProvider>
-            <Tooltip delayDuration={200}>
-                <TooltipTrigger asChild>
-                    <div className='w-[170px] h-[32px] flex justify-center items-center cursor-pointer border
+
+        return (
+            <TooltipProvider>
+                <Tooltip delayDuration={200}>
+                    <TooltipTrigger asChild>
+                        <div className='w-[170px] h-[32px] flex justify-center items-center cursor-pointer border
         border-gray-400 rounded-md hover:bg-[#f2f3f5] transition-all duration-100 ease-linear'
-                         onClick={() => {
-                             setActiveTool('Font')
-                             setExpanded(true)
-                         }}>
-                        {fontName}
-                    </div>
-                </TooltipTrigger>
-                <TooltipContent side="bottom" sideOffset={10}>
-                    <p>Font</p>
-                </TooltipContent>
-            </Tooltip>
-        </TooltipProvider>
-    );
+                             onClick={() => {
+                                 setActiveTool('Font')
+                                 setExpanded(true)
+                             }}>
+                            {fontName}
+                        </div>
+                    </TooltipTrigger>
+                    <TooltipContent side="bottom" sideOffset={10}>
+                        <p>Font</p>
+                    </TooltipContent>
+                </Tooltip>
+            </TooltipProvider>
+        );
 };
 
 export default FontPicker;
