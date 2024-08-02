@@ -6,6 +6,9 @@ import FontSizePicker from "@/features/editor/toolbar/components/font-size-picke
 import AlignmentPicker from "@/features/editor/toolbar/components/alignment-picker";
 import FontPicker from "@/features/editor/toolbar/components/font-picker";
 import FontBoldToggle from "@/features/editor/toolbar/components/font-bold-toggle";
+import LinethroughToggle from "@/features/editor/toolbar/components/linethrough-toggle";
+import ItalicToggle from "@/features/editor/toolbar/components/italic-toggle";
+import UnderlineToggle from "@/features/editor/toolbar/components/underline-toggle";
 
 
 interface ToolbarProps {
@@ -34,20 +37,6 @@ const Toolbar = ({editor}: ToolbarProps) => {
         return false
     }
 
-    // const isHaveStrokeWidth = () : boolean => {
-    //     const selected = editor?.selectedObjects
-    //     if (selected) {
-    //         for (let i = 0; i < selected.length; i++) {
-    //             const object = selected[i];
-    //             if (object.get('strokeWidth') > 0) {
-    //                 return true
-    //             }
-    //         }
-    //     }
-    //     return false
-    // }
-
-
     return (
 
         <div className='h-[48px] absolute top-[68px] flex items-center gap-2 px-2' style={style}>
@@ -60,6 +49,9 @@ const Toolbar = ({editor}: ToolbarProps) => {
                     <StrokeWidthPicker editor={editor}/>
                     {isContainsTextbox() && <AlignmentPicker editor={editor}/>}
                     {isContainsTextbox() && <FontBoldToggle editor={editor}/>}
+                    {isContainsTextbox() && <LinethroughToggle editor={editor}/>}
+                    {isContainsTextbox() && <ItalicToggle editor={editor}/>}
+                    {isContainsTextbox() && <UnderlineToggle editor={editor}/>}
                 </>
             }
         </div>

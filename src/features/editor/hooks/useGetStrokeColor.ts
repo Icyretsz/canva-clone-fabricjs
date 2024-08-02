@@ -11,6 +11,7 @@ const useGetStrokeColor = (
 
         if (selectedObjects && selectedObjects.length > 0) {
             selectedObjects.forEach((object) => {
+                // @ts-ignore
                 if (!object.type !== 'image') {
                 const strokeColor = object.get('stroke');
                 if (strokeColor && typeof strokeColor === 'string') {
