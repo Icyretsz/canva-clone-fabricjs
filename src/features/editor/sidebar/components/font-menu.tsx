@@ -9,7 +9,7 @@ import {
     AccordionTrigger,
 } from "@/components/ui/accordion"
 import {FaCheck} from "react-icons/fa6";
-import {textboxFonts, textboxFontSizes} from "@/features/editor/utils";
+import {textboxFonts} from "@/features/editor/utils";
 
 interface FontMenuProps {
     editor: Editor | undefined;
@@ -37,17 +37,18 @@ const FontMenu = ({editor}: FontMenuProps) => {
     interface RenderAccordionItemProps {
         fontFamily: any;
         fontName: string;
-        fontCheck: (font: string) => boolean;
+        fontCheck: (font: string, number: number) => boolean;
     }
 
     const fontCheck = (fontFamily: string, fontWeight: number): boolean => {
-        const fontsArray = textboxFonts(editor);
-        for (const font of fontsArray) {
+        const fontsSet =textboxFonts(editor);
+        let found = false;
+        fontsSet.forEach((font) => {
             if (font.fontFamily === fontFamily && font.fontWeight === fontWeight) {
-                return true;
+                found = true;
             }
-        }
-        return false;
+        });
+        return found;
     }
 
     const RenderAccordionItem = ({

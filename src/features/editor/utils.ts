@@ -13,7 +13,7 @@ export const textboxFonts = (editor: Editor | undefined): Set<{ fontFamily: stri
             if (object.type === 'textbox') {
                 const fontFamily = (object as fabric.Textbox).get('fontFamily');
                 const fontWeight = (object as fabric.Textbox).get('fontWeight');
-                if (fontFamily && fontWeight) {
+                if (fontFamily && typeof fontWeight === 'number') {
                     fontFamilySet.add({ fontFamily, fontWeight });
                 }
             }
