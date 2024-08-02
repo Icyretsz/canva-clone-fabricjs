@@ -23,6 +23,7 @@ const ColorPicker = ({ editor, type }: ColorPickerProps) => {
                         onClick={() => {
                             setActiveTool(toolType);
                             setExpanded(true);
+                            console.log(editor?.fillColor)
                         }}
                     >
                         {(colors && colors.length > 0) && (

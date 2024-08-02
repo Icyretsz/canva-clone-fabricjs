@@ -20,6 +20,7 @@ const useCanvasEvents = ({
         if (canvas) {
             canvas.on('selection:created', (e) => {
                 setSelectedObjects(e.selected || [])
+
             })
             canvas.on('selection:updated', (e) => {
                 setSelectedObjects(e.selected || [])
@@ -30,6 +31,7 @@ const useCanvasEvents = ({
                     setActiveTool("")
                     setExpanded(false)
                 }
+
             })
         }
         return () => {

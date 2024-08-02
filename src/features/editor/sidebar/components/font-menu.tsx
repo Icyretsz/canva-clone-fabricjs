@@ -9,7 +9,7 @@ import {
     AccordionTrigger,
 } from "@/components/ui/accordion"
 import {FaCheck} from "react-icons/fa6";
-import {textboxFonts} from "@/features/editor/utils";
+import {textboxFonts, textboxFontSizes} from "@/features/editor/utils";
 
 interface FontMenuProps {
     editor: Editor | undefined;
@@ -40,12 +40,14 @@ const FontMenu = ({editor}: FontMenuProps) => {
         fontCheck: (font: string) => boolean;
     }
 
-    const fontCheck = (Font: string): boolean => {
-        const fontsArray = textboxFonts(editor)
-        if (fontsArray.has(Font)) {
-            return true
+    const fontCheck = (fontFamily: string, fontWeight: number): boolean => {
+        const fontsArray = textboxFonts(editor);
+        for (const font of fontsArray) {
+            if (font.fontFamily === fontFamily && font.fontWeight === fontWeight) {
+                return true;
+            }
         }
-        return false
+        return false;
     }
 
     const RenderAccordionItem = ({
@@ -60,7 +62,7 @@ const FontMenu = ({editor}: FontMenuProps) => {
                     <AccordionTrigger>
                                 <span
                                     className={`${fontFamily.className} font-regular flex pr-2 w-full items-center justify-between text-black text-[28px]`}>
-                                    {fontName} {(fontCheck(fontFamily.style.fontFamily) && (editor?.fontWeight === 300 || editor?.fontWeight === 400 || editor?.fontWeight === 700)) &&
+                                    {fontName} {(fontCheck(fontFamily.style.fontFamily, 300) || fontCheck(fontFamily.style.fontFamily, 400) || fontCheck(fontFamily.style.fontFamily, 700)) &&
                                     <FaCheck/>}</span>
                     </AccordionTrigger>
                     <AccordionContent>
@@ -71,7 +73,7 @@ const FontMenu = ({editor}: FontMenuProps) => {
                             >
                                         <span
                                             className={`${fontFamily.className} font-light flex pr-2 w-full items-center justify-between pl-4 text-black text-[24px] `}>
-                                            Light {fontCheck(fontFamily.style.fontFamily) && editor?.fontWeight === 300 && <FaCheck/>}</span>
+                                            Light {fontCheck(fontFamily.style.fontFamily, 300) && <FaCheck/>}</span>
                             </div>
 
                             <div
@@ -80,7 +82,7 @@ const FontMenu = ({editor}: FontMenuProps) => {
                             >
                                         <span
                                             className={`${fontFamily.className} flex pr-2 w-full items-center justify-between pl-4 font-normal text-black text-[24px] `}>
-                                            Normal {fontCheck(fontFamily.style.fontFamily) && editor?.fontWeight === 400 && <FaCheck/>}</span>
+                                            Normal {fontCheck(fontFamily.style.fontFamily, 400) && <FaCheck/>}</span>
                             </div>
 
                             <div
@@ -89,7 +91,7 @@ const FontMenu = ({editor}: FontMenuProps) => {
                             >
                                         <span
                                             className={`${fontFamily.className} flex pr-2 w-full items-center justify-between pl-4 font-bold text-black text-[24px] `}>
-                                            Bold {fontCheck(fontFamily.style.fontFamily) && editor?.fontWeight === 700 && <FaCheck/>}</span>
+                                            Bold {fontCheck(fontFamily.style.fontFamily, 700) && <FaCheck/>}</span>
                             </div>
                         </div>
                     </AccordionContent>

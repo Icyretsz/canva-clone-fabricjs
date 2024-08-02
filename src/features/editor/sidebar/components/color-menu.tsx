@@ -14,9 +14,24 @@ const ColorMenu = ({ editor, type }: ColorMenuProps) => {
     const colors = type === 'Fill' ? editor?.fillColor : editor?.strokeColor
     const changeColor = type === 'Fill' ? editor?.changeFillColor : editor?.changeStrokeColor
 
+    const rgbaToHex = (r, g, b, a) => {
+        const toHex = (c) => {
+            const hex = c.toString(16);
+            return hex.length === 1 ? '0' + hex : hex;
+        };
+
+        const rHex = toHex(r);
+        const gHex = toHex(g);
+        const bHex = toHex(b);
+        const aHex = toHex(Math.round(a * 255));
+
+        return `#${rHex}${gHex}${bHex}${aHex}`;
+    };
+
     const handleChangeComplete = (color: ColorResult) => {
         if (editor && changeColor) {
-            changeColor(color.hex);
+            const hexColor = rgbaToHex(color.rgb.r, color.rgb.g, color.rgb.b, color.rgb.a);
+            changeColor(hexColor);
         }
     };
 

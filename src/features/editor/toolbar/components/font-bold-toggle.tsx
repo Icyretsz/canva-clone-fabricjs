@@ -17,7 +17,7 @@ const FontBoldToggle = ({editor}: FontWeightPickerProps) => {
             weight = editor?.fontWeight > 400 ? 400 : 700
             editor?.changeFontWeight(weight)
         }
-        console.log(editor?.fontWeight)
+
     }
 
     return (

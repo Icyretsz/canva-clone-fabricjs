@@ -34,6 +34,19 @@ const Toolbar = ({editor}: ToolbarProps) => {
         return false
     }
 
+    // const isHaveStrokeWidth = () : boolean => {
+    //     const selected = editor?.selectedObjects
+    //     if (selected) {
+    //         for (let i = 0; i < selected.length; i++) {
+    //             const object = selected[i];
+    //             if (object.get('strokeWidth') > 0) {
+    //                 return true
+    //             }
+    //         }
+    //     }
+    //     return false
+    // }
+
 
     return (
 

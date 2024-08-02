@@ -1,22 +1,26 @@
-import {fabric} from "fabric";
-import {Dispatch, SetStateAction, useEffect} from "react";
+import { fabric } from "fabric";
+import { Dispatch, SetStateAction, useEffect } from "react";
 
 const useGetStrokeColor = (
-    selectedObjects : fabric.Object[] | undefined,
-    setStrokeColor : Dispatch<SetStateAction<string[]> >
+    selectedObjects: fabric.Object[] | undefined,
+    setStrokeColor: Dispatch<SetStateAction<string[]>>
 ) => {
 
     useEffect(() => {
-        const colors : string[] = []
+        const colors: Set<string> = new Set();
+
         if (selectedObjects && selectedObjects.length > 0) {
             selectedObjects.forEach((object) => {
-                const fillColor = object.get('stroke')
-                if (fillColor && !colors.includes(fillColor)) {
-                    colors.push(fillColor)
+                if (!object.type !== 'image') {
+                const strokeColor = object.get('stroke');
+                if (strokeColor && typeof strokeColor === 'string') {
+                    colors.add(strokeColor);
                 }
-            })}
-        setStrokeColor(colors)
-    }, [selectedObjects])
+            }});
+        }
+
+        setStrokeColor(Array.from(colors));
+    }, [selectedObjects, setStrokeColor]);
 };
 
 export default useGetStrokeColor;

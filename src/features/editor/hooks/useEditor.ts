@@ -282,7 +282,7 @@ export const useEditor = () => {
                         fontSize: fontSize,
                         fontWeight: fontWeight,
                         textAlign: 'center',
-                        fill: 'black',
+                        fill: '#000',
                         strokeWidth: STROKE_WIDTH,
                         stroke: STROKE_COLOR
                     })
@@ -376,8 +376,17 @@ export const useEditor = () => {
         initialCanvas.centerObject(initialWorkspace)
         initialCanvas.clipPath = initialWorkspace
 
+        fabric.Image.fromURL('https://i.imgur.com/9xkDKeE.jpeg', function(oImg) {
+            initialCanvas.add(oImg);
+            initialCanvas.renderAll()
+            initialCanvas.centerObject(oImg)
+        });
+
         setCanvas(initialCanvas)
         setContainer(initialContainer)
+
+
+
 
 
     }, [])
