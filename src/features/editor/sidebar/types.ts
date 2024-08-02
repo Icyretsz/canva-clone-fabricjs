@@ -107,6 +107,7 @@ export interface Editor {
     changeFontStyle: (value: fontStyle) => void,
     changeUnderline: (value: boolean) => void,
     changeLinethrough: (value: boolean) => void,
+    deleteObject: () => void,
     addRect: () => void,
     addCircle: () => void,
     addTriangle: () => void,

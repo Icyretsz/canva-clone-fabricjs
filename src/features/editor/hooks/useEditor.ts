@@ -18,7 +18,7 @@ import useGetActiveFill from "@/features/editor/hooks/useGetActiveFill";
 import useGetStrokeWidth from "@/features/editor/hooks/useGetStrokeWidth";
 import useGetStrokeType from "@/features/editor/hooks/useGetStrokeType";
 import useGetStrokeColor from "@/features/editor/hooks/useGetStrokeColor";
-import { Montserrat } from "next/font/google";
+import {Montserrat} from "next/font/google";
 import useGetFontProperties from "@/features/editor/hooks/useGetFontProperties";
 
 const montserrat = Montserrat({
@@ -41,7 +41,6 @@ export const useEditor = () => {
     const [fontWeight, setFontWeight] = useState<number | string>('normal')
     const [isUnderlined, setUnderlined] = useState<boolean>(false)
     const [linethrough, setLinethrough] = useState<boolean>(false)
-
 
 
     useAutoResize({canvas, container})
@@ -258,6 +257,14 @@ export const useEditor = () => {
                 })
                 canvas.renderAll();
             },
+            deleteObject: () => {
+
+                canvas.getActiveObjects().forEach((object) => {
+                    canvas.remove(object);
+                    canvas.discardActiveObject();
+                })
+                canvas.renderAll();
+            },
             addRect: () => {
                 const rect = new fabric.Rect({...RECTANGLE_OPTIONS});
                 addProc(rect);
@@ -320,7 +327,7 @@ export const useEditor = () => {
                     isUnderlined,
                     setUnderlined,
                     linethrough,
-                    setLinethrough
+                    setLinethrough,
                 }
             )
         }
@@ -376,7 +383,7 @@ export const useEditor = () => {
         initialCanvas.centerObject(initialWorkspace)
         initialCanvas.clipPath = initialWorkspace
 
-        fabric.Image.fromURL('https://i.imgur.com/9xkDKeE.jpeg', function(oImg) {
+        fabric.Image.fromURL('https://i.imgur.com/9xkDKeE.jpeg', function (oImg) {
             initialCanvas.add(oImg);
             initialCanvas.renderAll()
             initialCanvas.centerObject(oImg)
@@ -384,9 +391,6 @@ export const useEditor = () => {
 
         setCanvas(initialCanvas)
         setContainer(initialContainer)
-
-
-
 
 
     }, [])

@@ -9,7 +9,8 @@ import FontBoldToggle from "@/features/editor/toolbar/components/font-bold-toggl
 import LinethroughToggle from "@/features/editor/toolbar/components/linethrough-toggle";
 import ItalicToggle from "@/features/editor/toolbar/components/italic-toggle";
 import UnderlineToggle from "@/features/editor/toolbar/components/underline-toggle";
-
+import DeleteObjects from "@/features/editor/toolbar/components/delete-objects";
+import { RxDividerVertical } from "react-icons/rx";
 
 interface ToolbarProps {
     editor: Editor | undefined;
@@ -52,6 +53,8 @@ const Toolbar = ({editor}: ToolbarProps) => {
                     {isContainsTextbox() && <LinethroughToggle editor={editor}/>}
                     {isContainsTextbox() && <ItalicToggle editor={editor}/>}
                     {isContainsTextbox() && <UnderlineToggle editor={editor}/>}
+                    <RxDividerVertical/>
+                    <DeleteObjects editor={editor}/>
                 </>
             }
         </div>
