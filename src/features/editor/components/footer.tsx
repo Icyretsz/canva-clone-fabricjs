@@ -1,9 +1,9 @@
 import React from 'react';
-import useMenuStore from '@/features/editor/stores/store';
+import useObjectStore from '@/features/editor/stores/store';
 
 const Footer = () => {
 
-    const isExpanded = useMenuStore((state) => state.isExpanded);
+    const isExpanded = useObjectStore((state) => state.isExpanded);
 
     const style = isExpanded ? {width :'calc(100% - 72px - 350px)', left : 'calc(72px + 350px)'} :
         {width : 'calc(100% - 72px)', left : '72px'}

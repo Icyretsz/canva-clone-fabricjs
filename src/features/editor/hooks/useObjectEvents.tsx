@@ -1,6 +1,6 @@
-import React, {useEffect} from 'react';
+import {useEffect} from 'react';
 import {fabric} from "fabric";
-import useMenuStore from "@/features/editor/stores/store"
+import useObjectStore from "@/features/editor/stores/store"
 
 interface UseCanvasEventsProps {
     canvas: fabric.Canvas | null,
@@ -10,11 +10,10 @@ interface UseCanvasEventsProps {
 
 const useCanvasEvents = ({
                              canvas,
-                             selectedObjects,
                              setSelectedObjects
                          }: UseCanvasEventsProps) => {
 
-    const {activeTool, setActiveTool, isExpanded, setExpanded} = useMenuStore()
+    const {activeTool, setActiveTool, setExpanded} = useObjectStore()
 
     useEffect(() => {
         if (canvas) {
@@ -31,7 +30,6 @@ const useCanvasEvents = ({
                     setActiveTool("")
                     setExpanded(false)
                 }
-
             })
         }
         return () => {

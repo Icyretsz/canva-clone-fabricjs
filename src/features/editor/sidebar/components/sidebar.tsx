@@ -5,7 +5,7 @@ import {
     ALargeSmall,
     Upload
 } from 'lucide-react'
-import useMenuStore from "@/features/editor/stores/store";
+import useObjectStore from "@/features/editor/stores/store";
 import ShapeMenu from "@/features/editor/sidebar/components/shape-menu";
 import ColorMenu from "@/features/editor/sidebar/components/color-menu"
 import {Editor} from "@/features/editor/sidebar/types";
@@ -18,7 +18,7 @@ interface SidebarProps {
 }
 
 const Sidebar = ({editor} : SidebarProps) => {
-    const {activeTool, setActiveTool, setExpanded, isExpanded} = useMenuStore()
+    const {activeTool, setActiveTool, setExpanded, isExpanded} = useObjectStore()
 
     return (
         <div className='h-full'>

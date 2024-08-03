@@ -1,4 +1,4 @@
-import useMenuStore from '@/features/editor/stores/store';
+import useObjectStore from '@/features/editor/stores/store';
 import {Editor} from '@/features/editor/sidebar/types'
 import StrokeWidthPicker from "@/features/editor/toolbar/components/stroke-width-picker";
 import ColorPicker from "@/features/editor/toolbar/components/color-picker";
@@ -17,7 +17,7 @@ interface ToolbarProps {
 }
 
 const Toolbar = ({editor}: ToolbarProps) => {
-    const isExpanded = useMenuStore((state) => state.isExpanded);
+    const isExpanded = useObjectStore((state) => state.isExpanded);
 
     const style = isExpanded ? {
                 width: 'calc(100% - 72px - 350px)', left: 'calc(72px + 350px)'

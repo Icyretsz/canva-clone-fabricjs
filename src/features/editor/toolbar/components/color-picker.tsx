@@ -1,6 +1,6 @@
 import React from 'react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import useMenuStore from "@/features/editor/stores/store";
+import useObjectStore from "@/features/editor/stores/store";
 import {Editor} from "@/features/editor/sidebar/types";
 
 interface ColorPickerProps {
@@ -9,7 +9,7 @@ interface ColorPickerProps {
 }
 
 const ColorPicker = ({ editor, type }: ColorPickerProps) => {
-    const { setActiveTool, setExpanded } = useMenuStore();
+    const { setActiveTool, setExpanded } = useObjectStore();
     const colors = type === 'fill' ? editor?.fillColor : editor?.strokeColor;
     const toolType = type === 'fill' ? 'ShapeFill' : 'StrokeColor';
 

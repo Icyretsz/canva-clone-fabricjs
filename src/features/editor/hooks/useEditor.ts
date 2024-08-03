@@ -53,6 +53,7 @@ export const useEditor = () => {
 
     useGetFontProperties(selectedObjects, setFontFamily, setTextAlignment, setFontSize, setFontWeight, setFontStyle, setLinethrough, setUnderlined)
 
+
     const buildEditor = ({
                              selectedObjects,
                              canvas,
@@ -96,6 +97,11 @@ export const useEditor = () => {
         const addProc = (object: fabric.Object) => {
             center(object);
             canvas.add(object);
+            object.on('mousedown', function(event) {
+                if(event.button === 3) {
+                    console.log('right click')
+                }
+            })
             canvas.setActiveObject(object);
             canvas.renderAll();
         };
@@ -260,6 +266,7 @@ export const useEditor = () => {
             deleteObject: () => {
 
                 canvas.getActiveObjects().forEach((object) => {
+                    object.off()
                     canvas.remove(object);
                     canvas.discardActiveObject();
                 })
@@ -268,6 +275,7 @@ export const useEditor = () => {
             addRect: () => {
                 const rect = new fabric.Rect({...RECTANGLE_OPTIONS});
                 addProc(rect);
+                return rect
             },
             addCircle: () => {
                 const circle = new fabric.Circle({...CIRCLE_OPTIONS});
@@ -278,7 +286,7 @@ export const useEditor = () => {
                 addProc(triangle);
             },
             addPolygon: () => {
-                const octagon = new fabric.Polygon(OCTAGON_POINTS, {...OCTAGON_OPTIONS});
+                const octagon = new fabric.Polygon(OCTAGON_POINTS,  {...OCTAGON_OPTIONS});
                 addProc(octagon);
             },
             addTextbox: (type: 'heading' | 'subheading' | 'content') => {

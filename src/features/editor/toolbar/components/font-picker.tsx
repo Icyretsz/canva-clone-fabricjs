@@ -1,6 +1,6 @@
 import React from 'react';
 import {Editor} from "@/features/editor/sidebar/types";
-import useMenuStore from "@/features/editor/stores/store";
+import useObjectStore from "@/features/editor/stores/store";
 import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip";
 import {textboxFonts} from "@/features/editor/utils";
 import { RiArrowDropDownLine } from "react-icons/ri";
@@ -11,7 +11,7 @@ interface FontPickerProps {
 
 
 const FontPicker = ({editor}: FontPickerProps) => {
-    const {setActiveTool, setExpanded} = useMenuStore();
+    const {setActiveTool, setExpanded} = useObjectStore();
     let fontName
 
     if (textboxFonts(editor).size === 1) {

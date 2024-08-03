@@ -108,7 +108,7 @@ export interface Editor {
     changeUnderline: (value: boolean) => void,
     changeLinethrough: (value: boolean) => void,
     deleteObject: () => void,
-    addRect: () => void,
+    addRect: () => fabric.Object,
     addCircle: () => void,
     addTriangle: () => void,
     addPolygon: () => void
