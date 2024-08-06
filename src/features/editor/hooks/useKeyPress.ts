@@ -25,7 +25,7 @@ const useKeyPress = ({canvas, clipboard, setClipboard}: UseKeyPressProps) => {
                 if (clipboard && (event.ctrlKey || event.metaKey) && event.key === 'v') {
                     const activeObject = canvas.getActiveObject();
                     if (activeObject && activeObject.type === 'textbox' && (activeObject as fabric.Textbox).isEditing) {
-                        return; // Exit the function if a textbox is being edited
+                        return;
                     }
                     clipboard.clone(function (cloned: fabric.Object) {
                         canvas.discardActiveObject();
