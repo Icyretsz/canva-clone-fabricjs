@@ -20,6 +20,19 @@ const useCanvasEvents = ({
                          }: UseCanvasEventsProps) => {
 
     const {activeTool, setActiveTool, setExpanded} = useObjectStore()
+    const HISTORY_LIMIT = 10
+
+    const saveHistory = () => {
+        const state = JSON.stringify(canvas?.toJSON(['selectable', 'hasControls', 'hoverCursor', 'name']));
+        setHistoryUndo((prevState) => {
+            let historyUndoClone = [...prevState]
+            if (historyUndoClone.length === HISTORY_LIMIT) {
+                historyUndoClone.shift()
+            }
+            return [...historyUndoClone, state]
+        })
+        setHistoryRedo([])
+    }
 
     useEffect(() => {
         if (canvas) {
@@ -38,39 +51,17 @@ const useCanvasEvents = ({
                 }
             })
             canvas.on('object:modified', () => {
-                const state = JSON.stringify(canvas)
-                setHistoryUndo((prevState) => {
-                    let historyUndoClone = [...prevState]
-                        if (historyUndoClone.length === 5) {
-                            historyUndoClone.shift()
-                        }
-                    return [...historyUndoClone, state]
-                })
-                setHistoryRedo([])
-                console.log(historyUndo)
+                saveHistory()
             });
             canvas.on('object:added', () => {
-                const state = JSON.stringify(canvas)
-                setHistoryUndo((prevState) => {
-                    let historyUndoClone = [...prevState]
-                    if (historyUndoClone.length === 5) {
-                        historyUndoClone.shift()
-                    }
-                    return [...historyUndoClone, state]
-                })
-                setHistoryRedo([])
+                saveHistory()
             });
             canvas.on('object:removed', () => {
-                const state = JSON.stringify(canvas)
-                setHistoryUndo((prevState) => {
-                    let historyUndoClone = [...prevState]
-                    if (historyUndoClone.length === 5) {
-                        historyUndoClone.shift()
-                    }
-                    return [...historyUndoClone, state]
-                })
-                setHistoryRedo([])
+                saveHistory()
             });
+            canvas.on('text:changed', () => {
+                saveHistory()
+            })
         }
         return () => {
             if (canvas) {

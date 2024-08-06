@@ -32,20 +32,6 @@ const useKeyPress = ({
                 }
             }
         };
-        const applyWorkspaceProperties = (canvas : fabric.Canvas) => {
-            const objects = canvas.getObjects();
-            objects.forEach((object) => {
-                if (object.name === 'clip') {
-                    console.log('found')
-                    object.set({
-                        selectable: false,
-                        hasControls: false,
-                        hoverCursor: 'default'
-                    });
-                }
-            });
-            canvas.renderAll();
-        };
 
         const handleCtrlV = (event: KeyboardEvent) => {
             if (canvas) {
@@ -84,7 +70,6 @@ const useKeyPress = ({
         const handleCtrlZ = (event: KeyboardEvent) => {
             if (canvas && (event.ctrlKey || event.metaKey) && event.key === 'z') {
                 if(historyUndo.length > 1) {
-                    console.log('z')
                     let historyUndoClone = [...historyUndo]
                     const previousState = historyUndoClone.pop();
                     setHistoryUndo(historyUndoClone)
@@ -93,7 +78,7 @@ const useKeyPress = ({
                     }
                     const lastState = historyUndoClone[historyUndoClone.length - 1];
                     canvas.loadFromJSON(lastState, () => {
-                        applyWorkspaceProperties(canvas)
+                        canvas.renderAll()
                     });
                 } else {
 

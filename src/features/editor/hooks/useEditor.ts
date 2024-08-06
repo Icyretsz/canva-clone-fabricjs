@@ -201,6 +201,7 @@ export const useEditor = () => {
                 canvas.getActiveObjects().forEach((object) => {
                     if (object.type === 'textbox') {
                         (object as fabric.Textbox).set('fontSize', value);
+                        canvas.fire('object:modified', { target: object })
                     }
                 })
                 canvas.renderAll();
@@ -214,7 +215,9 @@ export const useEditor = () => {
                         } else if (size && type === '-') {
                             (object as fabric.Textbox).set('fontSize', size - 1);
                         }
+                        canvas.fire('object:modified', { target: object })
                     }
+
                 })
                 canvas.renderAll();
             },
@@ -223,6 +226,7 @@ export const useEditor = () => {
                 canvas.getActiveObjects().forEach((object) => {
                     if (object.type === 'textbox') {
                         (object as fabric.Textbox).set({'textAlign': alignment})
+                        canvas.fire('object:modified', { target: object })
                     }
                 })
                 canvas.renderAll();
@@ -232,6 +236,7 @@ export const useEditor = () => {
                 canvas.getActiveObjects().forEach((object) => {
                     if (object.type === 'textbox') {
                         (object as fabric.Textbox).set('fontFamily', value)
+                        canvas.fire('object:modified', { target: object })
                     }
                 })
                 canvas.renderAll();
@@ -241,6 +246,7 @@ export const useEditor = () => {
                 canvas.getActiveObjects().forEach((object) => {
                     if (object.type === 'textbox') {
                         (object as fabric.Textbox).set('fontWeight', value)
+                        canvas.fire('object:modified', { target: object })
                     }
                 })
                 canvas.renderAll();
@@ -250,6 +256,7 @@ export const useEditor = () => {
                 canvas.getActiveObjects().forEach((object) => {
                     if (object.type === 'textbox') {
                         (object as fabric.Textbox).set('fontStyle', value)
+                        canvas.fire('object:modified', { target: object })
                     }
                 })
                 canvas.renderAll();
@@ -259,6 +266,7 @@ export const useEditor = () => {
                 canvas.getActiveObjects().forEach((object) => {
                     if (object.type === 'textbox') {
                         (object as fabric.Textbox).set('underline', value)
+                        canvas.fire('object:modified', { target: object })
                     }
                 })
                 canvas.renderAll();
@@ -268,6 +276,7 @@ export const useEditor = () => {
                 canvas.getActiveObjects().forEach((object) => {
                     if (object.type === 'textbox') {
                         (object as fabric.Textbox).set('linethrough', value)
+                        canvas.fire('object:modified', { target: object })
                     }
                 })
                 canvas.renderAll();
