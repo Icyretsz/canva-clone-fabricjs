@@ -129,6 +129,8 @@ export interface BuildEditor {
     fontStyle: fontStyle,
     isUnderlined: boolean,
     linethrough: boolean,
+    clipboard: fabric.Object | undefined,
+    setClipboard: (clipboard : fabric.Object) => void,
     setFontWeight: (value : number | string) => void,
     setFontStyle: (value : fontStyle) => void,
     setUnderlined: (value : boolean) => void,

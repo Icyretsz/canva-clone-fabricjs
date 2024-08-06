@@ -20,6 +20,7 @@ import useGetStrokeType from "@/features/editor/hooks/useGetStrokeType";
 import useGetStrokeColor from "@/features/editor/hooks/useGetStrokeColor";
 import {Montserrat} from "next/font/google";
 import useGetFontProperties from "@/features/editor/hooks/useGetFontProperties";
+import useKeyPress from "@/features/editor/hooks/useKeyPress";
 
 const montserrat = Montserrat({
     subsets: ['latin', 'vietnamese'],
@@ -35,6 +36,7 @@ export const useEditor = () => {
     const [strokeType, setStrokeType] = useState<StrokeType>("stroke-none")
     const [fontSize, setFontSize] = useState<number[]>([])
     const [selectedObjects, setSelectedObjects] = useState<fabric.Object[]>([])
+    const [clipboard, setClipboard] = useState<fabric.Object>()
     const [textAlignment, setTextAlignment] = useState<string>('center')
     const [fontFamily, setFontFamily] = useState<string>('Montserrat')
     const [fontStyle, setFontStyle] = useState<fontStyle>('normal')
@@ -45,6 +47,7 @@ export const useEditor = () => {
 
     useAutoResize({canvas, container})
     useCanvasEvents({canvas, selectedObjects, setSelectedObjects})
+    useKeyPress({canvas, clipboard, setClipboard})
 
     useGetActiveFill(selectedObjects, setFillColor)
     useGetStrokeWidth(selectedObjects, setStrokeWidth)
@@ -336,11 +339,13 @@ export const useEditor = () => {
                     setUnderlined,
                     linethrough,
                     setLinethrough,
+                    clipboard,
+                    setClipboard
                 }
             )
         }
         return undefined
-    }, [canvas, fillColor, strokeColor, strokeWidth, selectedObjects, strokeType, fontSize, textAlignment, fontFamily, fontWeight, fontStyle, isUnderlined, linethrough])
+    }, [canvas, fillColor, strokeColor, strokeWidth, selectedObjects, strokeType, fontSize, textAlignment, fontFamily, fontWeight, fontStyle, isUnderlined, linethrough, clipboard])
 
     const init = useCallback((
         {
