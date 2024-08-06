@@ -43,11 +43,13 @@ export const useEditor = () => {
     const [fontWeight, setFontWeight] = useState<number | string>('normal')
     const [isUnderlined, setUnderlined] = useState<boolean>(false)
     const [linethrough, setLinethrough] = useState<boolean>(false)
+    const [historyUndo, setHistoryUndo] = useState<fabric.Object[][]>([])
+    const [historyRedo, setHistoryRedo] = useState<fabric.Object[][]>([])
 
 
     useAutoResize({canvas, container})
-    useCanvasEvents({canvas, selectedObjects, setSelectedObjects})
-    useKeyPress({canvas, clipboard, setClipboard})
+    useCanvasEvents({canvas, selectedObjects, setSelectedObjects, historyUndo, historyRedo, setHistoryUndo, setHistoryRedo})
+    useKeyPress({canvas, clipboard, setClipboard, historyUndo, historyRedo, setHistoryUndo, setHistoryRedo})
 
     useGetActiveFill(selectedObjects, setFillColor)
     useGetStrokeWidth(selectedObjects, setStrokeWidth)
@@ -148,6 +150,7 @@ export const useEditor = () => {
                 setFillColor([value])
                 canvas.getActiveObjects().forEach((object) => {
                     object.set({fill: value})
+                    canvas.fire('object:modified', { target: object })
                 })
                 canvas.renderAll();
             },
@@ -155,6 +158,7 @@ export const useEditor = () => {
                 setStrokeColor([value])
                 canvas.getActiveObjects().forEach((object) => {
                     object.set({stroke: value})
+                    canvas.fire('object:modified', { target: object })
                 })
                 canvas.renderAll();
             },
@@ -165,6 +169,7 @@ export const useEditor = () => {
                         strokeWidth: value,
                         strokeUniform: true
                     })
+                    canvas.fire('object:modified', { target: object })
                 })
                 canvas.renderAll();
             },
@@ -187,6 +192,7 @@ export const useEditor = () => {
                         default:
                             break;
                     }
+                    canvas.fire('object:modified', { target: object })
                 })
                 canvas.renderAll();
             },
@@ -340,12 +346,16 @@ export const useEditor = () => {
                     linethrough,
                     setLinethrough,
                     clipboard,
-                    setClipboard
+                    setClipboard,
+                    historyRedo,
+                    setHistoryRedo,
+                    historyUndo,
+                    setHistoryUndo
                 }
             )
         }
         return undefined
-    }, [canvas, fillColor, strokeColor, strokeWidth, selectedObjects, strokeType, fontSize, textAlignment, fontFamily, fontWeight, fontStyle, isUnderlined, linethrough, clipboard])
+    }, [canvas, fillColor, strokeColor, strokeWidth, selectedObjects, strokeType, fontSize, textAlignment, fontFamily, fontWeight, fontStyle, isUnderlined, linethrough, clipboard, historyRedo, historyUndo])
 
     const init = useCallback((
         {
@@ -396,11 +406,11 @@ export const useEditor = () => {
         initialCanvas.centerObject(initialWorkspace)
         initialCanvas.clipPath = initialWorkspace
 
-        fabric.Image.fromURL('https://i.imgur.com/9xkDKeE.jpeg', function (oImg) {
-            initialCanvas.add(oImg);
-            initialCanvas.renderAll()
-            initialCanvas.centerObject(oImg)
-        });
+        // fabric.Image.fromURL('https://i.imgur.com/9xkDKeE.jpeg', function (oImg) {
+        //     initialCanvas.add(oImg);
+        //     initialCanvas.renderAll()
+        //     initialCanvas.centerObject(oImg)
+        // });
 
         setCanvas(initialCanvas)
         setContainer(initialContainer)
