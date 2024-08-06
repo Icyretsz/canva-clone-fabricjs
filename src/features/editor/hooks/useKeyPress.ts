@@ -5,10 +5,10 @@ interface UseKeyPressProps {
     canvas: fabric.Canvas | null;
     clipboard: fabric.Object | undefined;
     setClipboard: (clipboard: fabric.Object) => void;
-    historyUndo: fabric.Object[][],
-    setHistoryUndo: React.Dispatch<React.SetStateAction<fabric.Object[][]>>;
-    historyRedo: fabric.Object[][],
-    setHistoryRedo: React.Dispatch<React.SetStateAction<fabric.Object[][]>>;
+    historyUndo: string[],
+    setHistoryUndo: React.Dispatch<React.SetStateAction<string[]>>;
+    historyRedo: string[],
+    setHistoryRedo: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 const useKeyPress = ({
@@ -31,6 +31,20 @@ const useKeyPress = ({
                     });
                 }
             }
+        };
+        const applyWorkspaceProperties = (canvas : fabric.Canvas) => {
+            const objects = canvas.getObjects();
+            objects.forEach((object) => {
+                if (object.name === 'clip') {
+                    console.log('found')
+                    object.set({
+                        selectable: false,
+                        hasControls: false,
+                        hoverCursor: 'default'
+                    });
+                }
+            });
+            canvas.renderAll();
         };
 
         const handleCtrlV = (event: KeyboardEvent) => {
@@ -69,44 +83,21 @@ const useKeyPress = ({
 
         const handleCtrlZ = (event: KeyboardEvent) => {
             if (canvas && (event.ctrlKey || event.metaKey) && event.key === 'z') {
-                if (historyUndo && historyUndo.length > 0) {
-                    console.log('hi')
-                    // Remove all objects from the canvas except those with name 'clip'
-                    const currentObjects = canvas.getObjects();
-                    currentObjects.forEach((object) => {
-                        if (object.name !== 'clip') {
-                            object.off();
-                            canvas.remove(object);
-                        }
+                if(historyUndo.length > 1) {
+                    console.log('z')
+                    let historyUndoClone = [...historyUndo]
+                    const previousState = historyUndoClone.pop();
+                    setHistoryUndo(historyUndoClone)
+                    if (previousState){
+                        setHistoryRedo((prevState) => [...prevState, previousState]);
+                    }
+                    const lastState = historyUndoClone[historyUndoClone.length - 1];
+                    canvas.loadFromJSON(lastState, () => {
+                        applyWorkspaceProperties(canvas)
                     });
-                    canvas.discardActiveObject();
-                    canvas.renderAll();
-
-                    // Create a copy of the history array and remove the last entry
-                    const newHistoryUndo = [...historyUndo];
-                    const previousState = newHistoryUndo.pop();
-                    setHistoryUndo(newHistoryUndo);
-                    console.log(historyUndo)
-
-                    // If there is a previous state, add its objects back to the canvas
-                    if (newHistoryUndo.length > 0) {
-                        const newState = newHistoryUndo[newHistoryUndo.length - 1];
-                        newState.forEach((object) => {
-                            console.log(newState)
-                            object.clone((cloned: fabric.Object) => {
-                                canvas.add(cloned);
-                            });
-                        });
-                    }
-
-                    // Add the popped state to redo history
-                    if (previousState) {
-                        setHistoryRedo((prevHistoryRedo) => [...prevHistoryRedo, previousState]);
-                    }
-
+                } else {
 
                 }
-                canvas.renderAll();
             }
         };
 

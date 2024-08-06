@@ -7,10 +7,10 @@ interface UseCanvasEventsProps {
     canvas: fabric.Canvas | null,
     selectedObjects: fabric.Object[],
     setSelectedObjects: (selectedObject: fabric.Object[]) => void,
-    historyUndo: fabric.Object[][],
-    setHistoryUndo: React.Dispatch<React.SetStateAction<fabric.Object[][]>>;
-    historyRedo: fabric.Object[][],
-    setHistoryRedo: React.Dispatch<React.SetStateAction<fabric.Object[][]>>;
+    historyUndo: string[],
+    setHistoryUndo: React.Dispatch<React.SetStateAction<string[]>>;
+    historyRedo: string[],
+    setHistoryRedo: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 const useCanvasEvents = ({
@@ -38,58 +38,38 @@ const useCanvasEvents = ({
                 }
             })
             canvas.on('object:modified', () => {
-                console.log('changed')
-                const currentObjects: fabric.Object[] = []
-                canvas.getObjects().map((object: fabric.Object) => {
-                    object.clone(function (cloned: fabric.Object) {
-                        if (object.name === 'clip') return
-                        currentObjects.push(cloned)
-                    })
+                const state = JSON.stringify(canvas)
+                setHistoryUndo((prevState) => {
+                    let historyUndoClone = [...prevState]
+                        if (historyUndoClone.length === 5) {
+                            historyUndoClone.shift()
+                        }
+                    return [...historyUndoClone, state]
                 })
-                setHistoryUndo((prevHistory: fabric.Object[][]) => {
-                    const newHistoryUndo = [...prevHistory, currentObjects];
-                    if (newHistoryUndo.length > 3) {
-                        newHistoryUndo.shift();
-                    }
-                    return newHistoryUndo;
-                });
-                setHistoryRedo([]);
+                setHistoryRedo([])
+                console.log(historyUndo)
             });
             canvas.on('object:added', () => {
-                console.log('added')
-                const currentObjects: fabric.Object[] = []
-                canvas.getObjects().map((object: fabric.Object) => {
-                    object.clone(function (cloned: fabric.Object) {
-                        if (object.name === 'clip') return
-                        currentObjects.push(cloned)
-                    })
-                })
-                setHistoryUndo((prevHistory: fabric.Object[][]) => {
-                    const newHistoryUndo = [...prevHistory, currentObjects];
-                    if (newHistoryUndo.length > 3) {
-                        newHistoryUndo.shift();
+                const state = JSON.stringify(canvas)
+                setHistoryUndo((prevState) => {
+                    let historyUndoClone = [...prevState]
+                    if (historyUndoClone.length === 5) {
+                        historyUndoClone.shift()
                     }
-                    return newHistoryUndo;
-                });
-                setHistoryRedo([]);
+                    return [...historyUndoClone, state]
+                })
+                setHistoryRedo([])
             });
             canvas.on('object:removed', () => {
-                console.log('removed')
-                const currentObjects: fabric.Object[] = []
-                canvas.getObjects().map((object: fabric.Object) => {
-                    object.clone(function (cloned: fabric.Object) {
-                        if (object.name === 'clip') return
-                        currentObjects.push(cloned)
-                    })
-                })
-                setHistoryUndo((prevHistory: fabric.Object[][]) => {
-                    const newHistoryUndo = [...prevHistory, currentObjects];
-                    if (newHistoryUndo.length > 10) {
-                        newHistoryUndo.shift();
+                const state = JSON.stringify(canvas)
+                setHistoryUndo((prevState) => {
+                    let historyUndoClone = [...prevState]
+                    if (historyUndoClone.length === 5) {
+                        historyUndoClone.shift()
                     }
-                    return newHistoryUndo;
-                });
-                setHistoryRedo([]);
+                    return [...historyUndoClone, state]
+                })
+                setHistoryRedo([])
             });
         }
         return () => {
@@ -97,7 +77,7 @@ const useCanvasEvents = ({
                 canvas.off()
             }
         }
-    }, [canvas, activeTool, setActiveTool, setExpanded, setSelectedObjects, setHistoryUndo, setHistoryRedo, historyRedo, historyUndo])
+    }, [canvas, activeTool, setActiveTool, setExpanded, setSelectedObjects, historyRedo, historyUndo])
 };
 
 export default useCanvasEvents;

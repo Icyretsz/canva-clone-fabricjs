@@ -43,8 +43,8 @@ export const useEditor = () => {
     const [fontWeight, setFontWeight] = useState<number | string>('normal')
     const [isUnderlined, setUnderlined] = useState<boolean>(false)
     const [linethrough, setLinethrough] = useState<boolean>(false)
-    const [historyUndo, setHistoryUndo] = useState<fabric.Object[][]>([])
-    const [historyRedo, setHistoryRedo] = useState<fabric.Object[][]>([])
+    const [historyUndo, setHistoryUndo] = useState<string[]>([])
+    const [historyRedo, setHistoryRedo] = useState<string[]>([])
 
 
     useAutoResize({canvas, container})
