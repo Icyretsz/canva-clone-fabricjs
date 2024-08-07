@@ -80,8 +80,27 @@ const useKeyPress = ({
                             setHistoryRedo(historyRedoClone);
 
                             if (nextState) {
+                                const selectedObjects = canvas.getActiveObjects()
+                                let activeIdArray: string[] = []
+                                selectedObjects.forEach((object) => {
+                                    const name = object.name
+                                    if (name) {
+                                        activeIdArray.push(name)
+                                    }
+                                })
                                 setHistoryUndo((prevState) => [...prevState, nextState]);
                                 canvas.loadFromJSON(nextState, () => {
+                                    const newObjects = canvas.getObjects()
+                                    let newSelectedObjects: fabric.Object[] = newObjects.filter((object) => {
+                                        return object.name && activeIdArray.includes(object.name)
+                                    });
+                                    if (newSelectedObjects.length > 1) {
+                                        const activeSelection = new fabric.ActiveSelection(newSelectedObjects, {canvas: canvas});
+                                        canvas.setActiveObject(activeSelection);
+                                    } else if (newSelectedObjects.length === 1) {
+                                        canvas.setActiveObject(newSelectedObjects[0]);
+                                    }
+
                                     canvas.renderAll();
                                 });
                             }
@@ -93,9 +112,27 @@ const useKeyPress = ({
                             setHistoryUndo(historyUndoClone);
 
                             if (previousState) {
+                                const selectedObjects = canvas.getActiveObjects()
+                                let activeIdArray: string[] = []
+                                selectedObjects.forEach((object) => {
+                                    const name = object.name
+                                    if (name) {
+                                        activeIdArray.push(name)
+                                    }
+                                })
                                 setHistoryRedo((prevState) => [...prevState, previousState]);
                                 const lastState = historyUndoClone[historyUndoClone.length - 1];
                                 canvas.loadFromJSON(lastState, () => {
+                                    const newObjects = canvas.getObjects()
+                                    let newSelectedObjects: fabric.Object[] = newObjects.filter((object) => {
+                                        return object.name && activeIdArray.includes(object.name)
+                                    });
+                                    if (newSelectedObjects.length > 1) {
+                                        const activeSelection = new fabric.ActiveSelection(newSelectedObjects, {canvas: canvas});
+                                        canvas.setActiveObject(activeSelection);
+                                    } else if (newSelectedObjects.length === 1) {
+                                        canvas.setActiveObject(newSelectedObjects[0]);
+                                    }
                                     canvas.renderAll();
                                 });
                             }

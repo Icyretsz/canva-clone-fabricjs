@@ -102,6 +102,8 @@ export const useEditor = () => {
         const addProc = (object: fabric.Object) => {
             center(object);
             canvas.add(object);
+            const currentId : string = String(canvas.getObjects().length - 1)
+            object.set('name', currentId)
             object.on('mousedown', function(event) {
                 if(event.button === 3) {
                     console.log('right click')
