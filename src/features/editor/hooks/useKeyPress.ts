@@ -99,6 +99,14 @@ const useKeyPress = ({
                                     let newSelectedObjects: fabric.Object[] = newObjects.filter((object) => {
                                         return object.name && activeIdArray.includes(object.name)
                                     });
+                                    newObjects.forEach(object => {
+                                        if (object.name !== 'clip')
+                                            object.set({
+                                                selectable: true,
+                                                evented: true,
+                                                hasControls: true,
+                                            });
+                                    });
                                     if (newSelectedObjects.length > 1) {
                                         const activeSelection = new fabric.ActiveSelection(newSelectedObjects, {canvas: canvas});
                                         canvas.setActiveObject(activeSelection);
@@ -134,6 +142,14 @@ const useKeyPress = ({
                                     const newObjects = canvas.getObjects()
                                     let newSelectedObjects: fabric.Object[] = newObjects.filter((object) => {
                                         return object.name && activeIdArray.includes(object.name)
+                                    });
+                                    newObjects.forEach(object => {
+                                        if (object.name !== 'clip')
+                                        object.set({
+                                            selectable: true,
+                                            evented: true,
+                                            hasControls: true,
+                                        });
                                     });
                                     if (newSelectedObjects.length > 1) {
                                         const activeSelection = new fabric.ActiveSelection(newSelectedObjects, {canvas: canvas});

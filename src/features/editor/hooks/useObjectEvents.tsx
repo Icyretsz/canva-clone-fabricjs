@@ -28,7 +28,7 @@ const useCanvasEvents = ({
     const saveHistory = useCallback(() => {
         if (!canvas) return;
 
-        const state = JSON.stringify(canvas.toJSON(['selectable', 'hasControls', 'hoverCursor', 'name']));
+        const state = JSON.stringify(canvas.toJSON(['selectable', 'hasControls', 'evented', 'hoverCursor', 'name']));
         setHistoryUndo((prevState) => {
             let historyUndoClone = [...prevState];
             if (historyUndoClone.length === HISTORY_LIMIT) {
@@ -55,11 +55,11 @@ const useCanvasEvents = ({
                     setExpanded(false)
                 }
             })
-            canvas.on('object:modified', () => {
+            canvas.on('object:modified', (event) => {
                 saveHistory()
             });
 
-            canvas.on('text:changed', () => {
+            canvas.on('text:changed', (event) => {
                 saveHistory()
             })
         }
