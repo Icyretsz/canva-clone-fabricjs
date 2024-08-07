@@ -37,7 +37,7 @@ const useCanvasEvents = ({
             return [...historyUndoClone, state];
         });
         setHistoryRedo([]);
-    }, [canvas, historyUndo]);
+    }, [canvas, setHistoryRedo, setHistoryUndo]);
 
     useEffect(() => {
         if (canvas) {
@@ -64,7 +64,7 @@ const useCanvasEvents = ({
                 canvas.off()
             }
         }
-    }, [canvas, activeTool, setActiveTool, setExpanded, setSelectedObjects, historyRedo, historyUndo])
+    }, [canvas, activeTool, setActiveTool, setExpanded, setSelectedObjects, historyRedo, historyUndo, saveHistory])
 };
 
 export default useCanvasEvents;

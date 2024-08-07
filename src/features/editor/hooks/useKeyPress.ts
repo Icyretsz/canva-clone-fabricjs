@@ -126,7 +126,7 @@ const useKeyPress = ({
             window.removeEventListener('keydown', handleUndoRedo);
             window.removeEventListener('keydown', resetHistory);
         };
-    }, [canvas, clipboard, setClipboard, historyUndo, historyRedo]);
+    }, [canvas, clipboard, setClipboard, historyUndo, historyRedo, setHistoryRedo, setHistoryUndo]);
 };
 
 export default useKeyPress;
