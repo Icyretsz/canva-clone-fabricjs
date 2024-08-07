@@ -47,10 +47,9 @@ export const useEditor = () => {
     const [historyUndo, setHistoryUndo] = useState<string[]>([INITIAL_CANVAS_STATE])
     const [historyRedo, setHistoryRedo] = useState<string[]>([])
 
-
-    useAutoResize({canvas, container})
+    const autoZoom = useAutoResize({canvas, container})
     useCanvasEvents({canvas, selectedObjects, setSelectedObjects, historyUndo, historyRedo, setHistoryUndo, setHistoryRedo})
-    useKeyPress({canvas, clipboard, setClipboard, historyUndo, historyRedo, setHistoryUndo, setHistoryRedo})
+    useKeyPress({canvas, clipboard, setClipboard, historyUndo, historyRedo, setHistoryUndo, setHistoryRedo, autoZoom})
 
     useGetActiveFill(selectedObjects, setFillColor)
     useGetStrokeWidth(selectedObjects, setStrokeWidth)

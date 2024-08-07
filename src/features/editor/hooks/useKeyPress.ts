@@ -10,6 +10,7 @@ interface UseKeyPressProps {
     setHistoryUndo: React.Dispatch<React.SetStateAction<string[]>>;
     historyRedo: string[],
     setHistoryRedo: React.Dispatch<React.SetStateAction<string[]>>;
+    autoZoom: () => void
 }
 
 const useKeyPress = ({
@@ -20,6 +21,7 @@ const useKeyPress = ({
                          historyRedo,
                          setHistoryUndo,
                          setHistoryRedo,
+                         autoZoom
                      }: UseKeyPressProps) => {
 
     useEffect(() => {
@@ -85,7 +87,6 @@ const useKeyPress = ({
                             }
                         }
                     } else {
-                        // Handle Ctrl + Z (Undo)
                         if (historyUndo.length > 1) {
                             let historyUndoClone = [...historyUndo];
                             const previousState = historyUndoClone.pop();
@@ -102,6 +103,7 @@ const useKeyPress = ({
                     }
                 }
             }
+            autoZoom()
         };
 
         const resetHistory = (event: KeyboardEvent) => {
@@ -112,6 +114,7 @@ const useKeyPress = ({
                     canvas.renderAll();
                 })
                 console.log('History reset')
+                autoZoom()
             }
         }
 
