@@ -3,6 +3,7 @@ import {fabric} from 'fabric'
 import useAutoResize from "@/features/editor/hooks/useAutoResize";
 import {
     StrokeType,
+    INITIAL_CANVAS_STATE,
     STROKE_COLOR,
     STROKE_WIDTH,
     RECTANGLE_OPTIONS,
@@ -43,7 +44,7 @@ export const useEditor = () => {
     const [fontWeight, setFontWeight] = useState<number | string>('normal')
     const [isUnderlined, setUnderlined] = useState<boolean>(false)
     const [linethrough, setLinethrough] = useState<boolean>(false)
-    const [historyUndo, setHistoryUndo] = useState<string[]>([])
+    const [historyUndo, setHistoryUndo] = useState<string[]>([INITIAL_CANVAS_STATE])
     const [historyRedo, setHistoryRedo] = useState<string[]>([])
 
 
@@ -107,6 +108,7 @@ export const useEditor = () => {
                     console.log('right click')
                 }
             })
+            canvas.fire('object:modified')
             canvas.setActiveObject(object);
             canvas.renderAll();
         };
@@ -150,16 +152,16 @@ export const useEditor = () => {
                 setFillColor([value])
                 canvas.getActiveObjects().forEach((object) => {
                     object.set({fill: value})
-                    canvas.fire('object:modified', { target: object })
                 })
+                canvas.fire('object:modified')
                 canvas.renderAll();
             },
             changeStrokeColor: (value: string) => {
                 setStrokeColor([value])
                 canvas.getActiveObjects().forEach((object) => {
                     object.set({stroke: value})
-                    canvas.fire('object:modified', { target: object })
                 })
+                canvas.fire('object:modified')
                 canvas.renderAll();
             },
             changeStrokeWidth: (value: number) => {
@@ -169,8 +171,8 @@ export const useEditor = () => {
                         strokeWidth: value,
                         strokeUniform: true
                     })
-                    canvas.fire('object:modified', { target: object })
                 })
+                canvas.fire('object:modified')
                 canvas.renderAll();
             },
             changeStrokeType: (value: StrokeType) => {
@@ -192,8 +194,8 @@ export const useEditor = () => {
                         default:
                             break;
                     }
-                    canvas.fire('object:modified', { target: object })
                 })
+                canvas.fire('object:modified')
                 canvas.renderAll();
             },
             changeFontSize: (value: number) => {
@@ -201,9 +203,9 @@ export const useEditor = () => {
                 canvas.getActiveObjects().forEach((object) => {
                     if (object.type === 'textbox') {
                         (object as fabric.Textbox).set('fontSize', value);
-                        canvas.fire('object:modified', { target: object })
                     }
                 })
+                canvas.fire('object:modified')
                 canvas.renderAll();
             },
             incrementFontSize: (type: '+' | '-') => {
@@ -215,10 +217,9 @@ export const useEditor = () => {
                         } else if (size && type === '-') {
                             (object as fabric.Textbox).set('fontSize', size - 1);
                         }
-                        canvas.fire('object:modified', { target: object })
                     }
-
                 })
+                canvas.fire('object:modified')
                 canvas.renderAll();
             },
             changeTextAlignment: (alignment: string) => {
@@ -226,9 +227,9 @@ export const useEditor = () => {
                 canvas.getActiveObjects().forEach((object) => {
                     if (object.type === 'textbox') {
                         (object as fabric.Textbox).set({'textAlign': alignment})
-                        canvas.fire('object:modified', { target: object })
                     }
                 })
+                canvas.fire('object:modified')
                 canvas.renderAll();
             },
             changeFontFamily: (value: string) => {
@@ -236,9 +237,9 @@ export const useEditor = () => {
                 canvas.getActiveObjects().forEach((object) => {
                     if (object.type === 'textbox') {
                         (object as fabric.Textbox).set('fontFamily', value)
-                        canvas.fire('object:modified', { target: object })
                     }
                 })
+                canvas.fire('object:modified')
                 canvas.renderAll();
             },
             changeFontWeight: (value: string | number) => {
@@ -246,9 +247,9 @@ export const useEditor = () => {
                 canvas.getActiveObjects().forEach((object) => {
                     if (object.type === 'textbox') {
                         (object as fabric.Textbox).set('fontWeight', value)
-                        canvas.fire('object:modified', { target: object })
                     }
                 })
+                canvas.fire('object:modified')
                 canvas.renderAll();
             },
             changeFontStyle: (value: fontStyle) => {
@@ -256,9 +257,9 @@ export const useEditor = () => {
                 canvas.getActiveObjects().forEach((object) => {
                     if (object.type === 'textbox') {
                         (object as fabric.Textbox).set('fontStyle', value)
-                        canvas.fire('object:modified', { target: object })
                     }
                 })
+                canvas.fire('object:modified')
                 canvas.renderAll();
             },
             changeUnderline: (value: boolean) => {
@@ -266,9 +267,9 @@ export const useEditor = () => {
                 canvas.getActiveObjects().forEach((object) => {
                     if (object.type === 'textbox') {
                         (object as fabric.Textbox).set('underline', value)
-                        canvas.fire('object:modified', { target: object })
                     }
                 })
+                canvas.fire('object:modified')
                 canvas.renderAll();
             },
             changeLinethrough: (value: boolean) => {
@@ -276,18 +277,18 @@ export const useEditor = () => {
                 canvas.getActiveObjects().forEach((object) => {
                     if (object.type === 'textbox') {
                         (object as fabric.Textbox).set('linethrough', value)
-                        canvas.fire('object:modified', { target: object })
                     }
                 })
+                canvas.fire('object:modified')
                 canvas.renderAll();
             },
             deleteObject: () => {
-
                 canvas.getActiveObjects().forEach((object) => {
                     object.off()
                     canvas.remove(object);
                     canvas.discardActiveObject();
                 })
+                canvas.fire('object:modified')
                 canvas.renderAll();
             },
             addRect: () => {
@@ -318,8 +319,7 @@ export const useEditor = () => {
                         fill: '#000',
                         strokeWidth: STROKE_WIDTH,
                         stroke: STROKE_COLOR
-                    })
-                ;
+                    });
                 addProc(textbox);
             }
         };

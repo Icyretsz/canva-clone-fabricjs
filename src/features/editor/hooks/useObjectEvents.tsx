@@ -1,4 +1,4 @@
-import {useEffect} from 'react';
+import {useCallback, useEffect} from 'react';
 import {fabric} from "fabric";
 import useObjectStore from "@/features/editor/stores/store"
 
@@ -16,23 +16,28 @@ interface UseCanvasEventsProps {
 const useCanvasEvents = ({
                              canvas,
                              setSelectedObjects,
-                             historyUndo, historyRedo, setHistoryUndo, setHistoryRedo
+                             historyUndo,
+                             historyRedo,
+                             setHistoryUndo,
+                             setHistoryRedo
                          }: UseCanvasEventsProps) => {
 
     const {activeTool, setActiveTool, setExpanded} = useObjectStore()
     const HISTORY_LIMIT = 10
 
-    const saveHistory = () => {
-        const state = JSON.stringify(canvas?.toJSON(['selectable', 'hasControls', 'hoverCursor', 'name']));
+    const saveHistory = useCallback(() => {
+        if (!canvas) return;
+
+        const state = JSON.stringify(canvas.toJSON(['selectable', 'hasControls', 'hoverCursor', 'name']));
         setHistoryUndo((prevState) => {
-            let historyUndoClone = [...prevState]
+            let historyUndoClone = [...prevState];
             if (historyUndoClone.length === HISTORY_LIMIT) {
-                historyUndoClone.shift()
+                historyUndoClone.shift();
             }
-            return [...historyUndoClone, state]
-        })
-        setHistoryRedo([])
-    }
+            return [...historyUndoClone, state];
+        });
+        setHistoryRedo([]);
+    }, [canvas, historyUndo]);
 
     useEffect(() => {
         if (canvas) {
@@ -53,15 +58,6 @@ const useCanvasEvents = ({
             canvas.on('object:modified', () => {
                 saveHistory()
             });
-            canvas.on('object:added', () => {
-                saveHistory()
-            });
-            canvas.on('object:removed', () => {
-                saveHistory()
-            });
-            canvas.on('text:changed', () => {
-                saveHistory()
-            })
         }
         return () => {
             if (canvas) {

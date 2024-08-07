@@ -1,5 +1,6 @@
 import {useEffect} from 'react';
 import {fabric} from 'fabric';
+import {INITIAL_CANVAS_STATE} from '@/features/editor/sidebar/types'
 
 interface UseKeyPressProps {
     canvas: fabric.Canvas | null;
@@ -18,7 +19,7 @@ const useKeyPress = ({
                          historyUndo,
                          historyRedo,
                          setHistoryUndo,
-                         setHistoryRedo
+                         setHistoryRedo,
                      }: UseKeyPressProps) => {
 
     useEffect(() => {
@@ -67,34 +68,63 @@ const useKeyPress = ({
             }
         };
 
-        const handleCtrlZ = (event: KeyboardEvent) => {
-            if (canvas && (event.ctrlKey || event.metaKey) && event.key === 'z') {
-                if(historyUndo.length > 1) {
-                    let historyUndoClone = [...historyUndo]
-                    const previousState = historyUndoClone.pop();
-                    setHistoryUndo(historyUndoClone)
-                    if (previousState){
-                        setHistoryRedo((prevState) => [...prevState, previousState]);
-                    }
-                    const lastState = historyUndoClone[historyUndoClone.length - 1];
-                    canvas.loadFromJSON(lastState, () => {
-                        canvas.renderAll()
-                    });
-                } else {
+        const handleUndoRedo = (event: KeyboardEvent) => {
+            if (canvas && (event.ctrlKey || event.metaKey)) {
+                if (event.key === 'z') {
+                    if (event.shiftKey) {
+                        if (historyRedo.length > 0) {
+                            let historyRedoClone = [...historyRedo];
+                            const nextState = historyRedoClone.pop();
+                            setHistoryRedo(historyRedoClone);
 
+                            if (nextState) {
+                                setHistoryUndo((prevState) => [...prevState, nextState]);
+                                canvas.loadFromJSON(nextState, () => {
+                                    canvas.renderAll();
+                                });
+                            }
+                        }
+                    } else {
+                        // Handle Ctrl + Z (Undo)
+                        if (historyUndo.length > 1) {
+                            let historyUndoClone = [...historyUndo];
+                            const previousState = historyUndoClone.pop();
+                            setHistoryUndo(historyUndoClone);
+
+                            if (previousState) {
+                                setHistoryRedo((prevState) => [...prevState, previousState]);
+                                const lastState = historyUndoClone[historyUndoClone.length - 1];
+                                canvas.loadFromJSON(lastState, () => {
+                                    canvas.renderAll();
+                                });
+                            }
+                        }
+                    }
                 }
             }
         };
 
+        const resetHistory = (event: KeyboardEvent) => {
+            if (canvas && (event.ctrlKey || event.metaKey) && event.key === 'x') {
+                setHistoryUndo([INITIAL_CANVAS_STATE])
+                setHistoryRedo([])
+                canvas.loadFromJSON(INITIAL_CANVAS_STATE, () => {
+                    canvas.renderAll();
+                })
+                console.log('History reset')
+            }
+        }
 
         window.addEventListener('keydown', handleCtrlC);
         window.addEventListener('keydown', handleCtrlV);
-        window.addEventListener('keydown', handleCtrlZ);
+        window.addEventListener('keydown', handleUndoRedo);
+        window.addEventListener('keydown', resetHistory)
 
         return () => {
             window.removeEventListener('keydown', handleCtrlC);
             window.removeEventListener('keydown', handleCtrlV);
-            window.removeEventListener('keydown', handleCtrlZ);
+            window.removeEventListener('keydown', handleUndoRedo);
+            window.removeEventListener('keydown', resetHistory);
         };
     }, [canvas, clipboard, setClipboard, historyUndo, historyRedo]);
 };

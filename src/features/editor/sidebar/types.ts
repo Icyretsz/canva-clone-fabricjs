@@ -55,6 +55,8 @@ export const TEXT_CONTENT = {
     fontWeight: 300,
 }
 
+export const INITIAL_CANVAS_STATE = '{"version":"5.3.0","objects":[{"type":"rect","version":"5.3.0","originX":"left","originY":"top","left":49.5,"top":118.5,"width":1200,"height":900,"fill":"white","stroke":null,"strokeWidth":1,"strokeDashArray":null,"strokeLineCap":"butt","strokeDashOffset":0,"strokeLineJoin":"miter","strokeUniform":false,"strokeMiterLimit":4,"scaleX":1,"scaleY":1,"angle":0,"flipX":false,"flipY":false,"opacity":1,"shadow":{"color":"rgba(0, 0, 0, 0.8)","blur":5,"offsetX":0,"offsetY":0,"affectStroke":false,"nonScaling":false},"visible":true,"backgroundColor":"","fillRule":"nonzero","paintFirst":"fill","globalCompositeOperation":"source-over","skewX":0,"skewY":0,"rx":0,"ry":0,"selectable":false,"hasControls":false,"hoverCursor":"default","name":"clip"}],"clipPath":{"type":"rect","version":"5.3.0","originX":"left","originY":"top","left":49.5,"top":118.5,"width":1200,"height":900,"fill":"white","stroke":null,"strokeWidth":1,"strokeDashArray":null,"strokeLineCap":"butt","strokeDashOffset":0,"strokeLineJoin":"miter","strokeUniform":false,"strokeMiterLimit":4,"scaleX":1,"scaleY":1,"angle":0,"flipX":false,"flipY":false,"opacity":1,"shadow":{"color":"rgba(0, 0, 0, 0.8)","blur":5,"offsetX":0,"offsetY":0,"affectStroke":false,"nonScaling":false},"visible":true,"backgroundColor":"","fillRule":"nonzero","paintFirst":"fill","globalCompositeOperation":"source-over","skewX":0,"skewY":0,"rx":0,"ry":0,"selectable":true,"hasControls":true,"hoverCursor":null},"hoverCursor":"move"}'
+
 export const OCTAGON_POINTS = [
     new fabric.Point(20, 52.73),
     new fabric.Point(37.29, 37.29),
