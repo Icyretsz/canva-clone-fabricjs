@@ -238,7 +238,6 @@ export const useEditor = () => {
                         (object as fabric.Textbox).set('fontFamily', value)
                     }
                 })
-                canvas.fire('object:modified')
                 canvas.renderAll();
             },
             changeFontWeight: (value: string | number) => {

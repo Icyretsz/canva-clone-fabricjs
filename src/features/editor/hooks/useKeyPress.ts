@@ -107,7 +107,7 @@ const useKeyPress = ({
         };
 
         const resetHistory = (event: KeyboardEvent) => {
-            if (canvas && (event.ctrlKey || event.metaKey) && event.key === 'x') {
+            if (canvas && (event.ctrlKey || event.metaKey) && event.key === 'r') {
                 setHistoryUndo([INITIAL_CANVAS_STATE])
                 setHistoryRedo([])
                 canvas.loadFromJSON(INITIAL_CANVAS_STATE, () => {
