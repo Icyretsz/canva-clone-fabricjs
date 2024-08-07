@@ -58,6 +58,10 @@ const useCanvasEvents = ({
             canvas.on('object:modified', () => {
                 saveHistory()
             });
+
+            canvas.on('text:changed', () => {
+                saveHistory()
+            })
         }
         return () => {
             if (canvas) {
