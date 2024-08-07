@@ -17,7 +17,7 @@ interface ToolbarProps {
 }
 
 const Toolbar = ({editor}: ToolbarProps) => {
-    const isExpanded = useObjectStore((state) => state.isExpanded);
+    const {isExpanded} = useObjectStore();
 
     const style = isExpanded ? {
                 width: 'calc(100% - 72px - 350px)', left: 'calc(72px + 350px)'

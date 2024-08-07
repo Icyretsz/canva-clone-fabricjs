@@ -1,6 +1,7 @@
 import {useEffect} from 'react';
 import {fabric} from 'fabric';
 import {INITIAL_CANVAS_STATE} from '@/features/editor/sidebar/types'
+import useObjectStore from '@/features/editor/stores/store'
 
 interface UseKeyPressProps {
     canvas: fabric.Canvas | null;
@@ -23,6 +24,8 @@ const useKeyPress = ({
                          setHistoryRedo,
                          autoZoom
                      }: UseKeyPressProps) => {
+
+    const {isExpanded, setExpanded, activeTool, setActiveTool} = useObjectStore()
 
     useEffect(() => {
         const handleCtrlC = (event: KeyboardEvent) => {
@@ -88,6 +91,8 @@ const useKeyPress = ({
                                         activeIdArray.push(name)
                                     }
                                 })
+                                const currentTool = activeTool
+                                const currentExpandedStatus = isExpanded
                                 setHistoryUndo((prevState) => [...prevState, nextState]);
                                 canvas.loadFromJSON(nextState, () => {
                                     const newObjects = canvas.getObjects()
@@ -100,7 +105,8 @@ const useKeyPress = ({
                                     } else if (newSelectedObjects.length === 1) {
                                         canvas.setActiveObject(newSelectedObjects[0]);
                                     }
-
+                                    setActiveTool(currentTool)
+                                    setExpanded(currentExpandedStatus)
                                     canvas.renderAll();
                                 });
                             }
@@ -120,6 +126,8 @@ const useKeyPress = ({
                                         activeIdArray.push(name)
                                     }
                                 })
+                                const currentTool = activeTool
+                                const currentExpandedStatus = isExpanded
                                 setHistoryRedo((prevState) => [...prevState, previousState]);
                                 const lastState = historyUndoClone[historyUndoClone.length - 1];
                                 canvas.loadFromJSON(lastState, () => {
@@ -133,6 +141,8 @@ const useKeyPress = ({
                                     } else if (newSelectedObjects.length === 1) {
                                         canvas.setActiveObject(newSelectedObjects[0]);
                                     }
+                                    setActiveTool(currentTool)
+                                    setExpanded(currentExpandedStatus)
                                     canvas.renderAll();
                                 });
                             }

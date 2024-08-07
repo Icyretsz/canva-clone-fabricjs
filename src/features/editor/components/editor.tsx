@@ -12,7 +12,7 @@ const Editor = () => {
     const canvasRef = useRef(null);
     const containerRef = useRef<HTMLDivElement>(null)
     const {init, editor} = useEditor()
-    const isExpanded = useObjectStore((state) => state.isExpanded);
+    const {isExpanded} = useObjectStore()
 
 
     useEffect(() => {
