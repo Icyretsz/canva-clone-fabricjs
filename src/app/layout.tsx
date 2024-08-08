@@ -3,7 +3,6 @@ import { Inter, Nunito, Roboto } from "next/font/google";
 import "./globals.css";
 import {NextUIProvider} from "@nextui-org/react";
 
-const inter = Inter({ subsets: ["latin"] });
 const nunito = Nunito({ subsets: ["latin", "vietnamese"] });
 
 export const metadata: Metadata = {
