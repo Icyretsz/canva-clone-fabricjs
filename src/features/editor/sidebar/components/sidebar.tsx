@@ -11,6 +11,7 @@ import ColorMenu from "@/features/editor/sidebar/components/color-menu"
 import {Editor} from "@/features/editor/sidebar/types";
 import TextMenu from "@/features/editor/sidebar/components/textbox-menu";
 import FontMenu from "@/features/editor/sidebar/components/font-menu";
+import UploadMenu from "@/features/editor/sidebar/components/upload-menu";
 
 
 interface SidebarProps {
@@ -58,6 +59,7 @@ const Sidebar = ({editor} : SidebarProps) => {
                 {(activeTool === 'StrokeColor') &&  <ColorMenu editor={editor} type='Stroke Color'/>}
                 {(activeTool === 'Text') &&  <TextMenu editor={editor}/>}
                 {(activeTool === 'Font') &&  <FontMenu editor={editor}/>}
+                {(activeTool === 'Upload' && <UploadMenu editor={editor}/>)}
             </div>}
         </div>
     );
