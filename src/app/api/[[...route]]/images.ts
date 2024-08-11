@@ -42,4 +42,5 @@ const imagesApp = new Hono()
         return c.json({expense : deletedImages})
     })
 
+export type AppType = typeof imagesApp
 export default imagesApp
