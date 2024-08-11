@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Nunito, Roboto } from "next/font/google";
+import { Nunito } from "next/font/google";
 import "./globals.css";
 import {NextUIProvider} from "@nextui-org/react";
 
