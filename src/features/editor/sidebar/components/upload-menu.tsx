@@ -6,6 +6,7 @@ import {BiSolidPolygon} from "react-icons/bi";
 import {Editor} from "@/features/editor/sidebar/types";
 
 
+
 interface UploadMenuProps {
     editor : Editor | undefined
 }
