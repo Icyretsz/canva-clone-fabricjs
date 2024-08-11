@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Nunito } from "next/font/google";
 import "./globals.css";
 import {NextUIProvider} from "@nextui-org/react";
+import {ClerkProvider} from '@clerk/nextjs'
 
 const nunito = Nunito({ subsets: ["latin", "vietnamese"] });
 
@@ -19,7 +20,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={nunito.className}>
       <NextUIProvider>
+          <ClerkProvider>
       {children}
+          </ClerkProvider>
       </NextUIProvider>
       </body>
     </html>
