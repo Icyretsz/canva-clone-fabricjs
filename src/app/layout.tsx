@@ -4,7 +4,9 @@ import "./globals.css";
 import {NextUIProvider} from "@nextui-org/react";
 import {ClerkProvider} from '@clerk/nextjs'
 
+
 const nunito = Nunito({ subsets: ["latin", "vietnamese"] });
+const queryClient = new QueryClient()
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -19,11 +21,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={nunito.className}>
+
       <NextUIProvider>
           <ClerkProvider >
       {children}
           </ClerkProvider>
       </NextUIProvider>
+
       </body>
     </html>
   );

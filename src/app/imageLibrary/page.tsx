@@ -28,6 +28,10 @@ const FileUpload: React.FC = () => {
 
     const handleFileUpload = async (event: FormEvent) => {
         event.preventDefault();
+        if (uploading) {
+            console.error('File upload is in process, please wait')
+            return;
+        }
         if (!selectedFile) {
             console.error('No file selected');
             return;
@@ -61,7 +65,7 @@ const FileUpload: React.FC = () => {
                     });
                     const GETResponseURL = await GETURLResponse.json();
                     if (GETURLResponse.ok && GETResponseURL.url) {
-                        setFileURL(GETResponseURL.url); // Assuming setImageUrl updates your component state to display the image
+                        setFileURL(GETResponseURL.url);
                     } else {
                         console.error('Failed to retrieve signed URL:', GETResponseURL.error || GETURLResponse.statusText);
                     }
