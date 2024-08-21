@@ -1,6 +1,6 @@
 'use client'
 import React, {useState, ChangeEvent, FormEvent} from 'react';
-import {AppType} from '../api/[[...route]]/route'
+import  Image  from 'next/image'
 // @ts-ignore
 import {v4} from 'uuid';
 
@@ -96,7 +96,7 @@ const FileUpload: React.FC = () => {
             </form>
             {selectedFile && <p>Selected file: {selectedFile.name}</p>}
             {uploading && <div>Uploading...</div> }
-            {fileURL !== "" && <img src={fileURL} alt='uploaded image'/>}
+            {fileURL !== "" && <Image src={fileURL} width={400} height={400} alt='uploaded image'/>}
         </div>
     );
 };
