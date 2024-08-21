@@ -6,7 +6,6 @@ import {ClerkProvider} from '@clerk/nextjs'
 
 
 const nunito = Nunito({ subsets: ["latin", "vietnamese"] });
-const queryClient = new QueryClient()
 
 export const metadata: Metadata = {
   title: "Create Next App",

@@ -1,7 +1,7 @@
 import {InsertMedia} from "@/app/db/schema";
 
 async function AddMedia(newMedia : InsertMedia) {
-    const response = await fetch('/api/add-item', {
+    const response = await fetch('/api/add-item/add-img-url', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -10,7 +10,7 @@ async function AddMedia(newMedia : InsertMedia) {
     });
 
     if (!response.ok) {
-        throw new Error('Failed to add item');
+        throw new Error('Failed to add media');
     }
     return response.json();
 }
