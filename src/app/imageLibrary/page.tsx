@@ -1,9 +1,13 @@
 'use client'
 import React, {useState, ChangeEvent, FormEvent} from 'react';
 import {AppType} from '../api/[[...route]]/route'
+// @ts-ignore
+import {v4} from 'uuid';
+
 const FileUpload: React.FC = () => {
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [uploading, setUploading] = useState(false)
+    const [fileURL, setFileURL] = useState('')
 
     const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
         if (event.target.files && event.target.files.length > 0) {
@@ -19,20 +23,20 @@ const FileUpload: React.FC = () => {
         }
 
         setUploading(true);
+        const fileName = `${v4()}-${selectedFile.name}`
 
         try {
-            const response = await fetch('/api/upload', {
+            const PUTURLResponse = await fetch('/api/upload/put', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': selectedFile.type,
                 },
-                body: JSON.stringify({ fileName: selectedFile.name }),
+                body: JSON.stringify({ fileName: fileName }),
             });
 
-            const data = await response.json();
-            console.log(data)
-            if (response.ok && data.url) {
-                const uploadResponse = await fetch(data.url, {
+            const PUTSignedURL = await PUTURLResponse.json();
+            if (PUTURLResponse.ok && PUTSignedURL.url) {
+                const uploadResponse = await fetch(PUTSignedURL.url, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': selectedFile.type,
@@ -41,12 +45,25 @@ const FileUpload: React.FC = () => {
                 });
 
                 if (uploadResponse.ok) {
-                    console.log('File uploaded successfully');
+                    const GETURLResponse = await fetch(`/api/upload/get?fileName=${fileName}`, {
+                        method: 'GET',
+                    });
+                    const GETResponseURL = await GETURLResponse.json();
+                    if (GETURLResponse.ok && GETResponseURL.url) {
+                        setFileURL(GETResponseURL.url); // Assuming setImageUrl updates your component state to display the image
+                    } else {
+                        console.error('Failed to retrieve signed URL:', GETResponseURL.error || GETURLResponse.statusText);
+                    }
+                    // console.log('File uploaded successfully');
+                    // const s3Region = process.env.NEXT_PUBLIC_S3_BUCKET_REGION as string;
+                    // const s3BucketName = process.env.NEXT_PUBLIC_S3_BUCKET as string;
+                    // const url = `https://${s3BucketName}.s3.${s3Region}.amazonaws.com/${fileName}`
+                    // setFileURL(url)
                 } else {
                     console.error('File upload failed');
                 }
             } else {
-                console.error('Failed to get upload URL:', data.error);
+                console.error('Failed to get upload URL:', PUTSignedURL.error);
             }
         } catch (error) {
             console.error('An error occurred during the upload:', error);
@@ -68,6 +85,7 @@ const FileUpload: React.FC = () => {
             </form>
             {selectedFile && <p>Selected file: {selectedFile.name}</p>}
             {uploading && <div>Uploading...</div> }
+            {fileURL !== "" && <img src={fileURL} alt='uploaded image'/>}
         </div>
     );
 };

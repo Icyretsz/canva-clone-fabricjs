@@ -2,12 +2,11 @@
 
 import {
     PutObjectCommand,
+    GetObjectCommand,
     S3Client,
 } from '@aws-sdk/client-s3';
-// @ts-ignore
-import { v4 } from 'uuid';
-import { auth } from '@clerk/nextjs/server'
-import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+import {auth} from '@clerk/nextjs/server'
+import {getSignedUrl} from '@aws-sdk/s3-request-presigner';
 
 const s3Client = new S3Client({
     region: process.env.S3_BUCKET_REGION as string,
@@ -23,17 +22,26 @@ type SignedURLResponse = Promise<
     | { failure: string | unknown; success?: undefined }
 >;
 
-export const getSignedURL = async (fileName : string): SignedURLResponse => {
+export const getSignedURL = async (fileName: string, operation: 'PUT' | 'GET'): SignedURLResponse => {
     if (!auth().sessionId) {
-        return { failure: "Unauthorized" };
+        return {failure: "Unauthorized"};
     }
+    let url : string = ''
+    if (operation === 'PUT') {
+        const putObjectCommand = new PutObjectCommand({
+            Bucket: process.env.S3_BUCKET!,
+            Key: fileName,
+        });
+        url = await getSignedUrl(s3Client, putObjectCommand, {expiresIn: 60});
 
-    const putObjectCommand = new PutObjectCommand({
-        Bucket: process.env.S3_BUCKET!,
-        Key: `${v4()}-${Date.now()}`,
-    });
-    const url = await getSignedUrl(s3Client, putObjectCommand, { expiresIn: 60 });
-        return { success: { url } };
+    } else if (operation === 'GET') {
+        const getObjectCommand = new GetObjectCommand({
+            Bucket: process.env.S3_BUCKET!,
+            Key: fileName,
+        });
+        url = await getSignedUrl(s3Client, getObjectCommand, {expiresIn: 60});
+    }
+    return {success: {url}};
 };
 
 
