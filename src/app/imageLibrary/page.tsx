@@ -4,6 +4,8 @@ import {AppType} from '../api/[[...route]]/route'
 // @ts-ignore
 import {v4} from 'uuid';
 
+const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+
 const FileUpload: React.FC = () => {
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [uploading, setUploading] = useState(false)
@@ -11,6 +13,15 @@ const FileUpload: React.FC = () => {
 
     const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
         if (event.target.files && event.target.files.length > 0) {
+            const fileList = event.target.files;
+            for (let i = 0; i < fileList.length; i++) {
+                const file = fileList[i];
+                if (!allowedTypes.includes(file.type)) {
+                    alert('Invalid file type. Please upload a JPEG, PNG, or GIF image.');
+                    event.target.value = ''
+                    return;
+                }
+            }
             setSelectedFile(event.target.files[0]);
         }
     };
