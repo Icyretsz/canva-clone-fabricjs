@@ -13,9 +13,9 @@ const mediaS3App = new Hono()
                 return c.json({error: result.failure}, 401)
             }
             return c.json({url: result.success?.url})
-        } catch (error) {
-            console.log(error)
-            return c.json({error: 'An unexpected error occurred.'}, 500)
+        } catch (error : any) {
+            console.error('Error in /put route:', error);
+            return c.json({ error: 'An unexpected error occurred.', details: error.message }, 500);
         }
 
     })
