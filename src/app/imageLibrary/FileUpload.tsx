@@ -11,10 +11,12 @@ const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
 
 const FileUpload: React.FC = () => {
     const queryClient = useQueryClient()
-    const [selectedFiles, setSelectedFiles] = useState<File[] | null>([]);
+    const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
     const [uploading, setUploading] = useState(false)
     const [fileURLs, setFileURLs] = useState<string[]>([])
     const {user} = useUser();
+
+
 
     const mutation = useMutation({
         mutationFn: addMedia,
@@ -23,6 +25,16 @@ const FileUpload: React.FC = () => {
         },
     })
 
+    const fetchUrlFromDb = async () => {
+        if (user) {
+            const userId = user.id
+            const GETURLDbResponse = await fetch(`/api/media-interact/get-img-url?userId=${userId}`, {
+                method: 'GET',
+            });
+            const GETURLDbJson = await GETURLDbResponse.json();
+            console.log(GETURLDbJson)
+        }
+    }
 
     const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
         if (event.target.files && event.target.files.length > 0) {
@@ -46,7 +58,7 @@ const FileUpload: React.FC = () => {
             console.error('File upload is in process, please wait')
             return;
         }
-        if (!selectedFiles) {
+        if (selectedFiles.length === 0) {
             console.error('No file selected');
             return;
         }
@@ -91,7 +103,7 @@ const FileUpload: React.FC = () => {
                                 GETResponseURL.url
                             ]);
                         } else {
-                            console.error('Failed to retrieve signed URL:', GETResponseURL.error || GETURLResponse.statusText);
+                            console.error('Failed to retrieve GET signed URL:', GETResponseURL.error || GETURLResponse.statusText);
                         }
                         // console.log('File uploaded successfully');
                         // const s3Region = process.env.NEXT_PUBLIC_S3_BUCKET_REGION as string;
@@ -109,6 +121,7 @@ const FileUpload: React.FC = () => {
             }
         }
         setUploading(false)
+        await fetchUrlFromDb()
     };
 
     return (

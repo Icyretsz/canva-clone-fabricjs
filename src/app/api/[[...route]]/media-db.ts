@@ -30,13 +30,19 @@ const mediaDbApp = new Hono()
     }
 })
     .get('/get-img-url', async (c) => {
-        const {user} = useUser()
         try {
-            const result = await db.select().from(mediaTable).where(eq(mediaTable.user_id, user!.id))
+            const userId = c.req.query('userId');
+
+            if (!userId) {
+                return c.json({ success: false, message: 'Unauthorized' }, 401);
+            }
+            const result = await db.select().from(mediaTable).where(eq(mediaTable.user_id, userId));
+
             return c.json({ success: true, data: result }, 200);
-        } catch (error : any) {
+
+        } catch (error: any) {
             return c.json({ success: false, message: error.message }, 500);
         }
-    })
+    });
 
 export default mediaDbApp;
