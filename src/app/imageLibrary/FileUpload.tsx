@@ -1,22 +1,43 @@
 'use client'
-import React, {useState, ChangeEvent, FormEvent} from 'react';
+import React, {useState, ChangeEvent, FormEvent, useEffect} from 'react';
 import Image from 'next/image'
 // @ts-ignore
 import {v4} from 'uuid';
 import {useUser} from '@clerk/nextjs';
-import {useMutation, useQueryClient} from "@tanstack/react-query";
+import {useMutation, useQueryClient, useQuery} from "@tanstack/react-query";
 import addMedia from "@/app/db/addMedia";
-
+import FetchMediaUrl from "@/app/db/fetch-media-url";
+import {MediaType} from "@/app/db/type"
 const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+
+interface DataType {
+    data : MediaType[]
+}
 
 const FileUpload: React.FC = () => {
     const queryClient = useQueryClient()
     const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
     const [uploading, setUploading] = useState(false)
-    const [fileURLs, setFileURLs] = useState<string[]>([])
+    const [fileDbURLs, setFileDbURLs] = useState<string[]>([])
+    const [s3Url, setS3Url] = useState<string[]>([]);
     const {user} = useUser();
 
+    const { isPending, isError, data, error, refetch } = useQuery<DataType>({
+        queryKey: ['media', user?.id],
+        queryFn: () => FetchMediaUrl(user!.id),
+        enabled: !!user,
+    })
 
+    useEffect(() => {
+        if (data && JSON.stringify(data) !== JSON.stringify(fileDbURLs)) {
+            console.log(data)
+            const dbUrls = data.data.map((media: MediaType) => media.url)
+            setFileDbURLs(dbUrls)
+            dbUrls.map((url : string) => {
+                getImgFromUrl(url)
+            })
+        }
+    }, [data])
 
     const mutation = useMutation({
         mutationFn: addMedia,
@@ -25,14 +46,18 @@ const FileUpload: React.FC = () => {
         },
     })
 
-    const fetchUrlFromDb = async () => {
-        if (user) {
-            const userId = user.id
-            const GETURLDbResponse = await fetch(`/api/media-interact/get-img-url?userId=${userId}`, {
-                method: 'GET',
-            });
-            const GETURLDbJson = await GETURLDbResponse.json();
-            console.log(GETURLDbJson)
+    const getImgFromUrl = async (fileName : string) => {
+        const GETURLResponse = await fetch(`/api/upload/get?fileName=${fileName}`, {
+            method: 'GET',
+        });
+        const GETResponseURL = await GETURLResponse.json();
+        if (GETURLResponse.ok && GETResponseURL.url) {
+            setS3Url((prevURLs) => [
+                ...prevURLs,
+                GETResponseURL.url
+            ]);
+        } else {
+            console.error('Failed to retrieve GET signed URL:', GETResponseURL.error || GETURLResponse.statusText);
         }
     }
 
@@ -93,18 +118,18 @@ const FileUpload: React.FC = () => {
                             url: fileName,
                         })
 
-                        const GETURLResponse = await fetch(`/api/upload/get?fileName=${fileName}`, {
-                            method: 'GET',
-                        });
-                        const GETResponseURL = await GETURLResponse.json();
-                        if (GETURLResponse.ok && GETResponseURL.url) {
-                            setFileURLs((prevURLs) => [
-                                ...prevURLs,
-                                GETResponseURL.url
-                            ]);
-                        } else {
-                            console.error('Failed to retrieve GET signed URL:', GETResponseURL.error || GETURLResponse.statusText);
-                        }
+                        // const GETURLResponse = await fetch(`/api/upload/get?fileName=${fileName}`, {
+                        //     method: 'GET',
+                        // });
+                        // const GETResponseURL = await GETURLResponse.json();
+                        // if (GETURLResponse.ok && GETResponseURL.url) {
+                        //     setFileURLs((prevURLs) => [
+                        //         ...prevURLs,
+                        //         GETResponseURL.url
+                        //     ]);
+                        // } else {
+                        //     console.error('Failed to retrieve GET signed URL:', GETResponseURL.error || GETURLResponse.statusText);
+                        // }
                         // console.log('File uploaded successfully');
                         // const s3Region = process.env.NEXT_PUBLIC_S3_BUCKET_REGION as string;
                         // const s3BucketName = process.env.NEXT_PUBLIC_S3_BUCKET as string;
@@ -121,7 +146,7 @@ const FileUpload: React.FC = () => {
             }
         }
         setUploading(false)
-        await fetchUrlFromDb()
+        refetch()
     };
 
     return (
@@ -136,9 +161,9 @@ const FileUpload: React.FC = () => {
                 </div>
             </form>
             {uploading && <div>Uploading...</div>}
-            {fileURLs.length !== 0 &&
-                fileURLs.map((fileURL, i) => {
-                    return <Image key={i} src={fileURL} width={400} height={400} alt='uploaded image'/>
+            {s3Url.length !== 0 &&
+                s3Url.map((s3Url, i) => {
+                    return <Image key={i} src={s3Url} width={400} height={400} alt='uploaded image'/>
                 })
             }
         </div>

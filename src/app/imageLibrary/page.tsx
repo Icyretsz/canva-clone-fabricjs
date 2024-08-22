@@ -17,11 +17,11 @@ const Page = () => {
     }, [])
 
     return (
-        <div className='flex justify-between p-[50px]'>
-            <QueryClientProvider client={queryClient}>
-            <FileUpload/>
-            </QueryClientProvider>
+        <div className='flex flex-col justify-between p-[50px]'>
             { rendered && <UserButton/>}
+            <div><QueryClientProvider client={queryClient}>
+            <FileUpload/>
+            </QueryClientProvider></div>
         </div>
     );
 };
