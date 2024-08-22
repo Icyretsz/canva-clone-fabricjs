@@ -20,6 +20,7 @@ const FileUpload: React.FC = () => {
     const [uploading, setUploading] = useState(false)
     const [fileDbURLs, setFileDbURLs] = useState<string[]>([])
     const [s3Url, setS3Url] = useState<string[]>([]);
+    const [loadingStates, setLoadingStates] = useState<boolean[]>([]);
     const {user} = useUser();
 
     const { isPending, isError, data, error, refetch } = useQuery<DataType>({
@@ -56,6 +57,7 @@ const FileUpload: React.FC = () => {
                 ...prevURLs,
                 GETResponseURL.url
             ]);
+            setLoadingStates((prevStates) => [...prevStates, true]);
         } else {
             console.error('Failed to retrieve GET signed URL:', GETResponseURL.error || GETURLResponse.statusText);
         }
@@ -117,24 +119,6 @@ const FileUpload: React.FC = () => {
                             user_id: user!.id,
                             url: fileName,
                         })
-
-                        // const GETURLResponse = await fetch(`/api/upload/get?fileName=${fileName}`, {
-                        //     method: 'GET',
-                        // });
-                        // const GETResponseURL = await GETURLResponse.json();
-                        // if (GETURLResponse.ok && GETResponseURL.url) {
-                        //     setFileURLs((prevURLs) => [
-                        //         ...prevURLs,
-                        //         GETResponseURL.url
-                        //     ]);
-                        // } else {
-                        //     console.error('Failed to retrieve GET signed URL:', GETResponseURL.error || GETURLResponse.statusText);
-                        // }
-                        // console.log('File uploaded successfully');
-                        // const s3Region = process.env.NEXT_PUBLIC_S3_BUCKET_REGION as string;
-                        // const s3BucketName = process.env.NEXT_PUBLIC_S3_BUCKET as string;
-                        // const url = `https://${s3BucketName}.s3.${s3Region}.amazonaws.com/${fileName}`
-                        // setFileURL(url)
                     } else {
                         console.error('File upload failed');
                     }
@@ -149,6 +133,14 @@ const FileUpload: React.FC = () => {
         refetch()
     };
 
+    const handleImageLoad = (index: number) => {
+        setLoadingStates((prevStates) => {
+            const newStates = [...prevStates];
+            newStates[index] = false;
+            return newStates;
+        });
+    };
+
     return (
         <div>
             <h1>Upload a File</h1>
@@ -161,11 +153,35 @@ const FileUpload: React.FC = () => {
                 </div>
             </form>
             {uploading && <div>Uploading...</div>}
-            {s3Url.length !== 0 &&
-                s3Url.map((s3Url, i) => {
-                    return <Image key={i} src={s3Url} width={400} height={400} alt='uploaded image'/>
-                })
-            }
+            <div>
+                {s3Url.map((url, i) => (
+                    <div key={i} style={{position: 'relative', width: '400px', height: '400px'}}>
+                        {loadingStates[i] && (
+                            <div style={{
+                                position: 'absolute',
+                                top: 0,
+                                left: 0,
+                                width: '100%',
+                                height: '100%',
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                backgroundColor: '#f0f0f0',
+                                zIndex: 1,
+                            }}>
+                                <span>Loading...</span> {/* Placeholder or spinner */}
+                            </div>
+                        )}
+                        <Image
+                            src={url}
+                            width={400}
+                            height={400}
+                            alt="uploaded image"
+                            onLoadingComplete={() => handleImageLoad(i)}
+                        />
+                    </div>
+                ))}
+            </div>
         </div>
     );
 };
