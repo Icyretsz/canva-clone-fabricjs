@@ -1,7 +1,7 @@
 import {InsertMedia} from "@/app/db/schema";
 
 async function AddMedia(newMedia : InsertMedia) {
-    const response = await fetch('/api/add-item/add-img-url', {
+    const response = await fetch('/api/media-interact/add-img-url', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
