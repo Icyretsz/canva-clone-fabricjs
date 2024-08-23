@@ -26,7 +26,7 @@ const DisplayImage: React.FC<DisplayImageProps> = ({s3Url, loadingStates, handle
                     <Image
                         src={url}
                         layout="responsive"
-                        objectFit="contain" // Maintain the original aspect ratio of the image
+                        objectFit="contain"
                         width={100}
                         height={100}
                         alt="uploaded image"
