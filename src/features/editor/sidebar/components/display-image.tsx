@@ -15,7 +15,7 @@ const DisplayImage: React.FC<DisplayImageProps> = ({s3Url, loadingStates, handle
         editor?.addMedia(url)
     }
     return (
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 gap-4">
             {s3Url.map((url, i) => (
                 <div key={i} className="relative">
                     {loadingStates[i] && (
