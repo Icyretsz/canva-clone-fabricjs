@@ -158,7 +158,7 @@ const FileUpload = ({ editor } : UploadProps) => {
                 </div>
             </form>
             {uploading && <div>Uploading...</div>}
-            <div className='flex flex-wrap gap-[5px]'>
+            <div>
                 <DisplayImage s3Url={s3Url} loadingStates={loadingStates} handleImageLoad={handleImageLoad} editor={editor}/>
             </div>
         </div>
