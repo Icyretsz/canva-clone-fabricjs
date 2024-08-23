@@ -10,7 +10,7 @@ const Footer = () => {
     ;
 
     return (
-        <div className='h-[40px] top-[calc(100%-40px)] absolute' style={style}>
+        <div className='h-[40px] top-[calc(100%-40px)] absolute z-50' style={style}>
             Footer
         </div>
     );
