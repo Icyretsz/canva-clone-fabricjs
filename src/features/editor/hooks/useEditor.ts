@@ -324,10 +324,20 @@ export const useEditor = () => {
             },
             addMedia: (url : string) => {
                 fabric.Image.fromURL(url, function(oImg) {
+                    const currentId : string = String(canvas.getObjects().length - 1)
+                    oImg.set('name', currentId)
                     oImg.scale(0.1)
                     canvas.add(oImg);
-                    addProc(oImg);
+                    canvas.setActiveObject(oImg);
+                    canvas.centerObject(oImg);
+                    canvas.renderAll();
+                    oImg.on('mousedown', function(event) {
+                        if(event.button === 3) {
+                            console.log('right click')
+                        }
+                    })
                 });
+                canvas.fire('object:modified')
             }
         };
     };
