@@ -113,8 +113,9 @@ export interface Editor {
     addRect: () => fabric.Object,
     addCircle: () => void,
     addTriangle: () => void,
-    addPolygon: () => void
-    addTextbox: (type: 'heading' | 'subheading' | 'content') => void
+    addPolygon: () => void,
+    addTextbox: (type: 'heading' | 'subheading' | 'content') => void,
+    addMedia: (url : string) => void,
 }
 
 export interface BuildEditor {

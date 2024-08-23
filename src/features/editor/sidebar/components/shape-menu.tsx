@@ -16,12 +16,12 @@ const ShapeMenu = ({ editor } : ShapeMenuProps) => {
     return (
         <div className='flex flex-col h-full w-full'>
             <MenuHeaderDark type='Shapes'/>
-            <div className='flex flex-col h-[100px] w-full overflow-x-auto'>
-                <div className='w-[500px] h-full flex gap-2 py-2 justify-center'>
+            <div className='flex flex-col h-full w-full '>
+                <div className='w-full h-full flex gap-2 py-2 justify-center flex-wrap'>
                     <MdRectangle className='text-gray-200 size-24 cursor-pointer' onClick={() => editor?.addRect()}/>
                     <MdCircle className='text-gray-200 size-24 cursor-pointer' onClick={() => editor?.addCircle()}/>
                     <IoTriangleSharp className='text-gray-200 size-24 cursor-pointer' onClick={() => editor?.addTriangle()}/>
-                    <BiSolidPolygon className='text-gray-200 size-24 cursor-pointer' onClick={() => editor?.addPolygon()}/>
+                    {/*<BiSolidPolygon className='text-gray-200 size-24 cursor-pointer' onClick={() => editor?.addPolygon()}/>*/}
                 </div>
             </div>
         </div>

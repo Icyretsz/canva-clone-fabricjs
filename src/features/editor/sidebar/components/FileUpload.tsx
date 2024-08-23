@@ -1,6 +1,5 @@
 'use client'
 import React, {useState, ChangeEvent, FormEvent, useEffect} from 'react';
-import Image from 'next/image'
 // @ts-ignore
 import {v4} from 'uuid';
 import {useUser} from '@clerk/nextjs';
@@ -8,18 +7,24 @@ import {useMutation, useQueryClient, useQuery} from "@tanstack/react-query";
 import addMedia from "@/app/db/addMedia";
 import FetchMediaUrl from "@/app/db/fetch-media-url";
 import {MediaType} from "@/app/db/type"
-import {Loader2} from 'lucide-react';
+import {Button} from "@/components/ui/button"
+import DisplayImage from "@/features/editor/sidebar/components/display-image";
+import {Editor} from "@/features/editor/sidebar/types";
 const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
 
 interface DataType {
     data : MediaType[]
 }
 
-const FileUpload: React.FC = () => {
+interface UploadProps {
+    editor : Editor | undefined
+}
+
+
+const FileUpload = ({ editor } : UploadProps) => {
     const queryClient = useQueryClient()
     const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
     const [uploading, setUploading] = useState(false)
-    const [fileDbURLs, setFileDbURLs] = useState<string[]>([])
     const [s3Url, setS3Url] = useState<string[]>([]);
     const [loadingStates, setLoadingStates] = useState<boolean[]>([]);
     const {user} = useUser();
@@ -31,10 +36,8 @@ const FileUpload: React.FC = () => {
     })
 
     useEffect(() => {
-        if (data && JSON.stringify(data) !== JSON.stringify(fileDbURLs)) {
-            console.log(data)
+        if (data) {
             const dbUrls = data.data.map((media: MediaType) => media.url)
-            setFileDbURLs(dbUrls)
             dbUrls.map((url : string) => {
                 getImgFromUrl(url)
             })
@@ -122,10 +125,10 @@ const FileUpload: React.FC = () => {
                         })
                         setS3Url([])
                     } else {
-                        console.error('File upload failed');
+                        console.error('Add to database failed');
                     }
                 } else {
-                    console.error('Failed to get upload URL:', PUTSignedURL.error);
+                    console.error('Failed to upload ', PUTSignedURL.error);
                 }
             } catch (error) {
                 console.error('An error occurred during the upload:', error);
@@ -145,44 +148,18 @@ const FileUpload: React.FC = () => {
 
     return (
         <div>
-            <h1>Upload a File</h1>
+            <h1>Upload a Media</h1>
             <form onSubmit={handleFileUpload}>
                 <div>
                     <input type="file" multiple onChange={handleFileChange}/>
                 </div>
                 <div>
-                    <button className="bg-blue-200 text-black border border-black" type="submit">Upload</button>
+                    <Button className="bg-blue-200 text-black border border-black" type="submit">Upload</Button>
                 </div>
             </form>
             {uploading && <div>Uploading...</div>}
-            <div className='flex'>
-                {s3Url.map((url, i) => (
-                    <div key={i} style={{position: 'relative', width: '400px', height: '400px'}}>
-                        {loadingStates[i] && (
-                            <div style={{
-                                position: 'absolute',
-                                top: 0,
-                                left: 0,
-                                width: '100%',
-                                height: '100%',
-                                display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                backgroundColor: '#f0f0f0',
-                                zIndex: 1,
-                            }}>
-                                <Loader2 className="animate-spin text-muted-foreground"></Loader2>
-                            </div>
-                        )}
-                        <Image
-                            src={url}
-                            width={400}
-                            height={400}
-                            alt="uploaded image"
-                            onLoadingComplete={() => handleImageLoad(i)}
-                        />
-                    </div>
-                ))}
+            <div className='flex flex-wrap gap-[5px]'>
+                <DisplayImage s3Url={s3Url} loadingStates={loadingStates} handleImageLoad={handleImageLoad} editor={editor}/>
             </div>
         </div>
     );

@@ -321,6 +321,13 @@ export const useEditor = () => {
                         stroke: STROKE_COLOR
                     });
                 addProc(textbox);
+            },
+            addMedia: (url : string) => {
+                fabric.Image.fromURL(url, function(oImg) {
+                    oImg.scale(0.1)
+                    canvas.add(oImg);
+                    addProc(oImg);
+                });
             }
         };
     };
