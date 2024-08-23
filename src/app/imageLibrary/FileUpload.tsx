@@ -8,6 +8,7 @@ import {useMutation, useQueryClient, useQuery} from "@tanstack/react-query";
 import addMedia from "@/app/db/addMedia";
 import FetchMediaUrl from "@/app/db/fetch-media-url";
 import {MediaType} from "@/app/db/type"
+import {Loader2} from 'lucide-react';
 const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
 
 interface DataType {
@@ -119,6 +120,7 @@ const FileUpload: React.FC = () => {
                             user_id: user!.id,
                             url: fileName,
                         })
+                        setS3Url([])
                     } else {
                         console.error('File upload failed');
                     }
@@ -153,7 +155,7 @@ const FileUpload: React.FC = () => {
                 </div>
             </form>
             {uploading && <div>Uploading...</div>}
-            <div>
+            <div className='flex'>
                 {s3Url.map((url, i) => (
                     <div key={i} style={{position: 'relative', width: '400px', height: '400px'}}>
                         {loadingStates[i] && (
@@ -169,7 +171,7 @@ const FileUpload: React.FC = () => {
                                 backgroundColor: '#f0f0f0',
                                 zIndex: 1,
                             }}>
-                                <span>Loading...</span> {/* Placeholder or spinner */}
+                                <Loader2 className="animate-spin text-muted-foreground"></Loader2>
                             </div>
                         )}
                         <Image
