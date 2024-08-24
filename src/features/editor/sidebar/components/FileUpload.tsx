@@ -10,7 +10,9 @@ import {MediaType} from "@/app/db/type"
 import {Button} from "@/components/ui/button"
 import DisplayImage from "@/features/editor/sidebar/components/display-image";
 import {Editor} from "@/features/editor/sidebar/types";
+import {Loader2} from "lucide-react";
 const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+
 
 interface DataType {
     data : MediaType[]
@@ -97,7 +99,7 @@ const FileUpload = ({ editor } : UploadProps) => {
         }
 
         setUploading(true);
-        for (const selectedFile of selectedFiles) {
+        const uploadPromises = selectedFiles.map(async (selectedFile) => {
 
             const fileName = `${v4()}-${selectedFile.name}`
 
@@ -135,11 +137,18 @@ const FileUpload = ({ editor } : UploadProps) => {
             } catch (error) {
                 console.error('An error occurred during the upload:', error);
             }
-        }
+        })
+            try {
+                await Promise.all(uploadPromises);
+                console.log('All files have been uploaded successfully');
+            } catch (error) {
+                console.error('An error occurred during one of the uploads:', error);
+            }
         setUploading(false)
         setTimeout(() => {
             refetch();
         }, 500);
+
     };
 
     const handleImageLoad = (index: number) => {
@@ -161,7 +170,7 @@ const FileUpload = ({ editor } : UploadProps) => {
                     <Button className="bg-blue-200 text-black border border-black" type="submit">Upload</Button>
                 </div>
             </form>
-            {uploading && <div>Uploading...</div>}
+            {uploading && <div>Uploading... <Loader2 className="animate-spin text-muted-foreground" /></div>}
             <div>
                 <DisplayImage s3Url={s3Url} loadingStates={loadingStates} handleImageLoad={handleImageLoad} editor={editor}/>
             </div>
