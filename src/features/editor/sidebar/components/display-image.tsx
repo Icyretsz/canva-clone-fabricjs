@@ -14,8 +14,9 @@ const DisplayImage: React.FC<DisplayImageProps> = ({s3Url, loadingStates, handle
     const handleOnClick = (url: string) => {
         editor?.addMedia(url)
     }
+
     return (
-        <div className="grid grid-cols-2 gap-4">
+        <div className="columns-2 gap-2">
             {s3Url.map((url, i) => (
                 <div key={i} className="relative">
                     {loadingStates[i] && (
@@ -32,7 +33,7 @@ const DisplayImage: React.FC<DisplayImageProps> = ({s3Url, loadingStates, handle
                         alt="uploaded image"
                         onLoadingComplete={() => handleImageLoad(i)}
                         onClick={() => handleOnClick(url)}
-                        className="cursor-pointer"
+                        className="cursor-pointer mb-2 rounded-lg"
                     />
                 </div>
             ))}
