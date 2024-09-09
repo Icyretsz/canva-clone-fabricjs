@@ -11,6 +11,7 @@ import ColorMenu from "@/features/editor/sidebar/components/color-menu"
 import {Editor} from "@/features/editor/sidebar/types";
 import TextMenu from "@/features/editor/sidebar/components/textbox-menu";
 import FontMenu from "@/features/editor/sidebar/components/font-menu";
+import PositionMenu from "@/features/editor/sidebar/components/position-menu";
 
 
 interface SidebarProps {
@@ -28,7 +29,7 @@ const Sidebar = ({editor} : SidebarProps) => {
                     label='Shapes'
                     isActive={activeTool[0] === 'Shapes'}
                     onClick={() => {
-                        setActiveTool('Shapes', activeTool[1])
+                        setActiveTool('Shapes', "")
                         setExpanded(true)
                     }}
 
@@ -38,7 +39,7 @@ const Sidebar = ({editor} : SidebarProps) => {
                     label='Text'
                     isActive={activeTool[0] === 'Text'}
                     onClick={() => {
-                        setActiveTool('Text', activeTool[1])
+                        setActiveTool('Text', "")
                         setExpanded(true)
                     }}
                 />
@@ -47,7 +48,7 @@ const Sidebar = ({editor} : SidebarProps) => {
                     label='Upload'
                     isActive={activeTool[0] === 'Upload'}
                     onClick={() => {
-                        setActiveTool('Upload', activeTool[1])
+                        setActiveTool('Upload', "")
                         setExpanded(true)
                     }}
                 />
@@ -58,6 +59,7 @@ const Sidebar = ({editor} : SidebarProps) => {
                 {(activeTool[1] === 'StrokeColor') &&  <ColorMenu editor={editor} type='Stroke Color'/>}
                 {(activeTool[0] === 'Text') &&  <TextMenu editor={editor}/>}
                 {(activeTool[1] === 'Font') &&  <FontMenu editor={editor}/>}
+                {(activeTool[1] === 'Position') &&  <PositionMenu editor={editor}/>}
             </div>}
         </div>
     );
