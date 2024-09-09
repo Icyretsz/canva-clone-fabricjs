@@ -394,7 +394,6 @@ export const useEditor = () => {
             }
     ) => {
 
-
         fabric.Object.prototype.set({
             cornerColor: "#fff",
             cornerStyle: "circle",
@@ -427,16 +426,9 @@ export const useEditor = () => {
             initialContainer.offsetHeight
         )
 
-
         initialCanvas.add(initialWorkspace)
         initialCanvas.centerObject(initialWorkspace)
         initialCanvas.clipPath = initialWorkspace
-
-        // fabric.Image.fromURL('https://i.imgur.com/9xkDKeE.jpeg', function (oImg) {
-        //     initialCanvas.add(oImg);
-        //     initialCanvas.renderAll()
-        //     initialCanvas.centerObject(oImg)
-        // });
 
         setCanvas(initialCanvas)
         setContainer(initialContainer)

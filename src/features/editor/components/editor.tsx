@@ -25,8 +25,6 @@ const Editor = () => {
 
             init({ initialCanvas: canvas, initialContainer: containerRef.current! });
 
-
-
             return () => {
                 editor?.canvas.getObjects().forEach((object) => {
                     object.off()

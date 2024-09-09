@@ -11,6 +11,7 @@ import ItalicToggle from "@/features/editor/toolbar/components/italic-toggle";
 import UnderlineToggle from "@/features/editor/toolbar/components/underline-toggle";
 import DeleteObjects from "@/features/editor/toolbar/components/delete-objects";
 import { RxDividerVertical } from "react-icons/rx";
+import BringfrontSendback from "@/features/editor/toolbar/components/bringfront-sendback";
 
 interface ToolbarProps {
     editor: Editor | undefined;
@@ -53,8 +54,10 @@ const Toolbar = ({editor}: ToolbarProps) => {
                     {isContainsTextbox() && <LinethroughToggle editor={editor}/>}
                     {isContainsTextbox() && <ItalicToggle editor={editor}/>}
                     {isContainsTextbox() && <UnderlineToggle editor={editor}/>}
+                    <BringfrontSendback editor={editor}/>
                     <RxDividerVertical/>
                     <DeleteObjects editor={editor}/>
+
                 </>
             }
         </div>

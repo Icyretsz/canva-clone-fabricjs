@@ -3,8 +3,6 @@ import {db} from '@/app/db/db';
 import {z} from 'zod'
 import {zValidator} from '@hono/zod-validator'
 import {mediaTable} from "@/app/db/schema";
-import {useUser} from '@clerk/nextjs';
-import { getAuth } from '@clerk/nextjs/server';
 import {auth} from '@clerk/nextjs/server'
 import {eq} from "drizzle-orm";
 

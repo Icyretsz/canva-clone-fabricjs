@@ -8,6 +8,7 @@ export type ActiveTool =
     | "ShapeFill"
     | "StrokeColor"
     | "Font"
+    | "Position"
     | ""
 
 export const FILL_COLOR = '#D1D5DB'
