@@ -8,7 +8,7 @@ interface MenuHeaderProps {
 }
 
 const MenuHeaderLight = ({type} : MenuHeaderProps) => {
-    const {setExpanded, setActiveTool} = MenuExpandContext()
+    const {setExpanded, activeTool, setActiveTool} = MenuExpandContext()
     return (
         <div className='flex justify-between items-center h-[48px] px-4'>
             <div className='text-black'>{type}</div>
@@ -22,7 +22,7 @@ const MenuHeaderLight = ({type} : MenuHeaderProps) => {
                                alt='close icon'
                                onClick={() => {
                                    setExpanded(false)
-                                   setActiveTool('Select')
+                                   setActiveTool('Select', activeTool[1])
                                }}
                         />
                     </TooltipTrigger>

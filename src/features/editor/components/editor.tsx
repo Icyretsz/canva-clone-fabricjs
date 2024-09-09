@@ -40,9 +40,9 @@ const Editor = () => {
         {width : 'calc(100% - 72px)', left : '72px'}
 
     const visibleStyle: React.CSSProperties = {
-        opacity: activeTool === 'Upload' ? 1 : 1,
-        zIndex: activeTool === 'Upload' ? 50 : -999,
-        pointerEvents: activeTool === 'Upload' ? 'auto' : 'none',
+        opacity: activeTool[0] === 'Upload' ? 1 : 1,
+        zIndex: activeTool[0] === 'Upload' ? 50 : -999,
+        pointerEvents: activeTool[0] === 'Upload' ? 'auto' : 'none',
     };
 
     return (

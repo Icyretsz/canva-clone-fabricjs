@@ -113,7 +113,7 @@ const useKeyPress = ({
                                     } else if (newSelectedObjects.length === 1) {
                                         canvas.setActiveObject(newSelectedObjects[0]);
                                     }
-                                    setActiveTool(currentTool)
+                                    setActiveTool(currentTool[0], currentTool[1])
                                     setExpanded(currentExpandedStatus)
                                     canvas.renderAll();
                                 });
@@ -157,7 +157,7 @@ const useKeyPress = ({
                                     } else if (newSelectedObjects.length === 1) {
                                         canvas.setActiveObject(newSelectedObjects[0]);
                                     }
-                                    setActiveTool(currentTool)
+                                    setActiveTool(currentTool[0], currentTool[1])
                                     setExpanded(currentExpandedStatus)
                                     canvas.renderAll();
                                 });

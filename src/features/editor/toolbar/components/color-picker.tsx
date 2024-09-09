@@ -9,7 +9,7 @@ interface ColorPickerProps {
 }
 
 const ColorPicker = ({ editor, type }: ColorPickerProps) => {
-    const { setActiveTool, setExpanded } = useObjectStore();
+    const { activeTool, setActiveTool, setExpanded } = useObjectStore();
     const colors = type === 'fill' ? editor?.fillColor : editor?.strokeColor;
     const toolType = type === 'fill' ? 'ShapeFill' : 'StrokeColor';
 
@@ -21,7 +21,7 @@ const ColorPicker = ({ editor, type }: ColorPickerProps) => {
                     <div
                         className='flex rounded-full size-8 relative cursor-pointer overflow-hidden'
                         onClick={() => {
-                            setActiveTool(toolType);
+                            setActiveTool(activeTool[0], toolType);
                             setExpanded(true);
                             console.log(editor?.fillColor)
                         }}

@@ -26,9 +26,9 @@ const Sidebar = ({editor} : SidebarProps) => {
                 <SidebarButton
                     icon={Shapes}
                     label='Shapes'
-                    isActive={activeTool === 'Shapes'}
+                    isActive={activeTool[0] === 'Shapes'}
                     onClick={() => {
-                        setActiveTool('Shapes')
+                        setActiveTool('Shapes', activeTool[1])
                         setExpanded(true)
                     }}
 
@@ -36,28 +36,28 @@ const Sidebar = ({editor} : SidebarProps) => {
                 <SidebarButton
                     icon={ALargeSmall}
                     label='Text'
-                    isActive={activeTool === 'Text'}
+                    isActive={activeTool[0] === 'Text'}
                     onClick={() => {
-                        setActiveTool('Text')
+                        setActiveTool('Text', activeTool[1])
                         setExpanded(true)
                     }}
                 />
                 <SidebarButton
                     icon={Upload}
                     label='Upload'
-                    isActive={activeTool === 'Upload'}
+                    isActive={activeTool[0] === 'Upload'}
                     onClick={() => {
-                        setActiveTool('Upload')
+                        setActiveTool('Upload', activeTool[1])
                         setExpanded(true)
                     }}
                 />
             </div>
             {isExpanded && <div className='left-[72px] absolute w-[350px] top-[68px] h-[calc(100%-68px)] bg-[#252627]'>
-                {activeTool === 'Shapes' && <ShapeMenu editor={editor}/>}
-                {(activeTool === 'ShapeFill') && <ColorMenu editor={editor} type='Fill'/>}
-                {(activeTool === 'StrokeColor') &&  <ColorMenu editor={editor} type='Stroke Color'/>}
-                {(activeTool === 'Text') &&  <TextMenu editor={editor}/>}
-                {(activeTool === 'Font') &&  <FontMenu editor={editor}/>}
+                {activeTool[0] === 'Shapes' && <ShapeMenu editor={editor}/>}
+                {(activeTool[1] === 'ShapeFill') && <ColorMenu editor={editor} type='Fill'/>}
+                {(activeTool[1] === 'StrokeColor') &&  <ColorMenu editor={editor} type='Stroke Color'/>}
+                {(activeTool[0] === 'Text') &&  <TextMenu editor={editor}/>}
+                {(activeTool[1] === 'Font') &&  <FontMenu editor={editor}/>}
             </div>}
         </div>
     );

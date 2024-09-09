@@ -11,6 +11,20 @@ export type ActiveTool =
     | "Position"
     | ""
 
+export type PrimaryActiveTool =
+    | "Select"
+    | "Shapes"
+    | "Text"
+    | "Upload"
+
+
+export type SecondaryActiveTool =
+    | "ShapeFill"
+    | "StrokeColor"
+    | "Font"
+    | "Position"
+    | ""
+
 export const FILL_COLOR = '#D1D5DB'
 export const STROKE_COLOR = '#000'
 export const STROKE_WIDTH = 0

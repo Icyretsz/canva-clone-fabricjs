@@ -11,7 +11,7 @@ interface FontPickerProps {
 
 
 const FontPicker = ({editor}: FontPickerProps) => {
-    const {setActiveTool, setExpanded} = useObjectStore();
+    const {activeTool, setActiveTool, setExpanded} = useObjectStore();
     let fontName
 
     if (textboxFonts(editor).size === 1) {
@@ -34,7 +34,7 @@ const FontPicker = ({editor}: FontPickerProps) => {
                         <div className='w-[170px] h-[32px] pl-4 pr-1 flex justify-between items-center cursor-pointer border
         border-gray-400 rounded-md hover:bg-[#f2f3f5] transition-all duration-100 ease-linear'
                              onClick={() => {
-                                 setActiveTool('Font')
+                                 setActiveTool(activeTool[0], 'Font')
                                  setExpanded(true)
                              }}>
                             {fontName} <RiArrowDropDownLine className='size-7'/>

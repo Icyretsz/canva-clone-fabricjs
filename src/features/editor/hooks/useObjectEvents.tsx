@@ -50,9 +50,8 @@ const useCanvasEvents = ({
             })
             canvas.on('selection:cleared', () => {
                 setSelectedObjects([])
-                if (activeTool !== "Shapes" && activeTool !== "Text" && activeTool !== "Upload") {
-                    setActiveTool("")
-                    setExpanded(false)
+                if (activeTool[1] !== "") {
+                    setActiveTool(activeTool[0], "")
                 }
             })
             canvas.on('object:modified', (event) => {
