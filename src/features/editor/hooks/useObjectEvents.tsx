@@ -1,6 +1,7 @@
-import {useCallback, useEffect} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import {fabric} from "fabric";
 import useObjectStore from "@/features/editor/stores/store"
+import {flushSync} from "react-dom";
 
 
 interface UseCanvasEventsProps {
@@ -15,6 +16,7 @@ interface UseCanvasEventsProps {
 
 const useCanvasEvents = ({
                              canvas,
+                             selectedObjects,
                              setSelectedObjects,
                              historyUndo,
                              historyRedo,
@@ -24,6 +26,7 @@ const useCanvasEvents = ({
 
     const {activeTool, setActiveTool, setExpanded} = useObjectStore()
     const HISTORY_LIMIT = 10
+    const [localSelectedObjects, setLocalSelectedObjects] = useState<fabric.Object | null>(null)
 
     const saveHistory = useCallback(() => {
         if (!canvas) return;
@@ -48,10 +51,27 @@ const useCanvasEvents = ({
             canvas.on('selection:updated', (e) => {
                 setSelectedObjects(e.selected || [])
             })
+            canvas.on('before:selection:cleared', () => {
+                if (selectedObjects.length > 0) {
+                    flushSync(() => {
+                        setLocalSelectedObjects(canvas.getActiveObject())
+                    });
+
+                }
+            })
             canvas.on('selection:cleared', () => {
-                setSelectedObjects([])
+                console.log(localSelectedObjects)
                 if (activeTool[1] !== "") {
                     setActiveTool(activeTool[0], "")
+                    if (activeTool[0] === "Select") {
+                        setExpanded(false)
+                    }
+                    if (localSelectedObjects !== null) {
+                        canvas.setActiveObject(localSelectedObjects)
+                    }
+                } else if (activeTool[1] === "") {
+                    setSelectedObjects([])
+                    setLocalSelectedObjects(null)
                 }
             })
             canvas.on('object:modified', (event) => {
@@ -67,7 +87,7 @@ const useCanvasEvents = ({
                 canvas.off()
             }
         }
-    }, [canvas, activeTool, setActiveTool, setExpanded, setSelectedObjects, historyRedo, historyUndo, saveHistory])
+    }, [canvas, activeTool, setActiveTool, setExpanded, setSelectedObjects, historyRedo, historyUndo, saveHistory, localSelectedObjects])
 };
 
 export default useCanvasEvents;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Toggle } from "@/components/ui/toggle"
+import { Button } from "@/components/ui/button"
 import {Editor} from "@/features/editor/sidebar/types";
 import useObjectStore from "@/features/editor/stores/store";
 
@@ -9,19 +9,15 @@ interface PositionProps {
 
 const BringfrontSendback = (editor : PositionProps) => {
 
-    const { setActiveTool } = useObjectStore()
+    const { activeTool, setActiveTool } = useObjectStore()
 
-    const handlePressed = (pressed : boolean) => {
-        if (pressed) {
-            setActiveTool("Position")
-        } else {
-            setActiveTool("Select")
-        }
+    const handleClick = () => {
+        setActiveTool(activeTool[0], 'Position')
     }
 
     return (
         <div>
-            <Toggle onPressedChange={(pressed) => handlePressed}>Position</Toggle>
+            <Button variant='ghost' onClick={handleClick}>Position</Button>
         </div>
     );
 };
