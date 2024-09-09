@@ -1,5 +1,5 @@
 import {create} from 'zustand'
-import {ActiveTool, PrimaryActiveTool, SecondaryActiveTool} from "@/features/editor/sidebar/types";
+import {PrimaryActiveTool, SecondaryActiveTool} from "@/features/editor/sidebar/types";
 import {fabric} from "fabric";
 
 interface MenuStore {

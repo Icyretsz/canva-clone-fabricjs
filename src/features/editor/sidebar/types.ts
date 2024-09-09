@@ -1,16 +1,5 @@
 import {fabric} from "fabric";
 
-export type ActiveTool =
-    | "Select"
-    | "Shapes"
-    | "Text"
-    | "Upload"
-    | "ShapeFill"
-    | "StrokeColor"
-    | "Font"
-    | "Position"
-    | ""
-
 export type PrimaryActiveTool =
     | "Select"
     | "Shapes"
