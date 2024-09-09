@@ -59,7 +59,7 @@ const Sidebar = ({editor} : SidebarProps) => {
                 {(activeTool[1] === 'StrokeColor') &&  <ColorMenu editor={editor} type='Stroke Color'/>}
                 {(activeTool[0] === 'Text') &&  <TextMenu editor={editor}/>}
                 {(activeTool[1] === 'Font') &&  <FontMenu editor={editor}/>}
-                {(activeTool[1] === 'Position') &&  <PositionMenu editor={editor}/>}
+                {(activeTool[1] === 'Position') &&  <PositionMenu editor={editor} type='Position'/>}
             </div>}
         </div>
     );
