@@ -54,12 +54,12 @@ const Toolbar = ({editor}: ToolbarProps) => {
                     {isContainsTextbox() && <LinethroughToggle editor={editor}/>}
                     {isContainsTextbox() && <ItalicToggle editor={editor}/>}
                     {isContainsTextbox() && <UnderlineToggle editor={editor}/>}
-                    <BringfrontSendback editor={editor}/>
+                    <BringfrontSendback/>
                     <RxDividerVertical/>
                     <DeleteObjects editor={editor}/>
 
                 </>:
-                <BringfrontSendback editor={editor}/>
+                <BringfrontSendback/>
             }
         </div>
 
