@@ -87,6 +87,8 @@ export type StrokeType = "stroke-none" | "stroke-solid" | "stroke-dash" | "strok
 
 export type fontStyle = "" | "normal" | "italic" | "oblique" | undefined
 
+export type positionControlType = "sendBackwards" | "sendToBack" | "bringForward" | "bringToFront"
+
 export interface Editor {
     selectedObjects: fabric.Object[]
     canvas: fabric.Canvas,
@@ -114,6 +116,7 @@ export interface Editor {
     changeUnderline: (value: boolean) => void,
     changeLinethrough: (value: boolean) => void,
     deleteObject: () => void,
+    positionControl: (positionControl : positionControlType) => void,
     addRect: () => fabric.Object,
     addCircle: () => void,
     addTriangle: () => void,

@@ -12,7 +12,7 @@ import {
     OCTAGON_POINTS,
     OCTAGON_OPTIONS,
     STROKE_PATTERNS,
-    BuildEditor, fontStyle
+    BuildEditor, fontStyle, positionControlType
 } from "@/features/editor/sidebar/types";
 import useCanvasEvents from "@/features/editor/hooks/useObjectEvents";
 import useGetActiveFill from "@/features/editor/hooks/useGetActiveFill";
@@ -48,7 +48,15 @@ export const useEditor = () => {
     const [historyRedo, setHistoryRedo] = useState<string[]>([])
 
     const autoZoom = useAutoResize({canvas, container})
-    useCanvasEvents({canvas, selectedObjects, setSelectedObjects, historyUndo, historyRedo, setHistoryUndo, setHistoryRedo})
+    useCanvasEvents({
+        canvas,
+        selectedObjects,
+        setSelectedObjects,
+        historyUndo,
+        historyRedo,
+        setHistoryUndo,
+        setHistoryRedo
+    })
     useKeyPress({canvas, clipboard, setClipboard, historyUndo, historyRedo, setHistoryUndo, setHistoryRedo, autoZoom})
 
     useGetActiveFill(selectedObjects, setFillColor)
@@ -102,10 +110,10 @@ export const useEditor = () => {
         const addProc = (object: fabric.Object) => {
             center(object);
             canvas.add(object);
-            const currentId : string = String(canvas.getObjects().length - 1)
+            const currentId: string = String(canvas.getObjects().length - 1)
             object.set('name', currentId)
-            object.on('mousedown', function(event) {
-                if(event.button === 3) {
+            object.on('mousedown', function (event) {
+                if (event.button === 3) {
                     console.log('right click')
                 }
             })
@@ -291,6 +299,38 @@ export const useEditor = () => {
                 canvas.fire('object:modified')
                 canvas.renderAll();
             },
+            positionControl: (position: positionControlType) => {
+                switch(position) {
+                    case 'bringForward':
+                        canvas.getActiveObjects().forEach((object) => {
+                            canvas.bringForward(object)
+                        })
+                        break;
+                    case 'bringToFront':
+                        canvas.getActiveObjects().forEach((object) => {
+                            canvas.bringToFront(object)
+                        })
+                        break;
+                    case 'sendBackwards':
+                        canvas.getActiveObjects().forEach((object) => {
+
+                            const objects = canvas.getObjects()
+                            if (object === objects[1]) {
+                                return
+                            }
+                            canvas.sendBackwards(object)
+                        })
+                        break;
+                    case 'sendToBack':
+                        canvas.getActiveObjects().forEach((object) => {
+                            canvas.sendToBack(object)
+                            canvas.moveTo(object, 1)
+                        })
+                        canvas.renderAll()
+                        break;
+                }
+                canvas.renderAll()
+            },
             addRect: () => {
                 const rect = new fabric.Rect({...RECTANGLE_OPTIONS});
                 addProc(rect);
@@ -305,34 +345,34 @@ export const useEditor = () => {
                 addProc(triangle);
             },
             addPolygon: () => {
-                const octagon = new fabric.Polygon(OCTAGON_POINTS,  {...OCTAGON_OPTIONS});
+                const octagon = new fabric.Polygon(OCTAGON_POINTS, {...OCTAGON_OPTIONS});
                 addProc(octagon);
             },
             addTextbox: (type: 'heading' | 'subheading' | 'content') => {
                 const {content, width, fontSize, fontWeight} = typeProperties[type];
                 const textbox = new fabric.Textbox(content, {
-                        width: width,
-                        fontFamily: montserrat.style.fontFamily,
-                        fontSize: fontSize,
-                        fontWeight: fontWeight,
-                        textAlign: 'center',
-                        fill: '#000',
-                        strokeWidth: STROKE_WIDTH,
-                        stroke: STROKE_COLOR
-                    });
+                    width: width,
+                    fontFamily: montserrat.style.fontFamily,
+                    fontSize: fontSize,
+                    fontWeight: fontWeight,
+                    textAlign: 'center',
+                    fill: '#000',
+                    strokeWidth: STROKE_WIDTH,
+                    stroke: STROKE_COLOR
+                });
                 addProc(textbox);
             },
-            addMedia: (url : string) => {
-                fabric.Image.fromURL(url, function(oImg) {
-                    const currentId : string = String(canvas.getObjects().length - 1)
+            addMedia: (url: string) => {
+                fabric.Image.fromURL(url, function (oImg) {
+                    const currentId: string = String(canvas.getObjects().length - 1)
                     oImg.set('name', currentId)
                     oImg.scale(0.1)
                     canvas.add(oImg);
                     canvas.setActiveObject(oImg);
                     canvas.centerObject(oImg);
                     canvas.renderAll();
-                    oImg.on('mousedown', function(event) {
-                        if(event.button === 3) {
+                    oImg.on('mousedown', function (event) {
+                        if (event.button === 3) {
                             console.log('right click')
                         }
                     })
@@ -416,7 +456,7 @@ export const useEditor = () => {
                     color: 'rgba(0, 0, 0, 0.8)',
                     blur: 5
                 }
-            )
+            ),
         })
 
         initialCanvas.setWidth(

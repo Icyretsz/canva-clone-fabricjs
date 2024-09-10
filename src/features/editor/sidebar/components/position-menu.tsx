@@ -1,6 +1,6 @@
 'use client'
 import React, {useState} from 'react';
-import {Editor} from "@/features/editor/sidebar/types";
+import {Editor, positionControlType} from "@/features/editor/sidebar/types";
 import MenuHeaderLight from "@/features/editor/sidebar/components/menu-header-light";
 import {Button} from "@/components/ui/button"
 import { TbStackForward } from "react-icons/tb";
@@ -14,10 +14,38 @@ interface PositionMenuProps {
 }
 
 const PositionMenu = ({editor, type}: PositionMenuProps) => {
-    const [currentTab, setCurrentTab] = useState<string>('')
+    const [currentTab, setCurrentTab] = useState<string>('Arrange')
 
     const handleOnClick = (type: string) => {
         setCurrentTab(type)
+    }
+
+    const TabSwitchingBtn = ({type} : { type : string }) => {
+        return (
+            <Button variant='ghost' className='w-[50%] relative'
+                    onClick={() => handleOnClick(type)}>
+                {type}
+                {currentTab === type &&
+                    <div className='absolute top-[100%] h-[5px] w-[85%] rounded-xl bg-[#3493ec]'></div>}
+            </Button>
+        )
+    }
+
+    interface PositionControlBtnProps {
+        icon: React.ReactNode;
+        controlType : positionControlType;
+    }
+
+    const PositionControlBtn: React.FC<PositionControlBtnProps> = ({ icon, controlType }) => {
+        return (
+            <Button variant="ghost" className="flex justify-center items-center h-[50%] w-[50%]" onClick={() => positionChange(controlType)}>
+                {icon}
+            </Button>
+        );
+    };
+
+    const positionChange = (controlType : positionControlType) => {
+        editor?.positionControl(controlType)
     }
 
     return (
@@ -27,27 +55,17 @@ const PositionMenu = ({editor, type}: PositionMenuProps) => {
                     <div className=' w-full'>
                         <MenuHeaderLight type={type}/>
                         <div className=" w-full flex justify-center px-[5px] mb-[10px]">
-                            <Button variant='ghost' className='w-[50%] relative'
-                                    onClick={() => handleOnClick('arrange')}>
-                                Arrange
-                                {currentTab === 'arrange' &&
-                                    <div className='absolute top-[100%] h-[5px] w-full rounded-xl bg-[#0cbc84]'></div>}
-                            </Button>
-                            <Button variant='ghost' className='w-[50%] relative'
-                                    onClick={() => handleOnClick('layers')}>
-                                Layers
-                                {currentTab === 'layers' &&
-                                    <div className='absolute top-[100%] h-[5px] w-full bg-[#0cbc84] rounded-xl'></div>}
-                            </Button>
+                            <TabSwitchingBtn type='Arrange'/>
+                            <TabSwitchingBtn type='Layers'/>
                         </div>
                     </div>
-                    {currentTab === 'arrange' && <div className='h-[10%] w-full flex flex-wrap'>
-                        <Button variant='ghost' className='flex justify-center items-center h-[50%] w-[50%]'><TbStackForward className='size-8'/></Button>
-                        <Button variant='ghost' className='flex justify-center items-center h-[50%] w-[50%]'><TbStackBackward className='size-8'/></Button>
-                        <Button variant='ghost' className='flex justify-center items-center h-[50%] w-[50%]'><TbStackFront className='size-8'/></Button>
-                        <Button variant='ghost' className='flex justify-center items-center h-[50%] w-[50%]'><TbStackBack className='size-8'/></Button>
+                    {currentTab === 'Arrange' && <div className='h-[10%] w-full flex flex-wrap'>
+                        <PositionControlBtn icon={<TbStackForward className='size-8'/>} controlType={'bringForward'}/>
+                        <PositionControlBtn icon={<TbStackBackward className='size-8'/>} controlType={'sendBackwards'}/>
+                        <PositionControlBtn icon={<TbStackFront className='size-8'/>} controlType={'bringToFront'}/>
+                        <PositionControlBtn icon={<TbStackBack className='size-8'/>} controlType={'sendToBack'}/>
                     </div>}
-                    {currentTab === 'layers' && <div className='h-full w-full bg-pink-400'>Layers</div>}
+                    {currentTab === 'Layers' && <div className='h-full w-full bg-pink-400'>Layers</div>}
                 </div>
             </div>
         </div>
