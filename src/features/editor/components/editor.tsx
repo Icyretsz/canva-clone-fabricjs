@@ -9,6 +9,7 @@ import Footer from "@/features/editor/components/footer";
 import useObjectStore from "@/features/editor/stores/store";
 import UploadMenu from "@/features/editor/sidebar/components/upload-menu";
 
+
 const Editor = () => {
     const canvasRef = useRef(null);
     const containerRef = useRef<HTMLDivElement>(null)
@@ -16,33 +17,35 @@ const Editor = () => {
     const {isExpanded, activeTool} = useObjectStore()
 
     useEffect(() => {
-            const canvas = new fabric.Canvas(canvasRef.current, {
-                controlsAboveOverlay: true,
-                preserveObjectStacking: true,
-                fireRightClick: true,
-                stopContextMenu: true,
+        const canvas = new fabric.Canvas(canvasRef.current, {
+            controlsAboveOverlay: true,
+            preserveObjectStacking: true,
+            fireRightClick: true,
+            stopContextMenu: true,
+        })
+
+        init({initialCanvas: canvas, initialContainer: containerRef.current!});
+
+        return () => {
+            editor?.canvas.getObjects().forEach((object) => {
+                object.off()
             })
-
-            init({ initialCanvas: canvas, initialContainer: containerRef.current! });
-
-            return () => {
-                editor?.canvas.getObjects().forEach((object) => {
-                    object.off()
-                })
-                canvas.dispose();
-            };
+            canvas.dispose();
+        };
 
     }, [init]);
 
     const menuExpandedStyle = isExpanded ?
-        {width : 'calc(100% - 72px - 350px',
-        left : 'calc(72px + 350px'} :
-        {width : 'calc(100% - 72px)', left : '72px'}
+        {
+            width: 'calc(100% - 72px - 350px',
+            left: 'calc(72px + 350px'
+        } :
+        {width: 'calc(100% - 72px)', left: '72px'}
 
     const visibleStyle: React.CSSProperties = {
-        opacity: activeTool[0] === 'Upload' ? 1 : 1,
-        zIndex: activeTool[0] === 'Upload' ? 50 : -999,
-        pointerEvents: activeTool[0] === 'Upload' ? 'auto' : 'none',
+        opacity: activeTool[1] !== "" ? 0 : 1,
+        zIndex: activeTool[0] !== "Upload" ? -999 : 1,
+        pointerEvents: activeTool[1] !== "" ? 'none' : 'auto',
     };
 
     return (
@@ -58,7 +61,8 @@ const Editor = () => {
                     <canvas ref={canvasRef}/>
                 </div>
             </div>
-            <div className='left-[72px] top-[68px] fixed h-[calc(100%-68px)] w-[350px]' style={visibleStyle}><UploadMenu editor={editor}/></div>
+            <div className='left-[72px] top-[68px] fixed h-[calc(100%-68px)] w-[350px]' style={visibleStyle}><UploadMenu
+                editor={editor}/></div>
         </div>
     );
 };
