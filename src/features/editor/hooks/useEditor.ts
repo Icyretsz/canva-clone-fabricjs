@@ -377,6 +377,8 @@ export const useEditor = () => {
                             console.log('right click')
                         }
                     })
+                }, {
+                    crossOrigin: 'anonymous'
                 });
                 canvas.fire('object:modified')
             }

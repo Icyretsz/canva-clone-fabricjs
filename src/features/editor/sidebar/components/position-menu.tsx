@@ -57,7 +57,7 @@ const PositionMenu = ({editor, type}: PositionMenuProps) => {
             if (object.name === 'clip') return
             objectDataUrl.push(object.toDataURL({
                     format: 'jpeg',
-                    quality: 0.8
+                    quality: 0.8,
                 })
             )
         })
@@ -86,7 +86,7 @@ const PositionMenu = ({editor, type}: PositionMenuProps) => {
                         {objectDataUrl.length > 0 && objectDataUrl.map((url, i) => {
                             return <div key={i} className='relative flex h-[10%] p-[5px] justify-center rounded-2xl border-2 border-gray-200 px-[25%]'>
                                 <RxDragHandleDots1 className='size-12 absolute left-0' style={{color : 'gray'}}/>
-                                <img src={url} alt='object'/>
+                                <img src={url} crossOrigin="anonymous" alt='object'/>
                             </div>
                             })}
                     </div>}
