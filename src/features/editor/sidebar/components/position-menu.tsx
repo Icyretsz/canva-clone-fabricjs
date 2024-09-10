@@ -82,14 +82,25 @@ const PositionMenu = ({editor, type}: PositionMenuProps) => {
                         <PositionControlBtn icon={<TbStackFront className='size-8'/>} controlType={'bringToFront'}/>
                         <PositionControlBtn icon={<TbStackBack className='size-8'/>} controlType={'sendToBack'}/>
                     </div>}
-                    {currentTab === 'Layers' && <div className='h-full w-full flex flex-col gap-[5px] overflow-y-auto'>
-                        {objectDataUrl.length > 0 && objectDataUrl.map((url, i) => {
-                            return <div key={i} className='relative flex h-[10%] p-[5px] justify-center rounded-2xl border-2 border-gray-200 px-[25%]'>
-                                <RxDragHandleDots1 className='size-12 absolute left-0' style={{color : 'gray'}}/>
-                                <img src={url} crossOrigin="anonymous" alt='object'/>
-                            </div>
-                            })}
-                    </div>}
+                    {currentTab === 'Layers' && (
+                        <div className="h-full w-full flex flex-col gap-[5px] overflow-y-auto">
+                            {objectDataUrl.length > 0 &&
+                                objectDataUrl.map((url, i) => {
+                                    return (
+                                        <div
+                                            key={i}
+                                            className="relative flex h-[10%] p-[5px] justify-center items-center rounded-2xl border-2 border-gray-200 px-[25%]"
+                                        >
+                                            <div className="absolute left-0 flex items-center h-full">
+                                                <RxDragHandleDots1 className="size-12" style={{ color: 'gray' }} />
+                                            </div>
+                                            <img src={url} crossOrigin="anonymous" alt="object" className="h-full object-contain" />
+                                        </div>
+                                    );
+                                })}
+                        </div>
+                    )}
+
                 </div>
             </div>
         </div>
