@@ -42,7 +42,7 @@ const Toolbar = ({editor}: ToolbarProps) => {
     return (
 
         <div className='h-[48px] absolute top-[68px] flex items-center gap-2 px-2' style={style}>
-            {editor?.selectedObjects && editor?.selectedObjects.length > 0 &&
+            {editor?.selectedObjects && editor?.selectedObjects.length > 0 ?
                 <>
                     {isContainsTextbox() && <FontPicker editor={editor}/>}
                     {isContainsTextbox() && <FontSizePicker editor={editor}/>}
@@ -58,7 +58,8 @@ const Toolbar = ({editor}: ToolbarProps) => {
                     <RxDividerVertical/>
                     <DeleteObjects editor={editor}/>
 
-                </>
+                </>:
+                <BringfrontSendback editor={editor}/>
             }
         </div>
 
