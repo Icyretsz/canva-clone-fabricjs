@@ -329,6 +329,7 @@ export const useEditor = () => {
                         canvas.renderAll()
                         break;
                 }
+                canvas.fire('object:modified')
                 canvas.renderAll()
             },
             addRect: () => {
