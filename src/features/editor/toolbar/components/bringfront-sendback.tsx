@@ -1,19 +1,16 @@
 import React from 'react';
 import { Button } from "@/components/ui/button"
-import {Editor} from "@/features/editor/sidebar/types";
 import useObjectStore from "@/features/editor/stores/store";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
-interface PositionProps {
-    editor: Editor | undefined;
-}
 
-const BringfrontSendback = (editor : PositionProps) => {
+const BringfrontSendback = () => {
 
-    const { activeTool, setActiveTool } = useObjectStore()
+    const { activeTool, setActiveTool, setExpanded } = useObjectStore()
 
     const handleClick = () => {
         setActiveTool(activeTool[0], 'Position')
+        setExpanded(true)
     }
 
     return (
