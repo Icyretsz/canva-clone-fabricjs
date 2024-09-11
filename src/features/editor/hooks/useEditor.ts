@@ -467,7 +467,7 @@ export const useEditor = () => {
             height: 900,
             name: 'clip',
             fill: 'white',
-            selectable: true,
+            selectable: false,
             hasControls: false,
             hoverCursor: 'default',
             shadow: new fabric.Shadow(
