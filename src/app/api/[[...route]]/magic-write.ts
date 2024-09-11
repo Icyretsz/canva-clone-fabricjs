@@ -56,7 +56,7 @@ const magicWrite = new Hono()
         }
     })
 
-    .post('/formal', async (ctx) => {
+    .post('/casual', async (ctx) => {
 
         if (!auth().sessionId) {
             return ctx.json({success: false, message: 'Unauthorized'}, 401);
@@ -73,7 +73,7 @@ const magicWrite = new Hono()
             messages: [
                 {
                     role: 'system',
-                    content: 'You will be provided with statements, and your task is to initialize a simple, concise and formal essay about 40 words.'
+                    content: 'You will be provided with statements, and your task is to initialize a simple, concise and casual-in-tone essay about 40 words.'
                 },
                 {
                     role: 'user',
@@ -108,7 +108,7 @@ const magicWrite = new Hono()
             return ctx.json({success: false, message: 'Server error'}, 500);
         }
     })
-    .post('/fun', async (ctx) => {
+    .post('/funny', async (ctx) => {
 
         if (!auth().sessionId) {
             return ctx.json({success: false, message: 'Unauthorized'}, 401);
@@ -125,7 +125,7 @@ const magicWrite = new Hono()
             messages: [
                 {
                     role: 'system',
-                    content: 'You will be provided with statements, and your task is to initialize a simple, concise and funny essay about 40 words.'
+                    content: 'You will be provided with statements, and your task is to initialize a simple, concise and funny-in-tone essay about 40 words.'
                 },
                 {
                     role: 'user',
