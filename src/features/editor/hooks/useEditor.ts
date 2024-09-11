@@ -467,7 +467,7 @@ export const useEditor = () => {
             height: 900,
             name: 'clip',
             fill: 'white',
-            selectable: false,
+            selectable: true,
             hasControls: false,
             hoverCursor: 'default',
             shadow: new fabric.Shadow(
@@ -476,6 +476,12 @@ export const useEditor = () => {
                     blur: 5
                 }
             ),
+            // lockMovementX: true,
+            // lockMovementY: true,
+            // lockScalingX: true,
+            // lockScalingY: true,
+            // lockUniScaling: true,
+            // lockRotation: true,
         })
 
         initialCanvas.setWidth(

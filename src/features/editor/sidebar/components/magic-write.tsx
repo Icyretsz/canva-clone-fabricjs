@@ -154,7 +154,7 @@ const MagicWrite = ({editor}: MagicWriteProps) => {
             </Popover>
             <textarea onChange={(e) => saveText(e)} className='border border-black'
                       placeholder='Enter your prompt...'/>
-            <Button onClick={callOpenAI}>Submit</Button>
+            <Button onClick={callOpenAI}>Generate</Button>
             {AIResponse !== "" && <>
                 <div>{AIResponse}</div>
                 <Button onClick={addMagicText}>Add text</Button></>
