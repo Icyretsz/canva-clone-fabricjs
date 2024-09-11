@@ -121,7 +121,7 @@ export interface Editor {
     addCircle: () => void,
     addTriangle: () => void,
     addPolygon: () => void,
-    addTextbox: (type: 'heading' | 'subheading' | 'content') => void,
+    addTextbox: (type?: 'heading' | 'subheading' | 'content', userContent?: string) => void,
     addMedia: (url : string) => void,
 }
 

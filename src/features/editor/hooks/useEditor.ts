@@ -300,7 +300,7 @@ export const useEditor = () => {
                 canvas.renderAll();
             },
             positionControl: (position: positionControlType) => {
-                switch(position) {
+                switch (position) {
                     case 'bringForward':
                         canvas.getActiveObjects().forEach((object) => {
                             canvas.bringForward(object)
@@ -349,19 +349,35 @@ export const useEditor = () => {
                 const octagon = new fabric.Polygon(OCTAGON_POINTS, {...OCTAGON_OPTIONS});
                 addProc(octagon);
             },
-            addTextbox: (type: 'heading' | 'subheading' | 'content') => {
-                const {content, width, fontSize, fontWeight} = typeProperties[type];
-                const textbox = new fabric.Textbox(content, {
-                    width: width,
-                    fontFamily: montserrat.style.fontFamily,
-                    fontSize: fontSize,
-                    fontWeight: fontWeight,
-                    textAlign: 'center',
-                    fill: '#000',
-                    strokeWidth: STROKE_WIDTH,
-                    stroke: STROKE_COLOR
-                });
-                addProc(textbox);
+            addTextbox: (type?: 'heading' | 'subheading' | 'content', userContent?: string) => {
+                if ((type === 'heading' || type === 'subheading' || type === 'content') && userContent === undefined) {
+                    const {content, width, fontSize, fontWeight} = typeProperties[type];
+                    const textbox = new fabric.Textbox(content, {
+                        width: width,
+                        fontFamily: montserrat.style.fontFamily,
+                        fontSize: fontSize,
+                        fontWeight: fontWeight,
+                        textAlign: 'center',
+                        fill: '#000',
+                        strokeWidth: STROKE_WIDTH,
+                        stroke: STROKE_COLOR
+                    });
+                    addProc(textbox);
+                } else if (type === 'content' && userContent) {
+                    const {width, fontSize, fontWeight} = typeProperties[type]
+                    const textbox = new fabric.Textbox(userContent, {
+                        width: width,
+                        fontFamily: montserrat.style.fontFamily,
+                        fontSize: fontSize,
+                        fontWeight: fontWeight,
+                        textAlign: 'center',
+                        fill: '#000',
+                        strokeWidth: STROKE_WIDTH,
+                        stroke: STROKE_COLOR
+                    });
+                    addProc(textbox);
+                }
+
             },
             addMedia: (url: string) => {
                 fabric.Image.fromURL(url, function (oImg) {
