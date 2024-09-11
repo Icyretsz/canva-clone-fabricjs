@@ -1,5 +1,5 @@
 import {Hono} from 'hono';
-import {getSignedURL} from '../actions'
+import {getSignedURL} from '../s3-actions'
 
 const mediaS3App = new Hono()
     .post('/put', async (c) => {

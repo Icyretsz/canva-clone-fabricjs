@@ -1,10 +1,8 @@
 import { Hono } from 'hono'
 import { handle } from 'hono/vercel'
 import mediaDbApp from "@/app/api/[[...route]]/media-db"
-
-
-import imagesApp from "./images"
 import mediaS3App from "@/app/api/[[...route]]/media-S3";
+import magicWrite from "@/app/api/[[...route]]/magic-write";
 
 
 export const runtime = 'edge'
@@ -13,6 +11,7 @@ const app = new Hono().basePath('/api')
 
     .route("/upload", mediaS3App)
     .route("/media-interact", mediaDbApp)
+    .route("/magic-write", magicWrite)
 
 export const GET = handle(app)
 export const POST = handle(app)
