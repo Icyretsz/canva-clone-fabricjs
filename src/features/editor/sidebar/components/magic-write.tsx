@@ -97,7 +97,6 @@ const MagicWrite = ({editor}: MagicWriteProps) => {
         }
 
         try {
-            console.log(toneAPI)
             const response = await fetch(`${toneAPI}`, {
                 method: 'POST',
                 headers: {
@@ -110,7 +109,6 @@ const MagicWrite = ({editor}: MagicWriteProps) => {
 
             if (response.ok) {
                 setAIResponse(responseJSON.AIResponse);
-                console.log(responseJSON);
             } else {
                 console.error('Failed to retrieve response:', responseJSON.message || response.statusText);
             }
