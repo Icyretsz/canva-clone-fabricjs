@@ -1,5 +1,5 @@
 'use client'
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import {Check, ChevronsUpDown, Loader2} from "lucide-react"
 import {cn} from "@/lib/utils"
@@ -18,6 +18,8 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover"
 import {Editor} from "@/features/editor/sidebar/types";
+import splitString from "@/utils/splitString";
+import {motion, Variants} from 'framer-motion'
 
 const frameworks = [
     {
@@ -39,6 +41,11 @@ const tones = [
     {tone: 'Funny', api: '/api/magic-write/funny'}
 ]
 
+const charVariants = {
+    hidden: {opacity: 0},
+    reveal: {opacity: 1},
+}
+
 interface MagicWriteProps {
     editor: Editor | undefined
 }
@@ -51,6 +58,7 @@ const MagicWrite = ({editor}: MagicWriteProps) => {
     const [open, setOpen] = React.useState(false)
     const [value, setValue] = React.useState("Default")
     const [isLoading, setIsLoading] = React.useState(false)
+    const [splitted, setSplitted] = React.useState<string[]>([])
 
     const saveText = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setTextContent(e.currentTarget.value)
@@ -107,6 +115,10 @@ const MagicWrite = ({editor}: MagicWriteProps) => {
         }
     };
 
+    useEffect(() => {
+        setSplitted(splitString(AIResponse))
+    }, [AIResponse])
+
     return (
         <div className='flex flex-col gap-5'>
             <Popover open={open} onOpenChange={setOpen}>
@@ -155,8 +167,14 @@ const MagicWrite = ({editor}: MagicWriteProps) => {
             <textarea onChange={(e) => saveText(e)} className='border border-black'
                       placeholder='Enter your prompt...'/>
             <Button onClick={callOpenAI}>Generate</Button>
-            {AIResponse !== "" && <>
-                <div>{AIResponse}</div>
+            {AIResponse !== "" && splitted.length > 0 && <>
+                <motion.p initial="hidden" whileInView="reveal" transition={{staggerChildren: .02}}>
+                    {splitted.map((char, index) => (
+                        <motion.span key={index} transition={{duration: .1}} variants={charVariants}>
+                            {char}
+                        </motion.span>
+                    ))}
+                </motion.p>
                 <Button onClick={addMagicText}>Add text</Button></>
             }
             {isLoading && <div>Generating... <Loader2 className="animate-spin text-muted-foreground"/></div>}
