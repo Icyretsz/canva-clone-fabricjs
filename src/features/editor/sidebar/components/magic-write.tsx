@@ -73,6 +73,10 @@ const MagicWrite = ({editor}: MagicWriteProps) => {
             return;
         }
 
+        if (AIResponse !== '') {
+            setAIResponse('')
+        }
+
         setIsLoading(true)
 
         let toneAPI
@@ -177,7 +181,7 @@ const MagicWrite = ({editor}: MagicWriteProps) => {
                 </motion.p>
                 <Button onClick={addMagicText}>Add text</Button></>
             }
-            {isLoading && <div>Generating... <Loader2 className="animate-spin text-muted-foreground"/></div>}
+            {isLoading && <div className='flex justify-center'> <Loader2 className="animate-spin text-muted-foreground"/> Generating...</div>}
         </div>
     );
 };

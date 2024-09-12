@@ -20,7 +20,7 @@ const magicWrite = new Hono()
             messages: [
                 {
                     role: 'system',
-                    content: 'You will be provided with statements, and your task is to initialize a simple, concise essay about 40 words.'
+                    content: 'You will be provided with statements, and your task is to expand the topic with maximum 40 words.'
                 },
                 {
                     role: 'user',
@@ -73,11 +73,11 @@ const magicWrite = new Hono()
             messages: [
                 {
                     role: 'system',
-                    content: 'You will be provided with statements, and your task is to initialize a simple, concise and casual-in-tone essay about 40 words.'
+                    content: 'You will be provided with statements, and your task is to expand the topic in a casual way with maximum 40 words.'
                 },
                 {
                     role: 'user',
-                    content: textContent
+                    content: 'Expand this topic in a casual way: ' + textContent
                 }
             ],
             temperature: 0.7,
@@ -125,14 +125,14 @@ const magicWrite = new Hono()
             messages: [
                 {
                     role: 'system',
-                    content: 'You will be provided with statements, and your task is to initialize a simple, concise and funny-in-tone essay about 40 words.'
+                    content: 'You are a comedian. Your task is to expand the topic in a humorous way with a maximum of 40 words. Every response should strictly adhere to a humorous tone.'
                 },
                 {
                     role: 'user',
                     content: textContent
                 }
             ],
-            temperature: 0.7,
+            temperature: 0.9,
             max_tokens: 100,
             top_p: 1
         };
