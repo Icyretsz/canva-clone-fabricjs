@@ -28,7 +28,7 @@ const TextMenu = ({editor}: ShapeMenuProps) => {
                             onClick={() => editor?.addTextbox('content', 'Your paragraph text')}>Add a text box</Button>
                     <Button variant='outline' className='h-[40px] w-[160px]'
                             onClick={() => setOpenMagicWrite(!openMagicWrite)}>Magic write</Button>
-                    {openMagicWrite && <div className='absolute top-[10%] w-[90%] h-[40%] bg-white border border-black p-5 rounded-2xl overflow-y-auto'>
+                    {openMagicWrite && <div className='absolute top-[12%] w-[84%] h-[60%] bg-white border border-black p-5 rounded-2xl overflow-y-auto'>
                         <MagicWrite editor={editor}/></div>}
                 </div>
                 <div className='text-white text-[16px]'>Default text styles</div>
