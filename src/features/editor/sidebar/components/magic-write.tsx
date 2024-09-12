@@ -27,12 +27,12 @@ const frameworks = [
         label: "Default",
     },
     {
-        value: "More casual",
-        label: "More casual",
+        value: "Casual",
+        label: "Casual",
     },
     {
-        value: "More fun",
-        label: "More fun",
+        value: "Funny",
+        label: "Funny",
     },]
 
 const tones = [
@@ -95,7 +95,9 @@ const MagicWrite = ({editor}: MagicWriteProps) => {
                 toneAPI = (tones[0].api);
                 break;
         }
+
         try {
+            console.log(toneAPI)
             const response = await fetch(`${toneAPI}`, {
                 method: 'POST',
                 headers: {

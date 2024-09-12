@@ -77,7 +77,7 @@ const magicWrite = new Hono()
                 },
                 {
                     role: 'user',
-                    content: 'Expand this topic in a casual way: ' + textContent
+                    content: textContent
                 }
             ],
             temperature: 0.7,
@@ -125,7 +125,7 @@ const magicWrite = new Hono()
             messages: [
                 {
                     role: 'system',
-                    content: 'You are a comedian. Your task is to expand the topic in a humorous way with a maximum of 40 words. Every response should strictly adhere to a humorous tone.'
+                    content: 'You will be provided with statements, and your task is to expand the topic in a humorous way with maximum 40 words.'
                 },
                 {
                     role: 'user',
