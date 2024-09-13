@@ -20,6 +20,7 @@ import {
 import {Editor} from "@/features/editor/sidebar/types";
 import splitString from "@/utils/splitString";
 import {motion} from 'framer-motion'
+import { Textarea } from "@/components/ui/textarea"
 
 const frameworks = [
     {
@@ -176,9 +177,14 @@ const MagicWrite = ({editor}: MagicWriteProps) => {
                     </Command>
                 </PopoverContent>
             </Popover>
-            <textarea onChange={(e) => saveText(e)} className='border border-black'
-                      placeholder='Enter your prompt...'/>
-            {AIResponse !== '' ? <Button onClick={callOpenAI}>Re-generate</Button> : <Button onClick={callOpenAI}>Generate</Button>}
+            <div className="grid w-full gap-1.5">
+                <Textarea placeholder="Enter your prompt..." id="message-2" onChange={(e) => saveText(e)}/>
+            </div>
+            {AIResponse !== '' ? <Button onClick={callOpenAI}>{isLoading ?
+                    <div className='flex justify-center'><Loader2
+                        className="animate-spin text-muted-foreground"/> Generating...</div> : 'Re-generating'}</Button> :
+                <Button onClick={callOpenAI}>{isLoading ? <div className='flex justify-center'><Loader2
+                    className="animate-spin text-muted-foreground"/> Generating...</div> : 'Generate'}</Button>}
             {AIResponse !== "" && splitted.length > 0 && <>
                 <motion.p initial="hidden" whileInView="reveal" transition={{staggerChildren: .02}}>
                     {splitted.map((char, index) => (
@@ -189,7 +195,6 @@ const MagicWrite = ({editor}: MagicWriteProps) => {
                 </motion.p>
                 <Button onClick={addMagicText}>Add text</Button></>
             }
-            {isLoading && <div className='flex justify-center'> <Loader2 className="animate-spin text-muted-foreground"/> Generating...</div>}
         </div>
     );
 };

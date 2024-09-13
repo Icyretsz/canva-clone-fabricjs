@@ -3,6 +3,7 @@
 import {
     PutObjectCommand,
     GetObjectCommand,
+    DeleteObjectCommand,
     S3Client,
 } from '@aws-sdk/client-s3';
 import {auth} from '@clerk/nextjs/server'
@@ -22,26 +23,40 @@ type SignedURLResponse = Promise<
     | { failure: string | unknown; success?: undefined }
 >;
 
-export const getSignedURL = async (fileName: string, operation: 'PUT' | 'GET'): SignedURLResponse => {
+export const getSignedURL = async (fileName: string, operation: 'PUT' | 'GET' | 'DELETE'): SignedURLResponse => {
     if (!auth().sessionId) {
         return {failure: "Unauthorized"};
     }
-    let url : string = ''
-    if (operation === 'PUT') {
-        const putObjectCommand = new PutObjectCommand({
-            Bucket: process.env.S3_BUCKET!,
-            Key: fileName,
-        });
-        url = await getSignedUrl(s3Client, putObjectCommand, {expiresIn: 60});
+    try {
+        let url: string = '';
 
-    } else if (operation === 'GET') {
-        const getObjectCommand = new GetObjectCommand({
-            Bucket: process.env.S3_BUCKET!,
-            Key: fileName,
-        });
-        url = await getSignedUrl(s3Client, getObjectCommand, {expiresIn: 60});
+        if (operation === 'PUT') {
+            const putObjectCommand = new PutObjectCommand({
+                Bucket: process.env.S3_BUCKET!,
+                Key: fileName,
+            });
+            url = await getSignedUrl(s3Client, putObjectCommand, { expiresIn: 60 });
+
+        } else if (operation === 'GET') {
+            const getObjectCommand = new GetObjectCommand({
+                Bucket: process.env.S3_BUCKET!,
+                Key: fileName,
+            });
+            url = await getSignedUrl(s3Client, getObjectCommand, { expiresIn: 60 });
+
+        } else if (operation === 'DELETE') {
+            const deleteObjectCommand = new DeleteObjectCommand({
+                Bucket: process.env.S3_BUCKET!,
+                Key: fileName,
+            });
+            url = await getSignedUrl(s3Client, deleteObjectCommand, { expiresIn: 60 });
+        }
+
+        return { success: { url } };
+    } catch (error) {
+        console.error('Error generating signed URL:', error);
+        return { failure: error instanceof Error ? error.message : 'Unknown error occurred' };
     }
-    return {success: {url}};
 };
 
 
