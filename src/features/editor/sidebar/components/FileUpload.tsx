@@ -11,9 +11,9 @@ import {Button} from "@/components/ui/button"
 import DisplayImage from "@/features/editor/sidebar/components/display-image";
 import {Editor} from "@/features/editor/sidebar/types";
 import {Loader2} from "lucide-react";
+import Resizer from "react-image-file-resizer";
+
 const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
-
-
 
 interface DataType {
     data : MediaType[]
@@ -54,6 +54,22 @@ const FileUpload = ({ editor } : UploadProps) => {
         },
     })
 
+    const resizeFile = (file : File) =>
+        new Promise((resolve) => {
+            Resizer.imageFileResizer(
+                file,
+                1280,
+                720,
+                "JPEG",
+                90,
+                0,
+                (uri) => {
+                    resolve(uri);
+                },
+                "file"
+            );
+        });
+
     const getImgFromUrl = async (fileName : string) => {
         // const GETURLResponse = await fetch(`/api/upload/get?fileName=${fileName}`, {
         //     method: 'GET',
@@ -78,10 +94,11 @@ const FileUpload = ({ editor } : UploadProps) => {
         setLoadingStates((prevStates) => [...prevStates, true]);
     }
 
-    const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
         if (event.target.files && event.target.files.length > 0) {
             const fileList = event.target.files;
             const fileArray = Array.from(fileList)
+            const resizedFileArray: File[] = []
             for (let i = 0; i < fileArray.length; i++) {
                 const file = fileArray[i];
                 if (!allowedTypes.includes(file.type)) {
@@ -89,8 +106,10 @@ const FileUpload = ({ editor } : UploadProps) => {
                     event.target.value = ''
                     return;
                 }
+                const resizedFile : File = await resizeFile(file) as File
+                resizedFileArray.push(resizedFile)
             }
-            setSelectedFiles(fileArray);
+            setSelectedFiles(resizedFileArray);
         }
     };
 
