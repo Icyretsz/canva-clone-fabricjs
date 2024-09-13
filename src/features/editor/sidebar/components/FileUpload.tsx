@@ -38,14 +38,12 @@ const FileUpload = ({ editor } : UploadProps) => {
     })
 
     useEffect(() => {
-        console.log('hi')
         if (data) {
             const dbUrls = data.data.map((media: MediaType) => media.url)
             dbUrls.map((url : string) => {
                 getImgFromUrl(url)
             })
         }
-
     }, [data])
 
     const mutation = useMutation({
