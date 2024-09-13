@@ -56,19 +56,27 @@ const FileUpload = ({ editor } : UploadProps) => {
     })
 
     const getImgFromUrl = async (fileName : string) => {
-        const GETURLResponse = await fetch(`/api/upload/get?fileName=${fileName}`, {
-            method: 'GET',
-        });
-        const GETResponseURL = await GETURLResponse.json();
-        if (GETURLResponse.ok && GETResponseURL.url) {
-            setS3Url((prevURLs) => [
-                ...prevURLs,
-                GETResponseURL.url
-            ]);
-            setLoadingStates((prevStates) => [...prevStates, true]);
-        } else {
-            console.error('Failed to retrieve GET signed URL:', GETResponseURL.error || GETURLResponse.statusText);
-        }
+        // const GETURLResponse = await fetch(`/api/upload/get?fileName=${fileName}`, {
+        //     method: 'GET',
+        // });
+        // const GETResponseURL = await GETURLResponse.json();
+        // if (GETURLResponse.ok && GETResponseURL.url) {
+        //     setS3Url((prevURLs) => [
+        //         ...prevURLs,
+        //         GETResponseURL.url
+        //     ]);
+        //     setLoadingStates((prevStates) => [...prevStates, true]);
+        // } else {
+        //     console.error('Failed to retrieve GET signed URL:', GETResponseURL.error || GETURLResponse.statusText);
+        // }
+         const s3Region = process.env.NEXT_PUBLIC_S3_BUCKET_REGION as string;
+         const s3BucketName = process.env.NEXT_PUBLIC_S3_BUCKET as string;
+         const url = `https://${s3BucketName}.s3.${s3Region}.amazonaws.com/${fileName}`
+        setS3Url((prevURLs) => [
+            ...prevURLs,
+            url
+        ]);
+        setLoadingStates((prevStates) => [...prevStates, true]);
     }
 
     const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {

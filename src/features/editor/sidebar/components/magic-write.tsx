@@ -19,20 +19,20 @@ import {
 } from "@/components/ui/popover"
 import {Editor} from "@/features/editor/sidebar/types";
 import splitString from "@/utils/splitString";
-import {motion, Variants} from 'framer-motion'
+import {motion} from 'framer-motion'
 
 const frameworks = [
     {
         value: "Default",
-        label: "Default",
+        label: "Default (GPT-4o-mini)",
     },
     {
         value: "Casual",
-        label: "Casual",
+        label: "Casual (GPT-4o-mini)",
     },
     {
         value: "Funny",
-        label: "Funny",
+        label: "Funny (GPT-4o-mini)",
     },]
 
 const tones = [
@@ -170,7 +170,7 @@ const MagicWrite = ({editor}: MagicWriteProps) => {
             </Popover>
             <textarea onChange={(e) => saveText(e)} className='border border-black'
                       placeholder='Enter your prompt...'/>
-            <Button onClick={callOpenAI}>Generate</Button>
+            {AIResponse !== '' ? <Button onClick={callOpenAI}>Re-generate</Button> : <Button onClick={callOpenAI}>Generate</Button>}
             {AIResponse !== "" && splitted.length > 0 && <>
                 <motion.p initial="hidden" whileInView="reveal" transition={{staggerChildren: .02}}>
                     {splitted.map((char, index) => (

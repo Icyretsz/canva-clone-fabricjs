@@ -36,7 +36,7 @@ const ColorMenu = ({ editor, type }: ColorMenuProps) => {
     };
 
     return (
-        <div className="fixed w-[350px] top-[68px] h-[calc(100%-68px)] bg-white">
+        <div className="fixed w-[350px] top-[68px] h-[calc(100%-68px)] bg-white z-50">
             <div className="h-full w-full bg-white border-r-[1px] border-gray-200">
                 <MenuHeaderLight type={type} />
                 <div className="h-full w-full flex flex-col items-center gap-5">
