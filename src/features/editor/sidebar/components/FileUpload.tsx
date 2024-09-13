@@ -198,7 +198,7 @@ const FileUpload = ({ editor } : UploadProps) => {
             </form>
             {uploading && <div>Uploading... <Loader2 className="animate-spin text-muted-foreground" /></div>}
             <div>
-                <DisplayImage s3Url={s3Url} loadingStates={loadingStates} handleImageLoad={handleImageLoad} editor={editor}/>
+                <DisplayImage s3Url={s3Url} setS3Url={setS3Url} loadingStates={loadingStates} handleImageLoad={handleImageLoad} editor={editor}/>
             </div>
         </div>
     );

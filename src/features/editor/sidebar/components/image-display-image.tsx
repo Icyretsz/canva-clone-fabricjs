@@ -8,8 +8,8 @@ interface ImageDisplayImageProps {
     url: string,
     handleImageLoad: (i: number) => void;
     i: number,
-    isChecked: boolean[],
-    setChecked: (isChecked: boolean[]) => void;
+    isChecked: boolean[] | undefined,
+    setChecked: (isChecked: boolean[] | undefined) => void;
 }
 
 const ImageDisplayImage = ({editor, url, handleImageLoad, i, isChecked, setChecked}: ImageDisplayImageProps) => {
@@ -26,9 +26,11 @@ const ImageDisplayImage = ({editor, url, handleImageLoad, i, isChecked, setCheck
 
     const handleChecked = useCallback(
         (e: React.ChangeEvent<HTMLInputElement>) => {
-            const newIsChecked = [...isChecked];
-            newIsChecked[i] = e.target.checked;
-            setChecked(newIsChecked);
+            if (isChecked) {
+                const newIsChecked = [...isChecked];
+                newIsChecked[i] = e.target.checked;
+                setChecked(newIsChecked);
+            }
         },
         [isChecked, setChecked, i]
     );
@@ -48,12 +50,12 @@ const ImageDisplayImage = ({editor, url, handleImageLoad, i, isChecked, setCheck
                 onMouseEnter={() => setHovered(true)}
                 onMouseLeave={() => setHovered(false)}
             />
-            {(isHovered || isMenuHovered || isChecked.includes(true)) &&
+            {(isHovered || isMenuHovered || isChecked?.includes(true)) &&
                 <div
                     className='absolute top-[7%] left-[7%] cursor-pointer bg-gray-400 bg-opacity-50'
                     onMouseEnter={() => setMenuHovered(true)}
                     onMouseLeave={() => setMenuHovered(false)}>
-                    <input type="checkbox" id="scales" name="scales" checked={isChecked[i]} onChange={handleChecked}/>
+                    <input type="checkbox" id="scales" name="scales" checked={isChecked && isChecked[i]} onChange={handleChecked}/>
                 </div>
             }
         </div>
