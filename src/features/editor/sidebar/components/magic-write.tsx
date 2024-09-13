@@ -33,12 +33,17 @@ const frameworks = [
     {
         value: "Funny",
         label: "Funny (GPT-4o-mini)",
-    },]
+    },
+    {
+        value: "Spelling",
+        label: "Fix spelling (GPT-4o-mini)",
+    }]
 
 const tones = [
     {tone: 'Default', api: '/api/magic-write/default'},
     {tone: 'Casual', api: '/api/magic-write/casual'},
-    {tone: 'Funny', api: '/api/magic-write/funny'}
+    {tone: 'Funny', api: '/api/magic-write/funny'},
+    {tone: 'Spelling', api: '/api/magic-write/spelling'}
 ]
 
 const charVariants = {
@@ -90,6 +95,9 @@ const MagicWrite = ({editor}: MagicWriteProps) => {
                 break
             case 'Funny':
                 toneAPI = (tones[2].api)
+                break
+            case 'Spelling':
+                toneAPI = (tones[3].api)
                 break
             default:
                 toneAPI = (tones[0].api);

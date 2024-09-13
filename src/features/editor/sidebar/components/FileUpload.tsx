@@ -14,6 +14,7 @@ import {Loader2} from "lucide-react";
 const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
 
 
+
 interface DataType {
     data : MediaType[]
 }

@@ -4,6 +4,13 @@ import {Editor} from "@/features/editor/sidebar/types";
 import {Button} from "@/components/ui/button"
 import {Montserrat} from "next/font/google";
 import MagicWrite from "@/features/editor/sidebar/components/magic-write";
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover"
+import { FaWandMagicSparkles } from "react-icons/fa6";
+import { BsFonts } from "react-icons/bs";
 
 
 interface ShapeMenuProps {
@@ -16,20 +23,17 @@ const montserrat = Montserrat({
 
 
 const TextMenu = ({editor}: ShapeMenuProps) => {
-
-    const [openMagicWrite, setOpenMagicWrite] = React.useState(false);
-
     return (
         <div className='relative flex flex-col gap-2 h-full w-full'>
             <MenuHeaderDark type='Text'/>
             <div className='flex flex-col h-full gap-2 w-full px-7'>
                 <div className='flex gap-2'>
-                    <Button className='h-[40px] w-[160px] bg-[#14a7df] hover:bg-[#14a7df]/70'
-                            onClick={() => editor?.addTextbox('content', 'Your paragraph text')}>Add a text box</Button>
-                    <Button variant='outline' className='h-[40px] w-[160px]'
-                            onClick={() => setOpenMagicWrite(!openMagicWrite)}>Magic write</Button>
-                    {openMagicWrite && <div className='absolute top-[12%] w-[84%] h-[60%] bg-white border border-black p-5 rounded-2xl overflow-y-auto'>
-                        <MagicWrite editor={editor}/></div>}
+                    <Button className='h-[40px] w-[50%] bg-[#14a7df] hover:bg-[#14a7df]/70 flex gap-2'
+                            onClick={() => editor?.addTextbox('content', 'Your paragraph text')}><BsFonts/> Add a text box</Button>
+                    <Popover>
+                        <PopoverTrigger className='w-[50%]'><Button variant='outline' className='h-[40px] w-full flex gap-2'><FaWandMagicSparkles/> Magic write</Button></PopoverTrigger>
+                        <PopoverContent><MagicWrite editor={editor}/></PopoverContent>
+                    </Popover>
                 </div>
                 <div className='text-white text-[16px]'>Default text styles</div>
                 <div className='flex flex-col h-full gap-2 items-center w-full'>
