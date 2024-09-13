@@ -16,12 +16,12 @@ const DisplayImage: React.FC<DisplayImageProps> = ({s3Url, setS3Url, loadingStat
 
     const [isChecked, setChecked] = useState<boolean[]>();
     const [fileSelected, setFileSelected] = React.useState<string[]>();
-    const s3UrlClone = [...s3Url]
+    const [s3UrlClone, setS3UrlClone] = React.useState<string[]>([]);
 
     useEffect(() => {
-        setChecked(new Array(s3Url.length).fill(false))
-        setFileSelected(new Array(s3Url.length).fill(""))
-        //s3UrlClone = [...s3Url]
+        setChecked(new Array(s3UrlClone.length).fill(false))
+        setFileSelected(new Array(s3UrlClone.length).fill(""))
+        setS3UrlClone(s3Url)
     }, [s3Url])
 
     const extractFileNames = () => {
@@ -57,13 +57,27 @@ const DisplayImage: React.FC<DisplayImageProps> = ({s3Url, setS3Url, loadingStat
     }, [isChecked])
 
     const deleteFile = () => {
-
+        if (isChecked && fileSelected) {
+            const isCheckedClone = [...isChecked]
+            const fileSelectedClone = [...fileSelected]
+            const s3UrlCloneClone = [...s3UrlClone]
+            isCheckedClone.map((check, i) => {
+                if (check) {
+                    isCheckedClone.splice(i, 1);
+                    fileSelectedClone.splice(i, 1);
+                    s3UrlCloneClone.splice(i, 1);
+                }
+            })
+            setChecked(isCheckedClone);
+            setFileSelected(fileSelectedClone)
+            setS3UrlClone(s3UrlCloneClone)
+        }
     }
 
     return (
         <div>
             <div className="columns-2 gap-2">
-                {s3Url.map((url, i) => {
+                {s3UrlClone.map((url, i) => {
                     return <div key={i} className="relative">
                         {loadingStates[i] && (
                             <div className="absolute inset-0 flex justify-center items-center bg-gray-200 z-10">
