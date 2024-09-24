@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, {Dispatch, SetStateAction, useCallback, useState} from 'react';
 import Image from "next/image";
 import {Editor} from "@/features/editor/sidebar/types";
 
@@ -9,7 +9,7 @@ interface ImageDisplayImageProps {
     handleImageLoad: (i: number) => void;
     i: number,
     isChecked: boolean[] | undefined,
-    setChecked: (isChecked: boolean[] | undefined) => void;
+    setChecked: Dispatch<SetStateAction<boolean[]>>
 }
 
 const ImageDisplayImage = ({editor, url, handleImageLoad, i, isChecked, setChecked}: ImageDisplayImageProps) => {
