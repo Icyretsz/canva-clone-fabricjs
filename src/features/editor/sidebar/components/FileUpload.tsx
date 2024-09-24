@@ -193,10 +193,10 @@ const FileUpload = ({ editor } : UploadProps) => {
                     <input type="file" multiple onChange={handleFileChange}/>
                 </div>
                 <div>
-                    <Button className="bg-blue-200 text-black border border-black" type="submit">Upload</Button>
+                    {uploading ? <Button className="bg-blue-200 text-black border border-black" type="submit">Uploading... <Loader2 className="animate-spin text-muted-foreground" /></Button>
+                     : <Button className="bg-blue-200 text-black border border-black" type="submit">Upload</Button>}
                 </div>
             </form>
-            {uploading && <div>Uploading... <Loader2 className="animate-spin text-muted-foreground" /></div>}
             <div>
                 <DisplayImage s3Url={s3Url} setS3Url={setS3Url} loadingStates={loadingStates} handleImageLoad={handleImageLoad} editor={editor}/>
             </div>

@@ -52,7 +52,7 @@ const ImageDisplayImage = ({editor, url, handleImageLoad, i, isChecked, setCheck
             />
             {(isHovered || isMenuHovered || isChecked?.includes(true)) &&
                 <div
-                    className='absolute top-[7%] left-[7%] cursor-pointer bg-gray-400 bg-opacity-50'
+                    className='absolute top-[7%] left-[7%] cursor-pointer bg-gray-400 bg-opacity-50 flex'
                     onMouseEnter={() => setMenuHovered(true)}
                     onMouseLeave={() => setMenuHovered(false)}>
                     <input type="checkbox" id="scales" name="scales" checked={isChecked && isChecked[i]} onChange={handleChecked}/>
