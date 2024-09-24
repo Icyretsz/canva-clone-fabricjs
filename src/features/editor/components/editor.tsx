@@ -43,9 +43,8 @@ const Editor = () => {
         {width: 'calc(100% - 72px)', left: '72px'}
 
     const visibleStyle: React.CSSProperties = {
-        opacity: activeTool[1] !== "" ? 0 : 1,
-        zIndex: activeTool[0] !== "Upload" ? -999 : 1,
-        pointerEvents: activeTool[1] !== "" ? 'none' : 'auto',
+        opacity: activeTool[1] !== "" || activeTool[0] !== "Upload" ? 0 : 1,
+        pointerEvents: activeTool[1] !== "" || activeTool[0] !== "Upload" ? 'none' : 'auto',
     };
 
     return (

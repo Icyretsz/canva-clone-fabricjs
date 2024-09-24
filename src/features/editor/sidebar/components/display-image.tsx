@@ -17,18 +17,16 @@ interface DisplayImageProps {
 const DisplayImage: React.FC<DisplayImageProps> = ({s3Url, setS3Url, loadingStates, handleImageLoad, editor}) => {
     const [isChecked, setChecked] = useState<boolean[]>(new Array(s3Url.length).fill(false));
     const [fileSelected, setFileSelected] = useState<string[]>(new Array(s3Url.length).fill(''));
-    const [s3UrlClone, setS3UrlClone] = useState<string[]>(s3Url);
     const [selectedCounter, setSelectedCounter] = useState<number>(0);
 
     // Sync state when s3Url changes
     useEffect(() => {
         setChecked(new Array(s3Url.length).fill(false));
         setFileSelected(new Array(s3Url.length).fill(''));
-        setS3UrlClone(s3Url);
     }, [s3Url]);
 
     const extractFileNames = () => {
-        const updatedFileSelected = s3UrlClone.map((url, i) => {
+        const updatedFileSelected = s3Url.map((url, i) => {
             return isChecked[i] ? url.substring(url.lastIndexOf('/') + 1) : 'none';
         });
         setFileSelected(updatedFileSelected);
@@ -49,11 +47,11 @@ const DisplayImage: React.FC<DisplayImageProps> = ({s3Url, setS3Url, loadingStat
     const deleteFile = () => {
         const updatedIsChecked = isChecked.filter((check, i) => !check);
         const updatedFileSelected = fileSelected.filter((_, i) => !isChecked[i]);
-        const updatedS3UrlClone = s3UrlClone.filter((_, i) => !isChecked[i]);
+        const updatedS3UrlClone = s3Url.filter((_, i) => !isChecked[i]);
 
         setChecked(updatedIsChecked);
         setFileSelected(updatedFileSelected);
-        setS3UrlClone(updatedS3UrlClone);
+        setS3Url(updatedS3UrlClone);
     };
 
     const closeToolbar = () => {
@@ -64,7 +62,7 @@ const DisplayImage: React.FC<DisplayImageProps> = ({s3Url, setS3Url, loadingStat
     return (
         <div>
             <div className="columns-2 gap-2">
-                {s3UrlClone.map((url, i) => (
+                {s3Url.map((url, i) => (
                     <div key={i} className="relative">
                         {loadingStates[i] && (
                             <div className="absolute inset-0 flex justify-center items-center bg-gray-200 z-10">
