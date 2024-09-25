@@ -24,7 +24,8 @@ type SignedURLResponse = Promise<
 >;
 
 export const getSignedURL = async (fileName: string, operation: 'PUT' | 'GET' | 'DELETE'): SignedURLResponse => {
-    if (!auth().sessionId) {
+    const userId = auth().userId
+    if (!userId) {
         return {failure: "Unauthorized"};
     }
     try {

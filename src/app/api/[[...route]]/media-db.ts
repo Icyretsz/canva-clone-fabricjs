@@ -15,7 +15,8 @@ type MediaEntry = z.infer<typeof mediaPostSchema>;
 
 const mediaDbApp = new Hono()
     .post('/add-img-db', zValidator('json', mediaPostSchema), async (c) => {
-        if (!auth().sessionId) {
+        const userId = auth().userId
+        if (!userId) {
             return c.json({success: false, message: 'Unauthorized'}, 401);
         }
         try {
@@ -34,15 +35,16 @@ const mediaDbApp = new Hono()
     })
     .get('/get-img-db', async (c) => {
         try {
-            const userId = c.req.query('userId');
+            const userIdServer = auth().userId
 
-            if (!userId) {
+            if (!userIdServer) {
                 return c.json({success: false, message: 'Unauthorized'}, 401);
             }
+
             const result: MediaEntry[] = await db.select({
                 user_id: mediaTable.user_id,
                 fileName: mediaTable.fileName
-            }).from(mediaTable).where(eq(mediaTable.user_id, userId));
+            }).from(mediaTable).where(eq(mediaTable.user_id, userIdServer));
 
             return c.json({data: result}, 200);
 
@@ -60,12 +62,12 @@ const mediaDbApp = new Hono()
             }
 
             const result = await db.delete(mediaTable)
-               .where(
-                   and(
-                       eq(mediaTable.user_id, userId),
-                       eq(mediaTable.fileName, fileName!)
-                   )
-               );
+                .where(
+                    and(
+                        eq(mediaTable.user_id, userId),
+                        eq(mediaTable.fileName, fileName!)
+                    )
+                );
 
             return c.json({data: result}, 200);
 

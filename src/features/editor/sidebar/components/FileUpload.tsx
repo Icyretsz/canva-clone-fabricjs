@@ -33,7 +33,7 @@ const FileUpload = ({ editor } : UploadProps) => {
 
     const { isPending, isError, data, error, refetch } = useQuery<DataType>({
         queryKey: ['media', user?.id],
-        queryFn: () => fetchMediaFromDb(user!.id),
+        queryFn: () => fetchMediaFromDb(),
         enabled: !!user,
     })
 
@@ -185,7 +185,7 @@ const FileUpload = ({ editor } : UploadProps) => {
 
     const deleteOnS3 = async (fileSelected : string[]) => {
 
-        await Promise.all(fileSelected.map(async (fileName, i) => {
+        await Promise.all(fileSelected.map(async (fileName) => {
             try {
                 const DELURLResponse = await fetch(`/api/upload/delete?fileName=${encodeURIComponent(fileName)}`, {
                     method: 'POST',

@@ -15,8 +15,8 @@ export async function insertMediaToDb(newMedia : InsertMedia) {
     return response.json();
 }
 
-export const fetchMediaFromDb = async (userId : string) => {
-    const GETImgDbResponse = await fetch(`/api/media-interact/get-img-db?userId=${userId}`, {
+export const fetchMediaFromDb = async () => {
+    const GETImgDbResponse = await fetch(`/api/media-interact/get-img-db`, {
         method: 'GET',
     });
     if (!GETImgDbResponse.ok) {
