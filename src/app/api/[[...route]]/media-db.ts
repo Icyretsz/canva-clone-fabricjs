@@ -49,6 +49,24 @@ const mediaDbApp = new Hono()
         } catch (error: any) {
             return c.json({success: false, message: error.message}, 500);
         }
+    })
+    .delete('/delete-img-url', async (c) => {
+        try {
+            const userId = c.req.query('fileName');
+
+            if (!userId) {
+                return c.json({success: false, message: 'Unauthorized'}, 401);
+            }
+            const result: MediaEntry[] = await db.select({
+                user_id: mediaTable.user_id,
+                url: mediaTable.url
+            }).from(mediaTable).where(eq(mediaTable.user_id, userId));
+
+            return c.json({data: result}, 200);
+
+        } catch (error: any) {
+            return c.json({success: false, message: error.message}, 500);
+        }
     });
 
 export default mediaDbApp;

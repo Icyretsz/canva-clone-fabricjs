@@ -1,6 +1,6 @@
 import {InsertMedia} from "@/app/db/schema";
 
-async function AddMedia(newMedia : InsertMedia) {
+async function AddMediaToDb(newMedia : InsertMedia) {
     const response = await fetch('/api/media-interact/add-img-url', {
         method: 'POST',
         headers: {
@@ -15,4 +15,4 @@ async function AddMedia(newMedia : InsertMedia) {
     return response.json();
 }
 
-export default AddMedia
+export default AddMediaToDb

@@ -37,12 +37,12 @@ const mediaS3App = new Hono()
             return c.json({error: 'An unexpected error occurred.'}, 500)
         }
     })
-    .delete('/delete', async (c) => {
+    .post('/delete', async (c) => {
         try {
             const fileName = c.req.query('fileName');
 
             if (!fileName) {
-                return c.json({error: 'File name required.'}, 500)
+                return c.json({error: 'File name required.'}, 400)
             }
 
             const result = await getSignedURL(fileName, 'DELETE')
@@ -52,6 +52,7 @@ const mediaS3App = new Hono()
             }
             return c.json({url: result.success?.url})
         } catch (error) {
+            console.error('Server error:', error);
             return c.json({error: 'An unexpected error occurred.'}, 500)
         }
     })

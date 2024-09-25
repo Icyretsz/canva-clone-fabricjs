@@ -4,7 +4,7 @@ import React, {useState, ChangeEvent, FormEvent, useEffect} from 'react';
 import {v4} from 'uuid';
 import {useUser} from '@clerk/nextjs';
 import {useMutation, useQueryClient, useQuery} from "@tanstack/react-query";
-import addMedia from "@/app/db/addMedia";
+import addMedia from "@/app/db/addMediaToDb";
 import FetchMediaUrl from "@/app/db/fetch-media-url";
 import {MediaType} from "@/app/db/type"
 import {Button} from "@/components/ui/button"
@@ -177,6 +177,33 @@ const FileUpload = ({ editor } : UploadProps) => {
 
     };
 
+    const deleteOnS3 = async (fileSelected : string[]) => {
+
+        await Promise.all(fileSelected.map(async (fileName, i) => {
+            try {
+                const DELURLResponse = await fetch(`/api/upload/delete?fileName=${encodeURIComponent(fileName)}`, {
+                    method: 'POST',
+                });
+
+                const DELSignedURL = await DELURLResponse.json();
+                if (DELURLResponse.ok && DELSignedURL.url) {
+                    const deleteResponse = await fetch(DELSignedURL.url, {
+                        method: 'DELETE',
+                    });
+                    if (deleteResponse.ok) {
+                        console.log('delete successful')
+                    } else {
+                        console.log('error on deletetion')
+                    }
+                } else {
+                    console.error('Failed to delete, something wrong with delete presigned URL', DELSignedURL.error);
+                }
+            } catch (error) {
+                console.error('An error occurred during the deletion:', error);
+            }
+        }))
+    };
+
     const handleImageLoad = (index: number) => {
         setLoadingStates((prevStates) => {
             const newStates = [...prevStates];
@@ -198,7 +225,7 @@ const FileUpload = ({ editor } : UploadProps) => {
                 </div>
             </form>
             <div>
-                <DisplayImage s3Url={s3Url} setS3Url={setS3Url} loadingStates={loadingStates} handleImageLoad={handleImageLoad} editor={editor}/>
+                <DisplayImage s3Url={s3Url} setS3Url={setS3Url} deleteOnS3={deleteOnS3} loadingStates={loadingStates} handleImageLoad={handleImageLoad} editor={editor}/>
             </div>
         </div>
     );

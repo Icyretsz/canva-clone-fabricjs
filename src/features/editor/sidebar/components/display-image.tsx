@@ -12,9 +12,10 @@ interface DisplayImageProps {
     loadingStates: boolean[];
     handleImageLoad: (i: number) => void;
     editor: Editor | undefined;
+    deleteOnS3: (fileSelected : string[]) => void
 }
 
-const DisplayImage: React.FC<DisplayImageProps> = ({s3Url, setS3Url, loadingStates, handleImageLoad, editor}) => {
+const DisplayImage: React.FC<DisplayImageProps> = ({s3Url, setS3Url, loadingStates, deleteOnS3, handleImageLoad, editor}) => {
     const [isChecked, setChecked] = useState<boolean[]>(new Array(s3Url.length).fill(false));
     const [fileSelected, setFileSelected] = useState<string[]>(new Array(s3Url.length).fill(''));
     const [selectedCounter, setSelectedCounter] = useState<number>(0);
@@ -44,10 +45,12 @@ const DisplayImage: React.FC<DisplayImageProps> = ({s3Url, setS3Url, loadingStat
     }, [isChecked]);
 
 
-    const deleteFile = () => {
+    const deleteFile = async () => {
         const updatedIsChecked = isChecked.filter((check, i) => !check);
         const updatedFileSelected = fileSelected.filter((_, i) => !isChecked[i]);
         const updatedS3UrlClone = s3Url.filter((_, i) => !isChecked[i]);
+
+        deleteOnS3(fileSelected)
 
         setChecked(updatedIsChecked);
         setFileSelected(updatedFileSelected);
