@@ -4,8 +4,7 @@ import React, {useState, ChangeEvent, FormEvent, useEffect} from 'react';
 import {v4} from 'uuid';
 import {useUser} from '@clerk/nextjs';
 import {useMutation, useQueryClient, useQuery} from "@tanstack/react-query";
-import addMedia from "@/app/db/addMediaToDb";
-import FetchMediaUrl from "@/app/db/fetch-media-url";
+import {insertMediaUrlToDb, fetchMediaUrlFromDb, deleteMediaUrlFromDb} from "@/app/db/mediaDbManipulate";
 import {MediaType} from "@/app/db/type"
 import {Button} from "@/components/ui/button"
 import DisplayImage from "@/features/editor/sidebar/components/display-image";
@@ -34,7 +33,7 @@ const FileUpload = ({ editor } : UploadProps) => {
 
     const { isPending, isError, data, error, refetch } = useQuery<DataType>({
         queryKey: ['media', user?.id],
-        queryFn: () => FetchMediaUrl(user!.id),
+        queryFn: () => fetchMediaUrlFromDb(user!.id),
         enabled: !!user,
     })
 
@@ -47,8 +46,15 @@ const FileUpload = ({ editor } : UploadProps) => {
         }
     }, [data])
 
-    const mutation = useMutation({
-        mutationFn: addMedia,
+    const mutationAddMediaDb = useMutation({
+        mutationFn: insertMediaUrlToDb,
+        onSuccess: () => {
+            queryClient.invalidateQueries({queryKey: ['media']})
+        },
+    })
+
+    const mutationDelMediaDb = useMutation({
+        mutationFn: deleteMediaUrlFromDb,
         onSuccess: () => {
             queryClient.invalidateQueries({queryKey: ['media']})
         },
@@ -149,7 +155,7 @@ const FileUpload = ({ editor } : UploadProps) => {
                     });
 
                     if (uploadResponse.ok) {
-                        mutation.mutate({
+                        mutationAddMediaDb.mutate({
                             user_id: user!.id,
                             url: fileName,
                         })
@@ -192,6 +198,7 @@ const FileUpload = ({ editor } : UploadProps) => {
                     });
                     if (deleteResponse.ok) {
                         console.log('delete successful')
+                        mutationDelMediaDb.mutate(fileName)
                     } else {
                         console.log('error on deletetion')
                     }

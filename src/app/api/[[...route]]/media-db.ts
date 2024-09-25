@@ -4,7 +4,7 @@ import {z} from 'zod'
 import {zValidator} from '@hono/zod-validator'
 import {mediaTable} from "@/app/db/schema";
 import {auth} from '@clerk/nextjs/server'
-import {eq} from "drizzle-orm";
+import {and, eq} from "drizzle-orm";
 
 const mediaPostSchema = z.object({
     user_id: z.string(),
@@ -50,17 +50,22 @@ const mediaDbApp = new Hono()
             return c.json({success: false, message: error.message}, 500);
         }
     })
-    .delete('/delete-img-url', async (c) => {
+    .post('/delete-img-url', async (c) => {
         try {
-            const userId = c.req.query('fileName');
+            const fileName = c.req.query('fileName');
+            const userId = auth().userId
 
             if (!userId) {
                 return c.json({success: false, message: 'Unauthorized'}, 401);
             }
-            const result: MediaEntry[] = await db.select({
-                user_id: mediaTable.user_id,
-                url: mediaTable.url
-            }).from(mediaTable).where(eq(mediaTable.user_id, userId));
+
+            const result = await db.delete(mediaTable)
+               .where(
+                   and(
+                       eq(mediaTable.user_id, userId),
+                       eq(mediaTable.url, fileName!)
+                   )
+               );
 
             return c.json({data: result}, 200);
 
