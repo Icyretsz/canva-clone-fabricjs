@@ -5,5 +5,6 @@ CREATE TABLE IF NOT EXISTS "media_table" (
 	CONSTRAINT "media_table_url_unique" UNIQUE("url")
 );
 
-ALTER TABLE mediaTable RENAME COLUMN 'url' TO 'fileName';
+ALTER TABLE media_table RENAME COLUMN "url" TO "fileName"
+END $$;
 

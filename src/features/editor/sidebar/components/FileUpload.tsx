@@ -4,7 +4,7 @@ import React, {useState, ChangeEvent, FormEvent, useEffect} from 'react';
 import {v4} from 'uuid';
 import {useUser} from '@clerk/nextjs';
 import {useMutation, useQueryClient, useQuery} from "@tanstack/react-query";
-import {insertMediaUrlToDb, fetchMediaUrlFromDb, deleteMediaUrlFromDb} from "@/app/db/mediaDbManipulate";
+import {insertMediaToDb, fetchMediaFromDb, deleteMediaFromDb} from "@/app/db/mediaDbManipulate";
 import {MediaType} from "@/app/db/type"
 import {Button} from "@/components/ui/button"
 import DisplayImage from "@/features/editor/sidebar/components/display-image";
@@ -33,28 +33,28 @@ const FileUpload = ({ editor } : UploadProps) => {
 
     const { isPending, isError, data, error, refetch } = useQuery<DataType>({
         queryKey: ['media', user?.id],
-        queryFn: () => fetchMediaUrlFromDb(user!.id),
+        queryFn: () => fetchMediaFromDb(user!.id),
         enabled: !!user,
     })
 
     useEffect(() => {
         if (data) {
-            const dbUrls = data.data.map((media: MediaType) => media.url)
-            dbUrls.map((url : string) => {
-                getImgFromUrl(url)
+            const dbUrls = data.data.map((media: MediaType) => media.fileName)
+            dbUrls.map((fileName : string) => {
+                getImgUrlFromName(fileName)
             })
         }
     }, [data])
 
     const mutationAddMediaDb = useMutation({
-        mutationFn: insertMediaUrlToDb,
+        mutationFn: insertMediaToDb,
         onSuccess: () => {
             queryClient.invalidateQueries({queryKey: ['media']})
         },
     })
 
     const mutationDelMediaDb = useMutation({
-        mutationFn: deleteMediaUrlFromDb,
+        mutationFn: deleteMediaFromDb,
         onSuccess: () => {
             queryClient.invalidateQueries({queryKey: ['media']})
         },
@@ -76,7 +76,7 @@ const FileUpload = ({ editor } : UploadProps) => {
             );
         });
 
-    const getImgFromUrl = async (fileName : string) => {
+    const getImgUrlFromName = async (fileName : string) => {
         // const GETURLResponse = await fetch(`/api/upload/get?fileName=${fileName}`, {
         //     method: 'GET',
         // });
@@ -157,7 +157,7 @@ const FileUpload = ({ editor } : UploadProps) => {
                     if (uploadResponse.ok) {
                         mutationAddMediaDb.mutate({
                             user_id: user!.id,
-                            url: fileName,
+                            fileName: fileName,
                         })
                         setS3Url([])
                     } else {

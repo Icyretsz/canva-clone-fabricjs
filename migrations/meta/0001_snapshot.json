@@ -1,0 +1,52 @@
+{
+  "id": "90af5ccc-55e7-4edd-beb3-25d02d2f6fca",
+  "prevId": "ce124d0f-dbfe-4a64-94db-23a9c3061cce",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.media_table": {
+      "name": "media_table",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "fileName": {
+          "name": "fileName",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "media_table_fileName_unique": {
+          "name": "media_table_fileName_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "fileName"
+          ]
+        }
+      }
+    }
+  },
+  "enums": {},
+  "schemas": {},
+  "sequences": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}

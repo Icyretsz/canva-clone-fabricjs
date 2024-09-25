@@ -1,7 +1,7 @@
 import {InsertMedia} from "@/app/db/schema";
 
-export async function insertMediaUrlToDb(newMedia : InsertMedia) {
-    const response = await fetch('/api/media-interact/add-img-url', {
+export async function insertMediaToDb(newMedia : InsertMedia) {
+    const response = await fetch('/api/media-interact/add-img-db', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -10,23 +10,23 @@ export async function insertMediaUrlToDb(newMedia : InsertMedia) {
     });
 
     if (!response.ok) {
-        throw new Error('Failed to add media from database');
+        throw new Error('Failed to add media to database');
     }
     return response.json();
 }
 
-export const fetchMediaUrlFromDb = async (userId : string) => {
-    const GETURLDbResponse = await fetch(`/api/media-interact/get-img-url?userId=${userId}`, {
+export const fetchMediaFromDb = async (userId : string) => {
+    const GETImgDbResponse = await fetch(`/api/media-interact/get-img-db?userId=${userId}`, {
         method: 'GET',
     });
-    if (!GETURLDbResponse.ok) {
+    if (!GETImgDbResponse.ok) {
         throw new Error('Failed to fetch media URLs from database');
     }
-    return GETURLDbResponse.json();
+    return GETImgDbResponse.json();
 }
 
-export async function deleteMediaUrlFromDb(fileName : string) {
-    const response = await fetch(`/api/media-interact/delete-img-url?fileName=${fileName}`, {
+export async function deleteMediaFromDb(fileName : string) {
+    const response = await fetch(`/api/media-interact/delete-img-db?fileName=${fileName}`, {
         method: 'POST',
     });
 

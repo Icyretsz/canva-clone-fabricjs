@@ -8,6 +8,13 @@
       "when": 1724267585934,
       "tag": "0000_sticky_silver_sable",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1727264202582,
+      "tag": "0001_parched_black_widow",
+      "breakpoints": true
     }
   ]
 }

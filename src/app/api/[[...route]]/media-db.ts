@@ -8,23 +8,23 @@ import {and, eq} from "drizzle-orm";
 
 const mediaPostSchema = z.object({
     user_id: z.string(),
-    url: z.string()
+    fileName: z.string()
 })
 
 type MediaEntry = z.infer<typeof mediaPostSchema>;
 
 const mediaDbApp = new Hono()
-    .post('/add-img-url', zValidator('json', mediaPostSchema), async (c) => {
+    .post('/add-img-db', zValidator('json', mediaPostSchema), async (c) => {
         if (!auth().sessionId) {
             return c.json({success: false, message: 'Unauthorized'}, 401);
         }
         try {
             const body = c.req.valid('json');
-            const {user_id, url} = body;
+            const {user_id, fileName} = body;
 
             await db.insert(mediaTable).values({
                 user_id,
-                url
+                fileName
             }).execute();
 
             return c.json({success: true});
@@ -32,7 +32,7 @@ const mediaDbApp = new Hono()
             return c.json({success: false, message: error.message}, 500);
         }
     })
-    .get('/get-img-url', async (c) => {
+    .get('/get-img-db', async (c) => {
         try {
             const userId = c.req.query('userId');
 
@@ -41,7 +41,7 @@ const mediaDbApp = new Hono()
             }
             const result: MediaEntry[] = await db.select({
                 user_id: mediaTable.user_id,
-                url: mediaTable.url
+                fileName: mediaTable.fileName
             }).from(mediaTable).where(eq(mediaTable.user_id, userId));
 
             return c.json({data: result}, 200);
@@ -50,7 +50,7 @@ const mediaDbApp = new Hono()
             return c.json({success: false, message: error.message}, 500);
         }
     })
-    .post('/delete-img-url', async (c) => {
+    .post('/delete-img-db', async (c) => {
         try {
             const fileName = c.req.query('fileName');
             const userId = auth().userId
@@ -63,7 +63,7 @@ const mediaDbApp = new Hono()
                .where(
                    and(
                        eq(mediaTable.user_id, userId),
-                       eq(mediaTable.url, fileName!)
+                       eq(mediaTable.fileName, fileName!)
                    )
                );
 
