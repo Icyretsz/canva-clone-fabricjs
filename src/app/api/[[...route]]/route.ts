@@ -9,7 +9,7 @@ export const runtime = 'edge'
 
 const app = new Hono().basePath('/api')
 
-    .route("/upload", mediaS3App)
+    .route("/media", mediaS3App)
     .route("/media-interact", mediaDbApp)
     .route("/magic-write", magicWrite)
 

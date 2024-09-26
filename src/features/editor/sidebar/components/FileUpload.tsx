@@ -136,7 +136,7 @@ const FileUpload = ({ editor } : UploadProps) => {
             const fileName = `${v4()}-${selectedFile.name}`
 
             try {
-                const PUTURLResponse = await fetch('/api/upload/put', {
+                const PUTURLResponse = await fetch('/api/media/put', {
                     method: 'POST',
                     headers: {
                         'Content-Type': selectedFile.type,
@@ -187,8 +187,8 @@ const FileUpload = ({ editor } : UploadProps) => {
 
         await Promise.all(fileSelected.map(async (fileName) => {
             try {
-                const DELURLResponse = await fetch(`/api/upload/delete?fileName=${encodeURIComponent(fileName)}`, {
-                    method: 'POST',
+                const DELURLResponse = await fetch(`/api/media/delete?fileName=${encodeURIComponent(fileName)}`, {
+                    method: 'DELETE',
                 });
 
                 const DELSignedURL = await DELURLResponse.json();
