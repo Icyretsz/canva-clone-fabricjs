@@ -60,8 +60,9 @@ const Editor = () => {
                     <canvas ref={canvasRef}/>
                 </div>
             </div>
-            <div className='left-[72px] top-[68px] fixed h-[calc(100%-68px)] w-[350px]' style={visibleStyle}><UploadMenu
-                editor={editor}/></div>
+            <div className={`left-[72px] top-[68px] fixed h-[calc(100%-68px)] w-[350px] ${(activeTool[1] == "" && activeTool[0] == "Upload") ? "animate-slideRightAndFade" : ""}`} style={visibleStyle}>
+                <UploadMenu editor={editor}/>
+            </div>
         </div>
     );
 };

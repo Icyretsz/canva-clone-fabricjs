@@ -24,7 +24,7 @@ const montserrat = Montserrat({
 
 const TextMenu = ({editor}: ShapeMenuProps) => {
     return (
-        <div className='relative flex flex-col gap-2 h-full w-full'>
+        <div className='relative flex flex-col gap-2 h-full w-full animate-slideRightAndFade'>
             <MenuHeaderDark type='Text'/>
             <div className='flex flex-col h-full gap-2 w-full px-7'>
                 <div className='flex gap-2'>

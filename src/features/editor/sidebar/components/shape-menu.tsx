@@ -14,7 +14,7 @@ interface ShapeMenuProps {
 const ShapeMenu = ({ editor } : ShapeMenuProps) => {
 
     return (
-        <div className='flex flex-col h-full w-full'>
+        <div className='flex flex-col h-full w-full animate-slideRightAndFade'>
             <MenuHeaderDark type='Shapes'/>
             <div className='flex flex-col h-full w-full '>
                 <div className='w-full h-full flex gap-2 py-2 justify-center flex-wrap'>
