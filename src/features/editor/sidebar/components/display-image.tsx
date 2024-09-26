@@ -5,15 +5,7 @@ import ImageDisplayImage from '@/features/editor/sidebar/components/image-displa
 import {Button} from "@/components/ui/button";
 import {RiDeleteBinFill} from "react-icons/ri";
 import Image from "next/image";
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from "@/components/ui/dialog"
-import {createPortal} from "react-dom";
+import * as Popover from '@radix-ui/react-popover';
 
 interface DisplayImageProps {
     s3Url: string[];
@@ -106,19 +98,29 @@ const DisplayImage: React.FC<DisplayImageProps> = ({
                     className="absolute bottom-5 w-full bg-white ml-[-16px] h-[10%] rounded-md flex items-center px-5 justify-between">
                     <p>{selectedCounter} selected</p>
                     <div>
-                        <Dialog >
-                            <DialogTrigger ><Button>Open</Button></DialogTrigger>
-                            <DialogContent className='fixed'>
-                                <DialogHeader>
-                                    <DialogTitle>Are you absolutely sure?</DialogTitle>
-                                    <DialogDescription>
-                                        This action cannot be undone. This will permanently delete your account
-                                        and remove your data from our servers.
-                                    </DialogDescription>
-                                </DialogHeader>
-                            </DialogContent>
-                        </Dialog>
-                        <Button variant='ghost' onClick={deleteFile}><RiDeleteBinFill/></Button>
+                        <Popover.Root>
+                            <Popover.Trigger>
+                                <Button variant='ghost'>
+                                    <RiDeleteBinFill className='mb-[1px] size-4'/>
+                                </Button>
+                            </Popover.Trigger>
+                            <Popover.Portal>
+                                <Popover.Content
+                                    className="rounded p-5 w-[260px] bg-white shadow-[0_10px_38px_-10px_hsla(206,22%,7%,.35),0_10px_20px_-15px_hsla(206,22%,7%,.2)] focus:shadow-[0_10px_38px_-10px_hsla(206,22%,7%,.35),0_10px_20px_-15px_hsla(206,22%,7%,.2),0_0_0_2px_theme(colors.violet7)] will-change-[transform,opacity] data-[state=open]:data-[side=top]:animate-slideDownAndFade data-[state=open]:data-[side=right]:animate-slideLeftAndFade data-[state=open]:data-[side=bottom]:animate-slideUpAndFade data-[state=open]:data-[side=left]:animate-slideRightAndFade"
+                                    sideOffset={5}
+                                >
+                                    <p>Delete {selectedCounter} item(s)?</p>
+                                    <div className='flex justify-end gap-2 mt-5'>
+                                        <Popover.Close>
+                                            <Button variant='outline'>Cancel</Button>
+                                        </Popover.Close>
+                                        <Button variant='destructive' onClick={deleteFile}>Delete</Button>
+                                    </div>
+                                    <Popover.Arrow className="fill-white"/>
+                                </Popover.Content>
+                            </Popover.Portal>
+                        </Popover.Root>
+
                         <Button variant='ghost' onClick={closeToolbar}>
                             <Image className='cursor-pointer'
                                    src='/icons-close-light.svg'
@@ -128,6 +130,7 @@ const DisplayImage: React.FC<DisplayImageProps> = ({
                             />
                         </Button>
                     </div>
+
                 </div>
             )}
         </div>
