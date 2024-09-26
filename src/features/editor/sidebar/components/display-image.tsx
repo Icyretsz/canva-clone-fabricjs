@@ -5,6 +5,15 @@ import ImageDisplayImage from '@/features/editor/sidebar/components/image-displa
 import {Button} from "@/components/ui/button";
 import {RiDeleteBinFill} from "react-icons/ri";
 import Image from "next/image";
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog"
+import {createPortal} from "react-dom";
 
 interface DisplayImageProps {
     s3Url: string[];
@@ -12,10 +21,17 @@ interface DisplayImageProps {
     loadingStates: boolean[];
     handleImageLoad: (i: number) => void;
     editor: Editor | undefined;
-    deleteOnS3: (fileSelected : string[]) => void
+    deleteOnS3: (fileSelected: string[]) => void
 }
 
-const DisplayImage: React.FC<DisplayImageProps> = ({s3Url, setS3Url, loadingStates, deleteOnS3, handleImageLoad, editor}) => {
+const DisplayImage: React.FC<DisplayImageProps> = ({
+                                                       s3Url,
+                                                       setS3Url,
+                                                       loadingStates,
+                                                       deleteOnS3,
+                                                       handleImageLoad,
+                                                       editor
+                                                   }) => {
     const [isChecked, setChecked] = useState<boolean[]>(new Array(s3Url.length).fill(false));
     const [fileSelected, setFileSelected] = useState<string[]>(new Array(s3Url.length).fill(''));
     const [selectedCounter, setSelectedCounter] = useState<number>(0);
@@ -86,9 +102,22 @@ const DisplayImage: React.FC<DisplayImageProps> = ({s3Url, setS3Url, loadingStat
                 ))}
             </div>
             {isChecked.includes(true) && (
-                <div className="absolute bottom-5 w-full bg-white ml-[-16px] h-[10%] rounded-md flex items-center px-5 justify-between">
+                <div
+                    className="absolute bottom-5 w-full bg-white ml-[-16px] h-[10%] rounded-md flex items-center px-5 justify-between">
                     <p>{selectedCounter} selected</p>
                     <div>
+                        <Dialog >
+                            <DialogTrigger ><Button>Open</Button></DialogTrigger>
+                            <DialogContent className='fixed'>
+                                <DialogHeader>
+                                    <DialogTitle>Are you absolutely sure?</DialogTitle>
+                                    <DialogDescription>
+                                        This action cannot be undone. This will permanently delete your account
+                                        and remove your data from our servers.
+                                    </DialogDescription>
+                                </DialogHeader>
+                            </DialogContent>
+                        </Dialog>
                         <Button variant='ghost' onClick={deleteFile}><RiDeleteBinFill/></Button>
                         <Button variant='ghost' onClick={closeToolbar}>
                             <Image className='cursor-pointer'
