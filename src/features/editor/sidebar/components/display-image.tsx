@@ -6,6 +6,7 @@ import {Button} from "@/components/ui/button";
 import {RiDeleteBinFill} from "react-icons/ri";
 import Image from "next/image";
 import * as Popover from '@radix-ui/react-popover';
+import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip";
 
 interface DisplayImageProps {
     s3Url: string[];
@@ -31,7 +32,7 @@ const DisplayImage: React.FC<DisplayImageProps> = ({
     const [isAnimating, setIsAnimating] = useState<boolean>(false);
 
     useEffect(() => {
-        let timeoutId : any
+        let timeoutId: any
         if (isChecked.includes(true)) {
             setShouldRender(true);
             setIsAnimating(true);
@@ -118,9 +119,18 @@ const DisplayImage: React.FC<DisplayImageProps> = ({
                     <div>
                         <Popover.Root>
                             <Popover.Trigger>
-                                <Button variant='ghost'>
-                                    <RiDeleteBinFill className='mb-[1px] size-4'/>
-                                </Button>
+                                <TooltipProvider>
+                                    <Tooltip delayDuration={200}>
+                                        <TooltipTrigger>
+                                            <Button variant='ghost'>
+                                                <RiDeleteBinFill className='mb-[1px] size-4'/>
+                                            </Button>
+                                        </TooltipTrigger>
+                                        <TooltipContent side="bottom" sideOffset={10}>
+                                            <p>Delete item</p>
+                                        </TooltipContent>
+                                    </Tooltip>
+                                </TooltipProvider>
                             </Popover.Trigger>
                             <Popover.Portal>
                                 <Popover.Content
@@ -139,14 +149,24 @@ const DisplayImage: React.FC<DisplayImageProps> = ({
                             </Popover.Portal>
                         </Popover.Root>
 
-                        <Button variant='ghost' onClick={closeToolbar}>
-                            <Image className='cursor-pointer'
-                                   src='/icons-close-light.svg'
-                                   width='16'
-                                   height='16'
-                                   alt='close icon'
-                            />
-                        </Button>
+                        <TooltipProvider>
+                            <Tooltip delayDuration={200}>
+                                <TooltipTrigger>
+                                    <Button variant='ghost' onClick={closeToolbar}>
+                                        <Image className='cursor-pointer'
+                                               src='/icons-close-light.svg'
+                                               width='16'
+                                               height='16'
+                                               alt='close icon'
+                                        />
+                                    </Button>
+                                </TooltipTrigger>
+                                <TooltipContent side="bottom" sideOffset={10}>
+                                    <p>Unselect</p>
+                                </TooltipContent>
+                            </Tooltip>
+                        </TooltipProvider>
+
                     </div>
 
                 </div>
