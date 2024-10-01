@@ -18,7 +18,7 @@ const ImageDisplayImage = ({editor, url, handleImageLoad, i, isChecked, setCheck
     const [isMenuHovered, setMenuHovered] = useState(false);
 
     const handleOnClick = useCallback(
-        (url: string) => {
+        async (url: string) => {
             editor?.addMedia(url);
         },
         [editor]

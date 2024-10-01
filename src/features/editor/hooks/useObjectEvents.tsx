@@ -2,7 +2,7 @@ import {useCallback, useEffect, useRef} from 'react';
 import {fabric} from "fabric";
 import useObjectStore from "@/features/editor/stores/store"
 import {flushSync} from "react-dom";
-
+import useCanvasThumbnail from "@/features/editor/canvasSelector/utils";
 
 interface UseCanvasEventsProps {
     canvas: fabric.Canvas | null,
@@ -27,7 +27,7 @@ const useCanvasEvents = ({
     const {activeTool, setActiveTool, setExpanded} = useObjectStore()
     const HISTORY_LIMIT = 10
     const localSelectedObjectsRef = useRef<fabric.Object | null>(null);
-
+    const {getCanvasThumbnail} = useCanvasThumbnail()
 
     const saveHistory = useCallback(() => {
         if (!canvas) return;
@@ -75,6 +75,7 @@ const useCanvasEvents = ({
             })
             canvas.on('object:modified', (event) => {
                 saveHistory()
+                getCanvasThumbnail()
             });
 
             canvas.on('text:changed', (event) => {

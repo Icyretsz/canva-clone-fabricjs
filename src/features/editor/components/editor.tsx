@@ -8,13 +8,14 @@ import Toolbar from "@/features/editor/toolbar/components/toolbar";
 import Footer from "@/features/editor/components/footer";
 import useObjectStore from "@/features/editor/stores/store";
 import UploadMenu from "@/features/editor/sidebar/components/upload-menu";
+import CanvasSelector from "@/features/editor/canvasSelector/components/canvasSelector";
 
 
 const Editor = () => {
     const canvasRef = useRef(null);
     const containerRef = useRef<HTMLDivElement>(null)
     const {init, editor} = useEditor()
-    const {isExpanded, activeTool} = useObjectStore()
+    const {isExpanded, activeTool, currentCanvas, canvasContainer, setCanvasContainer, setOriginalWorkspaceDimension} = useObjectStore()
 
     useEffect(() => {
         const canvas = new fabric.Canvas(canvasRef.current, {
@@ -26,13 +27,14 @@ const Editor = () => {
 
         init({initialCanvas: canvas, initialContainer: containerRef.current!});
 
+        setCanvasContainer([... canvasContainer, canvas]);
+
         return () => {
             editor?.canvas.getObjects().forEach((object) => {
                 object.off()
             })
             canvas.dispose();
         };
-
     }, [init]);
 
     const menuExpandedStyle = isExpanded ?
@@ -53,7 +55,8 @@ const Editor = () => {
             <Sidebar editor={editor}/>
             <Toolbar editor={editor}/>
             <Footer/>
-            <div className='absolute h-[calc(100%-68px-48px-40px)] top-[calc(68px+48px)] flex'
+            <CanvasSelector/>
+            <div className='absolute h-[calc(100%-68px-48px-40px-100px)] top-[calc(68px+48px)] flex'
                  style={menuExpandedStyle}
             >
                 <div className='h-full w-full flex-1 bg-gray-200' ref={containerRef}>

@@ -1,5 +1,6 @@
 import {useCallback, useEffect} from 'react';
 import {fabric} from "fabric";
+import useObjectStore from "@/features/editor/stores/store";
 
 interface UseAutoResizeProps {
     canvas: fabric.Canvas | null
@@ -7,6 +8,7 @@ interface UseAutoResizeProps {
 }
 
 const UseAutoResize = ({canvas, container}: UseAutoResizeProps) => {
+    const {currentCanvas, setCurrentCanvas, originalWorkspaceDimension, setOriginalWorkspaceDimension} = useObjectStore()
 
     const autoZoom = useCallback(() => {
         if (!canvas || !container) return;
@@ -62,7 +64,6 @@ const UseAutoResize = ({canvas, container}: UseAutoResizeProps) => {
             })
         }
 
-
     }, [canvas, container])
 
     useEffect(() => {
@@ -78,6 +79,7 @@ const UseAutoResize = ({canvas, container}: UseAutoResizeProps) => {
             if (resizeObserver) resizeObserver.disconnect()
         }
     }, [canvas, container, autoZoom])
+
     return autoZoom
 };
 

@@ -67,7 +67,6 @@ const PositionMenu = ({editor, type}: PositionMenuProps) => {
 
     const positionChange = (controlType: positionControlType) => {
         editor?.positionControl(controlType)
-        console.log(editor?.canvas?.getObjects())
     }
 
     function getObjectThumbnails() {
@@ -81,7 +80,6 @@ const PositionMenu = ({editor, type}: PositionMenuProps) => {
             )
         })
         setObjectDataUrl(objectDataUrlArray)
-        console.log(editor?.canvas?.getObjects())
     }
 
     useEffect(() => {

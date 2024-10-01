@@ -1,4 +1,4 @@
-import {useCallback, useMemo, useState} from 'react'
+import {useCallback, useEffect, useMemo, useState} from 'react'
 import {fabric} from 'fabric'
 import useAutoResize from "@/features/editor/hooks/useAutoResize";
 import {
@@ -22,6 +22,7 @@ import useGetStrokeColor from "@/features/editor/hooks/useGetStrokeColor";
 import {Montserrat} from "next/font/google";
 import useGetFontProperties from "@/features/editor/hooks/useGetFontProperties";
 import useKeyPress from "@/features/editor/hooks/useKeyPress";
+import useObjectStore from "@/features/editor/stores/store";
 
 const montserrat = Montserrat({
     subsets: ['latin', 'vietnamese'],
@@ -46,6 +47,7 @@ export const useEditor = () => {
     const [linethrough, setLinethrough] = useState<boolean>(false)
     const [historyUndo, setHistoryUndo] = useState<string[]>([INITIAL_CANVAS_STATE])
     const [historyRedo, setHistoryRedo] = useState<string[]>([])
+    const {currentCanvas, setCurrentCanvas, originalWorkspaceDimension, setOriginalWorkspaceDimension} = useObjectStore()
 
     const autoZoom = useAutoResize({canvas, container})
     useCanvasEvents({
@@ -463,8 +465,8 @@ export const useEditor = () => {
             cornerStrokeColor: "#3b82f6"
         })
         const initialWorkspace = new fabric.Rect({
-            width: 1200,
-            height: 900,
+            width: initialCanvas?.width,
+            height: initialCanvas?.height,
             name: 'clip',
             fill: 'white',
             selectable: false,
@@ -476,12 +478,6 @@ export const useEditor = () => {
                     blur: 5
                 }
             ),
-            // lockMovementX: true,
-            // lockMovementY: true,
-            // lockScalingX: true,
-            // lockScalingY: true,
-            // lockUniScaling: true,
-            // lockRotation: true,
         })
 
         initialCanvas.setWidth(
@@ -491,6 +487,8 @@ export const useEditor = () => {
             initialContainer.offsetHeight
         )
 
+        setOriginalWorkspaceDimension([initialCanvas.width!, initialCanvas.height!])
+
         initialCanvas.add(initialWorkspace)
         initialCanvas.centerObject(initialWorkspace)
         initialCanvas.clipPath = initialWorkspace
@@ -498,7 +496,9 @@ export const useEditor = () => {
         setCanvas(initialCanvas)
         setContainer(initialContainer)
 
-
+        if(canvas) {
+            setCurrentCanvas(canvas)
+        }
     }, [])
 
     return {init, editor}
