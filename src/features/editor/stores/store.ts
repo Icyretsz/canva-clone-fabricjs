@@ -1,7 +1,6 @@
 import {create} from 'zustand'
 import {PrimaryActiveTool, SecondaryActiveTool} from "@/features/editor/sidebar/types";
 import {fabric} from "fabric";
-import {number} from "zod";
 
 interface MenuStore {
     isExpanded: boolean;
@@ -10,8 +9,6 @@ interface MenuStore {
     setActiveTool: (primaryActiveTool : PrimaryActiveTool, secondaryActiveTool : SecondaryActiveTool) => void;
     clipboard: fabric.Object[] | undefined;
     setClipboard: (clipboard: fabric.Object[]) => void;
-    currentCanvas: fabric.Canvas | undefined;
-    setCurrentCanvas: (currentCanvas: fabric.Canvas) => void;
     canvasContainer: fabric.Canvas[];
     setCanvasContainer: (canvasContainer: fabric.Canvas[]) => void;
     canvasThumbnails: string[];
@@ -27,8 +24,6 @@ const useObjectStore = create<MenuStore>((set) => ({
     setActiveTool: (primaryActiveTool : PrimaryActiveTool, secondaryActiveTool : SecondaryActiveTool) => set({ activeTool: [primaryActiveTool, secondaryActiveTool] }),
     clipboard: [],
     setClipboard: (clipboard: fabric.Object[]) => set({clipboard: clipboard}),
-    currentCanvas: undefined,
-    setCurrentCanvas: (currentCanvas: fabric.Canvas) => set({currentCanvas: currentCanvas}),
     canvasContainer: [] as fabric.Canvas[],
     setCanvasContainer: (canvasContainer: fabric.Canvas[]) => set({canvasContainer: canvasContainer}),
     canvasThumbnails: [],

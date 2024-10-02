@@ -137,7 +137,7 @@ const useKeyPress = ({
                                     }
                                 })
                                 const currentTool = activeTool
-                                const currentExpandedStatus = isExpanded
+                                //const currentExpandedStatus = isExpanded
                                 setHistoryRedo((prevState) => [...prevState, previousState]);
                                 const lastState = historyUndoClone[historyUndoClone.length - 1];
                                 canvas.loadFromJSON(lastState, () => {
@@ -184,16 +184,24 @@ const useKeyPress = ({
             }
         }
 
+        const getObjects = (event: KeyboardEvent) => {
+            if (canvas && (event.ctrlKey || event.metaKey) && event.key === 'u') {
+                console.log(canvas.getObjects())
+            }
+        }
+
         window.addEventListener('keydown', handleCtrlC);
         window.addEventListener('keydown', handleCtrlV);
         window.addEventListener('keydown', handleUndoRedo);
         window.addEventListener('keydown', resetHistory)
+        window.addEventListener('keydown', getObjects)
 
         return () => {
             window.removeEventListener('keydown', handleCtrlC);
             window.removeEventListener('keydown', handleCtrlV);
             window.removeEventListener('keydown', handleUndoRedo);
             window.removeEventListener('keydown', resetHistory);
+            window.removeEventListener('keydown', getObjects);
         };
     }, [canvas, clipboard, setClipboard, historyUndo, historyRedo, setHistoryRedo, setHistoryUndo]);
 };

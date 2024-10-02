@@ -23,43 +23,36 @@ export const STROKE_PATTERNS = {
     DOT: [3, 3]
 }
 
-export const RECTANGLE_OPTIONS = {
-    width: 140,
-    height: 120,
-    fill: FILL_COLOR,
-    stroke: STROKE_COLOR,
-    strokeWidth: STROKE_WIDTH
-}
-export const CIRCLE_OPTIONS = {
-    radius: 60,
-    fill: FILL_COLOR,
-    stroke: STROKE_COLOR,
-    strokeWidth: STROKE_WIDTH
-}
-export const TRIANGLE_OPTIONS = {
-    width: 120,
-    height: 120,
-    fill: FILL_COLOR,
-    stroke: STROKE_COLOR,
-    strokeWidth: STROKE_WIDTH
-}
-
-export const TEXT_HEADING = {
-    fontSize: 28,
-    fontWeight: 700,
-}
-
-export const TEXT_SUBHEADING = {
-    fontSize: 16.8,
-    fontWeight: 400,
+export const SHAPES_OPTIONS = {
+    RECTANGLE : {
+        width: 140,
+        height: 120,
+        fill: FILL_COLOR,
+        stroke: STROKE_COLOR,
+        strokeWidth: STROKE_WIDTH
+    },
+    CIRCLE : {
+        radius: 60,
+        fill: FILL_COLOR,
+        stroke: STROKE_COLOR,
+        strokeWidth: STROKE_WIDTH
+    },
+    TRIANGLE : {
+        width: 120,
+        height: 120,
+        fill: FILL_COLOR,
+        stroke: STROKE_COLOR,
+        strokeWidth: STROKE_WIDTH
+    },
+    OCTAGON : {
+        fill: FILL_COLOR,
+        stroke: STROKE_COLOR,
+        strokeWidth: STROKE_WIDTH
+    }
 }
 
-export const TEXT_CONTENT = {
-    fontSize: 12,
-    fontWeight: 300,
-}
 
-export const INITIAL_CANVAS_STATE = '{"version":"5.3.0","objects":[{"type":"rect","version":"5.3.0","originX":"left","originY":"top","left":49.5,"top":118.5,"width":1200,"height":900,"fill":"white","stroke":null,"strokeWidth":1,"strokeDashArray":null,"strokeLineCap":"butt","strokeDashOffset":0,"strokeLineJoin":"miter","strokeUniform":false,"strokeMiterLimit":4,"scaleX":1,"scaleY":1,"angle":0,"flipX":false,"flipY":false,"opacity":1,"shadow":{"color":"rgba(0, 0, 0, 0.8)","blur":5,"offsetX":0,"offsetY":0,"affectStroke":false,"nonScaling":false},"visible":true,"backgroundColor":"","fillRule":"nonzero","paintFirst":"fill","globalCompositeOperation":"source-over","skewX":0,"skewY":0,"rx":0,"ry":0,"selectable":false,"hasControls":false,"hoverCursor":"default","name":"clip"}],"clipPath":{"type":"rect","version":"5.3.0","originX":"left","originY":"top","left":49.5,"top":118.5,"width":1200,"height":900,"fill":"white","stroke":null,"strokeWidth":1,"strokeDashArray":null,"strokeLineCap":"butt","strokeDashOffset":0,"strokeLineJoin":"miter","strokeUniform":false,"strokeMiterLimit":4,"scaleX":1,"scaleY":1,"angle":0,"flipX":false,"flipY":false,"opacity":1,"shadow":{"color":"rgba(0, 0, 0, 0.8)","blur":5,"offsetX":0,"offsetY":0,"affectStroke":false,"nonScaling":false},"visible":true,"backgroundColor":"","fillRule":"nonzero","paintFirst":"fill","globalCompositeOperation":"source-over","skewX":0,"skewY":0,"rx":0,"ry":0,"selectable":true,"hasControls":true,"hoverCursor":null},"hoverCursor":"move"}'
+export const INITIAL_CANVAS_STATE = '{"version":"5.3.0","objects":[{"type":"rect","version":"5.3.0","originX":"left","originY":"top","left":49.5,"top":118.5,"width":1600,"height":900,"fill":"white","stroke":null,"strokeWidth":1,"strokeDashArray":null,"strokeLineCap":"butt","strokeDashOffset":0,"strokeLineJoin":"miter","strokeUniform":false,"strokeMiterLimit":4,"scaleX":1,"scaleY":1,"angle":0,"flipX":false,"flipY":false,"opacity":1,"shadow":{"color":"rgba(0, 0, 0, 0.8)","blur":5,"offsetX":0,"offsetY":0,"affectStroke":false,"nonScaling":false},"visible":true,"backgroundColor":"","fillRule":"nonzero","paintFirst":"fill","globalCompositeOperation":"source-over","skewX":0,"skewY":0,"rx":0,"ry":0,"selectable":false,"hasControls":false,"hoverCursor":"default","name":"clip"}],"clipPath":{"type":"rect","version":"5.3.0","originX":"left","originY":"top","left":49.5,"top":118.5,"width":1200,"height":900,"fill":"white","stroke":null,"strokeWidth":1,"strokeDashArray":null,"strokeLineCap":"butt","strokeDashOffset":0,"strokeLineJoin":"miter","strokeUniform":false,"strokeMiterLimit":4,"scaleX":1,"scaleY":1,"angle":0,"flipX":false,"flipY":false,"opacity":1,"shadow":{"color":"rgba(0, 0, 0, 0.8)","blur":5,"offsetX":0,"offsetY":0,"affectStroke":false,"nonScaling":false},"visible":true,"backgroundColor":"","fillRule":"nonzero","paintFirst":"fill","globalCompositeOperation":"source-over","skewX":0,"skewY":0,"rx":0,"ry":0,"selectable":true,"hasControls":true,"hoverCursor":null},"hoverCursor":"move"}'
 
 export const OCTAGON_POINTS = [
     new fabric.Point(20, 52.73),
@@ -77,11 +70,6 @@ export const OCTAGON_POINTS = [
 ];
 
 
-export const OCTAGON_OPTIONS = {
-    fill: FILL_COLOR,
-    stroke: STROKE_COLOR,
-    strokeWidth: STROKE_WIDTH
-}
 
 export type StrokeType = "stroke-none" | "stroke-solid" | "stroke-dash" | "stroke-dot";
 
@@ -123,6 +111,10 @@ export interface Editor {
     addPolygon: () => void,
     addTextbox: (type?: 'heading' | 'subheading' | 'content', userContent?: string) => void,
     addMedia: (url : string) => void,
+    currentPage: number,
+    setCurrentPage: React.Dispatch<React.SetStateAction<number>>,
+    pageContainer: number[],
+    setPageContainer: React.Dispatch<React.SetStateAction<number[]>>,
 }
 
 export interface BuildEditor {
@@ -156,5 +148,9 @@ export interface BuildEditor {
     setStrokeWidth: (value: number) => void,
     setTextAlignment: (alignment: string) => void,
     setFontFamily: (value: string) => void
+    currentPage: number,
+    setCurrentPage: React.Dispatch<React.SetStateAction<number>>,
+    pageContainer: number[],
+    setPageContainer: React.Dispatch<React.SetStateAction<number[]>>,
 }
 

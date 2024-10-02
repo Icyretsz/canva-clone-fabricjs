@@ -8,14 +8,14 @@ import Toolbar from "@/features/editor/toolbar/components/toolbar";
 import Footer from "@/features/editor/components/footer";
 import useObjectStore from "@/features/editor/stores/store";
 import UploadMenu from "@/features/editor/sidebar/components/upload-menu";
-import CanvasSelector from "@/features/editor/canvasSelector/components/canvasSelector";
+import PageSelector from "@/features/editor/canvasSelector/components/pageSelector";
 
 
 const Editor = () => {
     const canvasRef = useRef(null);
     const containerRef = useRef<HTMLDivElement>(null)
     const {init, editor} = useEditor()
-    const {isExpanded, activeTool, currentCanvas, canvasContainer, setCanvasContainer, setOriginalWorkspaceDimension} = useObjectStore()
+    const {isExpanded, activeTool, canvasContainer, setCanvasContainer} = useObjectStore()
 
     useEffect(() => {
         const canvas = new fabric.Canvas(canvasRef.current, {
@@ -55,7 +55,7 @@ const Editor = () => {
             <Sidebar editor={editor}/>
             <Toolbar editor={editor}/>
             <Footer/>
-            <CanvasSelector/>
+            <PageSelector editor={editor}/>
             <div className='absolute h-[calc(100%-68px-48px-40px-100px)] top-[calc(68px+48px)] flex'
                  style={menuExpandedStyle}
             >

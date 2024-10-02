@@ -81,8 +81,8 @@
 }
 
 /* width */
-::-webkit-scrollbar {
-  width: 10px;
+.scrollbar-thin::-webkit-scrollbar {
+  width: 5px;
 }
 
 /* Track */
@@ -99,3 +99,8 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+
+.scrollbar-stable {
+  scrollbar-gutter: stable;
+}
+

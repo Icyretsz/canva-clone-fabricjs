@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useMemo, useState} from 'react'
+import {useCallback, useMemo, useState} from 'react'
 import {fabric} from 'fabric'
 import useAutoResize from "@/features/editor/hooks/useAutoResize";
 import {
@@ -6,11 +6,8 @@ import {
     INITIAL_CANVAS_STATE,
     STROKE_COLOR,
     STROKE_WIDTH,
-    RECTANGLE_OPTIONS,
-    TRIANGLE_OPTIONS,
-    CIRCLE_OPTIONS,
+    SHAPES_OPTIONS,
     OCTAGON_POINTS,
-    OCTAGON_OPTIONS,
     STROKE_PATTERNS,
     BuildEditor, fontStyle, positionControlType
 } from "@/features/editor/sidebar/types";
@@ -47,7 +44,9 @@ export const useEditor = () => {
     const [linethrough, setLinethrough] = useState<boolean>(false)
     const [historyUndo, setHistoryUndo] = useState<string[]>([INITIAL_CANVAS_STATE])
     const [historyRedo, setHistoryRedo] = useState<string[]>([])
-    const {currentCanvas, setCurrentCanvas, originalWorkspaceDimension, setOriginalWorkspaceDimension} = useObjectStore()
+    const [currentPage, setCurrentPage] = useState<number>(0)
+    const [pageContainer, setPageContainer] = useState<number[]>([0])
+    const { setOriginalWorkspaceDimension} = useObjectStore()
 
     const autoZoom = useAutoResize({canvas, container})
     useCanvasEvents({
@@ -93,7 +92,11 @@ export const useEditor = () => {
                              isUnderlined,
                              setUnderlined,
                              linethrough,
-                             setLinethrough
+                             setLinethrough,
+                             currentPage,
+                             setCurrentPage,
+                             pageContainer,
+                             setPageContainer
                          }: BuildEditor) => {
         const getWorkspace = () => {
             return canvas.getObjects().find((object) => object.name === "clip");
@@ -112,8 +115,8 @@ export const useEditor = () => {
         const addProc = (object: fabric.Object) => {
             center(object);
             canvas.add(object);
-            const currentId: string = String(canvas.getObjects().length - 1)
-            object.set('name', currentId)
+            // const currentId: string = String(canvas.getObjects().length - 1)
+            // object.set('name', currentId)
             object.on('mousedown', function (event) {
                 if (event.button === 3) {
                     console.log('right click')
@@ -159,6 +162,10 @@ export const useEditor = () => {
             fontStyle,
             isUnderlined,
             linethrough,
+            currentPage,
+            setCurrentPage,
+            pageContainer,
+            setPageContainer,
             changeFillColor: (value: string) => {
                 setFillColor([value])
                 canvas.getActiveObjects().forEach((object) => {
@@ -335,20 +342,20 @@ export const useEditor = () => {
                 canvas.renderAll()
             },
             addRect: () => {
-                const rect = new fabric.Rect({...RECTANGLE_OPTIONS});
+                const rect = new fabric.Rect({...SHAPES_OPTIONS.RECTANGLE, name : currentPage.toString()});
                 addProc(rect);
                 return rect
             },
             addCircle: () => {
-                const circle = new fabric.Circle({...CIRCLE_OPTIONS});
+                const circle = new fabric.Circle({...SHAPES_OPTIONS.CIRCLE, name : currentPage.toString()});
                 addProc(circle);
             },
             addTriangle: () => {
-                const triangle = new fabric.Triangle({...TRIANGLE_OPTIONS});
+                const triangle = new fabric.Triangle({...SHAPES_OPTIONS.TRIANGLE, name : currentPage.toString()});
                 addProc(triangle);
             },
             addPolygon: () => {
-                const octagon = new fabric.Polygon(OCTAGON_POINTS, {...OCTAGON_OPTIONS});
+                const octagon = new fabric.Polygon(OCTAGON_POINTS, {...SHAPES_OPTIONS.OCTAGON, name : currentPage.toString()});
                 addProc(octagon);
             },
             addTextbox: (type?: 'heading' | 'subheading' | 'content', userContent?: string) => {
@@ -362,7 +369,8 @@ export const useEditor = () => {
                         textAlign: 'center',
                         fill: '#000',
                         strokeWidth: STROKE_WIDTH,
-                        stroke: STROKE_COLOR
+                        stroke: STROKE_COLOR,
+                        name : currentPage.toString()
                     });
                     addProc(textbox);
                 } else if (type === 'content' && userContent) {
@@ -375,7 +383,8 @@ export const useEditor = () => {
                         textAlign: 'center',
                         fill: '#000',
                         strokeWidth: STROKE_WIDTH,
-                        stroke: STROKE_COLOR
+                        stroke: STROKE_COLOR,
+                        name : currentPage.toString()
                     });
                     addProc(textbox);
                 }
@@ -383,8 +392,8 @@ export const useEditor = () => {
             },
             addMedia: (url: string) => {
                 fabric.Image.fromURL(url, function (oImg) {
-                    const currentId: string = String(canvas.getObjects().length - 1)
-                    oImg.set('name', currentId)
+                    // const currentId: string = String(canvas.getObjects().length - 1)
+                    oImg.set('name', currentPage.toString())
                     oImg.scale(0.1)
                     canvas.add(oImg);
                     canvas.setActiveObject(oImg);
@@ -396,7 +405,7 @@ export const useEditor = () => {
                         }
                     })
                 }, {
-                    crossOrigin: 'anonymous'
+                    crossOrigin: 'anonymous',
                 });
                 canvas.fire('object:modified')
             }
@@ -437,12 +446,16 @@ export const useEditor = () => {
                     historyRedo,
                     setHistoryRedo,
                     historyUndo,
-                    setHistoryUndo
+                    setHistoryUndo,
+                    currentPage,
+                    setCurrentPage,
+                    pageContainer,
+                    setPageContainer
                 }
             )
         }
         return undefined
-    }, [canvas, fillColor, strokeColor, strokeWidth, selectedObjects, strokeType, fontSize, textAlignment, fontFamily, fontWeight, fontStyle, isUnderlined, linethrough, clipboard, historyRedo, historyUndo])
+    }, [canvas, fillColor, strokeColor, strokeWidth, selectedObjects, strokeType, fontSize, textAlignment, fontFamily, fontWeight, fontStyle, isUnderlined, linethrough, clipboard, historyRedo, historyUndo, currentPage, pageContainer])
 
     const init = useCallback((
         {
@@ -495,10 +508,6 @@ export const useEditor = () => {
 
         setCanvas(initialCanvas)
         setContainer(initialContainer)
-
-        if(canvas) {
-            setCurrentCanvas(canvas)
-        }
     }, [])
 
     return {init, editor}
