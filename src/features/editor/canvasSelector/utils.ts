@@ -6,7 +6,7 @@ function useCanvasThumbnail() {
 
     const getCanvasThumbnail = () => {
         if (canvasContainer.length > 0) {
-            const thumbnails: string[] = []; // Collect URLs here
+            const thumbnails: string[] = [];
 
             canvasContainer.forEach((canvas) => {
                 canvas.clone((canvasClone: fabric.Canvas) => {
