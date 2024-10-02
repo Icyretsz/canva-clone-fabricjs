@@ -66,7 +66,7 @@ const useCanvasEvents = ({
                         setExpanded(false)
                     }
                     if (localSelectedObjectsRef.current !== null) {
-                        canvas.setActiveObject(localSelectedObjectsRef.current);
+                        //canvas.setActiveObject(localSelectedObjectsRef.current);
                         canvas.renderAll();
                     }
                 } else if (activeTool[1] === "") {

@@ -22,7 +22,7 @@ export default function RootLayout({
       <body className={nunito.className}>
 
       <NextUIProvider>
-          <ClerkProvider >
+          <ClerkProvider>
       {children}
           </ClerkProvider>
       </NextUIProvider>
