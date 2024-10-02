@@ -53,7 +53,7 @@ const useCanvasEvents = ({
                 setSelectedObjects(e.selected || [])
             })
             canvas.on('before:selection:cleared', () => {
-                if (canvas.getActiveObject) {
+                if (canvas.getActiveObject && activeTool[1] !== "") {
                     flushSync(() => {
                         localSelectedObjectsRef.current = canvas.getActiveObject();
                     });
@@ -66,10 +66,12 @@ const useCanvasEvents = ({
                         setExpanded(false)
                     }
                     if (localSelectedObjectsRef.current !== null) {
-                        //canvas.setActiveObject(localSelectedObjectsRef.current);
+                        canvas.setActiveObject(localSelectedObjectsRef.current);
+                        localSelectedObjectsRef.current = null
                         canvas.renderAll();
                     }
                 } else if (activeTool[1] === "") {
+                    canvas.discardActiveObject()
                     setSelectedObjects([])
                 }
             })
