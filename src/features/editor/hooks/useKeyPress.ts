@@ -2,6 +2,7 @@ import {useEffect} from 'react';
 import {fabric} from 'fabric';
 import {INITIAL_CANVAS_STATE} from '@/features/editor/sidebar/types'
 import useObjectStore from '@/features/editor/stores/store'
+import useCanvasThumbnail from "@/features/editor/canvasSelector/utils";
 
 interface UseKeyPressProps {
     canvas: fabric.Canvas | null;
@@ -26,6 +27,7 @@ const useKeyPress = ({
                      }: UseKeyPressProps) => {
 
     const {isExpanded, setExpanded, activeTool, setActiveTool} = useObjectStore()
+    const {getCanvasThumbnail} = useCanvasThumbnail()
 
     useEffect(() => {
         const handleCtrlC = (event: KeyboardEvent) => {
@@ -167,6 +169,7 @@ const useKeyPress = ({
                 }
             }
             autoZoom()
+            getCanvasThumbnail()
         };
 
         const resetHistory = (event: KeyboardEvent) => {
