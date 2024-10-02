@@ -160,7 +160,7 @@ const useKeyPress = ({
                                         canvas.setActiveObject(newSelectedObjects[0]);
                                     }
                                     setActiveTool(currentTool[0], currentTool[1])
-                                    setExpanded(currentExpandedStatus)
+                                    //setExpanded(currentExpandedStatus)
                                     canvas.renderAll();
                                 });
                             }

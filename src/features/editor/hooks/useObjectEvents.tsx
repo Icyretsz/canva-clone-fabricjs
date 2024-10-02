@@ -29,6 +29,7 @@ const useCanvasEvents = ({
     const localSelectedObjectsRef = useRef<fabric.Object | null>(null);
     const {getCanvasThumbnail} = useCanvasThumbnail()
 
+
     const saveHistory = useCallback(() => {
         if (!canvas) return;
 
@@ -42,6 +43,10 @@ const useCanvasEvents = ({
         });
         setHistoryRedo([]);
     }, [canvas, setHistoryRedo, setHistoryUndo]);
+
+    useEffect(() => {
+        saveHistory()
+    }, [])
 
     useEffect(() => {
         if (canvas) {
@@ -66,9 +71,9 @@ const useCanvasEvents = ({
                         setExpanded(false)
                     }
                     if (localSelectedObjectsRef.current !== null) {
-                        canvas.setActiveObject(localSelectedObjectsRef.current);
-                        localSelectedObjectsRef.current = null
-                        canvas.renderAll();
+                        // canvas.setActiveObject(localSelectedObjectsRef.current);
+                        // localSelectedObjectsRef.current = null
+                        // canvas.renderAll();
                     }
                 } else if (activeTool[1] === "") {
                     canvas.discardActiveObject()
