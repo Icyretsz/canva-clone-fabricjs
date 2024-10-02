@@ -465,8 +465,8 @@ export const useEditor = () => {
             cornerStrokeColor: "#3b82f6"
         })
         const initialWorkspace = new fabric.Rect({
-            width: 1600,
-            height: 900,
+            width: initialCanvas?.width,
+            height: initialCanvas?.height,
             name: 'clip',
             fill: 'white',
             selectable: false,
