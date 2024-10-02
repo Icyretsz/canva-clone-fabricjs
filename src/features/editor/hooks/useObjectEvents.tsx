@@ -12,6 +12,8 @@ interface UseCanvasEventsProps {
     setHistoryUndo: React.Dispatch<React.SetStateAction<string[]>>;
     historyRedo: string[],
     setHistoryRedo: React.Dispatch<React.SetStateAction<string[]>>;
+    currentPageHistory: number[],
+    setCurrentPageHistory: React.Dispatch<React.SetStateAction<number[]>>,
 }
 
 const useCanvasEvents = ({
@@ -21,7 +23,9 @@ const useCanvasEvents = ({
                              historyUndo,
                              historyRedo,
                              setHistoryUndo,
-                             setHistoryRedo
+                             setHistoryRedo,
+                             currentPageHistory,
+                             setCurrentPageHistory
                          }: UseCanvasEventsProps) => {
 
     const {activeTool, setActiveTool, setExpanded} = useObjectStore()
@@ -30,7 +34,7 @@ const useCanvasEvents = ({
     const {getCanvasThumbnail} = useCanvasThumbnail()
 
 
-    const saveHistory = useCallback(() => {
+    const saveHistory = useCallback((object?: fabric.Object) => {
         if (!canvas) return;
 
         const state = JSON.stringify(canvas.toJSON(['selectable', 'hasControls', 'evented', 'hoverCursor', 'name']));
@@ -42,7 +46,12 @@ const useCanvasEvents = ({
             return [...historyUndoClone, state];
         });
         setHistoryRedo([]);
+        setCurrentPageHistory(prev => [...prev, Number(object?.name)])
     }, [canvas, setHistoryRedo, setHistoryUndo]);
+
+    useEffect(() => {
+        console.log(currentPageHistory)
+    }, [currentPageHistory])
 
     useEffect(() => {
         saveHistory()
@@ -50,13 +59,12 @@ const useCanvasEvents = ({
 
     useEffect(() => {
         saveHistory()
-    }, [])
+    }, []) //this is for initialize the initial state of the canvas after the canvas initial render
 
     useEffect(() => {
         if (canvas) {
             canvas.on('selection:created', (e) => {
                 setSelectedObjects(e.selected || [])
-
             })
             canvas.on('selection:updated', (e) => {
                 setSelectedObjects(e.selected || [])
@@ -85,7 +93,12 @@ const useCanvasEvents = ({
                 }
             })
             canvas.on('object:modified', (event) => {
-                saveHistory()
+                const lastObject = canvas.getObjects()[canvas.getObjects().length - 1]
+                const currentActiveObjects = canvas.getActiveObjects()[canvas.getActiveObjects().length - 1]
+                if (currentActiveObjects)
+                    saveHistory(currentActiveObjects)
+                else
+                    saveHistory(lastObject)
                 getCanvasThumbnail()
             });
 

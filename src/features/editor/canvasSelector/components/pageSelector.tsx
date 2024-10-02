@@ -38,14 +38,12 @@ const PageSelector = ({editor}: PageSelectorProps) => {
                         opacity: 1,
                         selectable: true,
                     })
-                    console.log('opacity 1')
                 }
                 if (object.name !== editor?.currentPage.toString()) {
                     object.set({
                         opacity: 0,
                         selectable: false,
                     })
-                    console.log('opacity 0')
                 }
             }
         )
@@ -61,6 +59,10 @@ const PageSelector = ({editor}: PageSelectorProps) => {
             thumbnailContainer.current.scrollLeft += maxScrollLeft;
         }
     }
+
+    useEffect(() => {
+        console.log(editor?.currentPage)
+    }, [editor?.currentPage])
 
     return (
         <div

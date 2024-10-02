@@ -12,7 +12,11 @@ interface UseKeyPressProps {
     setHistoryUndo: React.Dispatch<React.SetStateAction<string[]>>;
     historyRedo: string[],
     setHistoryRedo: React.Dispatch<React.SetStateAction<string[]>>;
-    autoZoom: () => void
+    autoZoom: () => void,
+    currentPage: number,
+    setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
+    currentPageHistory: number[],
+    setCurrentPageHistory: React.Dispatch<React.SetStateAction<number[]>>;
 }
 
 const useKeyPress = ({
@@ -23,7 +27,11 @@ const useKeyPress = ({
                          historyRedo,
                          setHistoryUndo,
                          setHistoryRedo,
-                         autoZoom
+                         autoZoom,
+                         currentPage,
+                         setCurrentPage,
+                         currentPageHistory,
+                         setCurrentPageHistory
                      }: UseKeyPressProps) => {
 
     const {isExpanded, setExpanded, activeTool, setActiveTool} = useObjectStore()
@@ -98,6 +106,7 @@ const useKeyPress = ({
                                 setHistoryUndo((prevState) => [...prevState, nextState]);
                                 canvas.loadFromJSON(nextState, () => {
                                     const newObjects = canvas.getObjects()
+
                                     let newSelectedObjects: fabric.Object[] = newObjects.filter((object) => {
                                         return object.name && activeIdArray.includes(object.name)
                                     });
@@ -122,7 +131,7 @@ const useKeyPress = ({
                             }
                         }
                     } else {
-                        if (historyUndo.length > 2) {
+                        if (historyUndo.length > 1) {
                             let historyUndoClone = [...historyUndo];
                             const previousState = historyUndoClone.pop();
                             setHistoryUndo(historyUndoClone);
@@ -143,15 +152,15 @@ const useKeyPress = ({
                                 canvas.loadFromJSON(lastState, () => {
                                     const newObjects = canvas.getObjects()
                                     let newSelectedObjects: fabric.Object[] = newObjects.filter((object) => {
-                                        return object.name && activeIdArray.includes(object.name)
+                                        return object.name === currentPage.toString() && activeIdArray.includes(object.name)
                                     });
-                                    newObjects.forEach(object => {
+                                    newSelectedObjects.forEach(object => {
                                         if (object.name !== 'clip')
-                                        object.set({
-                                            selectable: true,
-                                            evented: true,
-                                            hasControls: true,
-                                        });
+                                            object.set({
+                                                selectable: true,
+                                                evented: true,
+                                                hasControls: true,
+                                            });
                                     });
                                     if (newSelectedObjects.length > 1) {
                                         const activeSelection = new fabric.ActiveSelection(newSelectedObjects, {canvas: canvas});
@@ -163,6 +172,13 @@ const useKeyPress = ({
                                     //setExpanded(currentExpandedStatus)
                                     canvas.renderAll();
                                 });
+                                const currentPageHistoryClone = [...currentPageHistory]
+                                const previousPage = currentPageHistoryClone.pop()!
+                                if (previousPage) {
+                                    setCurrentPage(previousPage)
+                                    setCurrentPageHistory(currentPageHistoryClone)
+                                    console.log('hey')
+                                }
                             }
                         }
                     }

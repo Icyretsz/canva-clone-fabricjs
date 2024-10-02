@@ -42,10 +42,11 @@ export const useEditor = () => {
     const [fontWeight, setFontWeight] = useState<number | string>('normal')
     const [isUnderlined, setUnderlined] = useState<boolean>(false)
     const [linethrough, setLinethrough] = useState<boolean>(false)
-    const [historyUndo, setHistoryUndo] = useState<string[]>([INITIAL_CANVAS_STATE])
+    const [historyUndo, setHistoryUndo] = useState<string[]>([])
     const [historyRedo, setHistoryRedo] = useState<string[]>([])
     const [currentPage, setCurrentPage] = useState<number>(0)
     const [pageContainer, setPageContainer] = useState<number[]>([0])
+    const [currentPageHistory, setCurrentPageHistory] = useState<number[]>([])
     const { setOriginalWorkspaceDimension} = useObjectStore()
 
     const autoZoom = useAutoResize({canvas, container})
@@ -56,9 +57,11 @@ export const useEditor = () => {
         historyUndo,
         historyRedo,
         setHistoryUndo,
-        setHistoryRedo
+        setHistoryRedo,
+        currentPageHistory,
+        setCurrentPageHistory
     })
-    useKeyPress({canvas, clipboard, setClipboard, historyUndo, historyRedo, setHistoryUndo, setHistoryRedo, autoZoom})
+    useKeyPress({canvas, clipboard, setClipboard, historyUndo, historyRedo, setHistoryUndo, setHistoryRedo, autoZoom, currentPage, setCurrentPage, currentPageHistory, setCurrentPageHistory})
 
     useGetActiveFill(selectedObjects, setFillColor)
     useGetStrokeWidth(selectedObjects, setStrokeWidth)
