@@ -52,7 +52,7 @@ const mediaDbApp = new Hono()
             return c.json({success: false, message: error.message}, 500);
         }
     })
-    .delete('/delete-img-db', async (c) => {
+    .post('/delete-img-db', async (c) => {
         try {
             const fileName = c.req.query('fileName');
             const userId = auth().userId

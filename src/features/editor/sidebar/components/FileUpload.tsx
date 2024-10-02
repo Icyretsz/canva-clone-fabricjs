@@ -188,7 +188,7 @@ const FileUpload = ({ editor } : UploadProps) => {
         await Promise.all(fileSelected.map(async (fileName) => {
             try {
                 const DELURLResponse = await fetch(`/api/media/delete?fileName=${encodeURIComponent(fileName)}`, {
-                    method: 'DELETE',
+                    method: 'POST',
                 });
 
                 const DELSignedURL = await DELURLResponse.json();
