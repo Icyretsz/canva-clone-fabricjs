@@ -122,7 +122,7 @@ const useKeyPress = ({
                             }
                         }
                     } else {
-                        if (historyUndo.length > 1) {
+                        if (historyUndo.length > 2) {
                             let historyUndoClone = [...historyUndo];
                             const previousState = historyUndoClone.pop();
                             setHistoryUndo(historyUndoClone);

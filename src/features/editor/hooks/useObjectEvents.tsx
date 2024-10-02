@@ -46,6 +46,10 @@ const useCanvasEvents = ({
 
     useEffect(() => {
         saveHistory()
+    }, [canvas, saveHistory])
+
+    useEffect(() => {
+        saveHistory()
     }, [])
 
     useEffect(() => {
