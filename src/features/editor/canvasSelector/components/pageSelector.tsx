@@ -20,14 +20,6 @@ const PageSelector = ({editor}: PageSelectorProps) => {
         {width: 'calc(100% - 72px)', left: '72px'}
     ;
 
-    useEffect(() => {
-        const canvas = editor?.canvas
-        const pageContainer = editor?.pageContainer
-        if (canvas && pageContainer) {
-            getCanvasThumbnail({canvas, pageContainer})
-        }
-    }, [editor?.pageContainer, editor?.canvas])
-
     const handleChangePage = (pageNo: number) => {
         editor?.setCurrentPage(pageNo)
     }
@@ -64,13 +56,18 @@ const PageSelector = ({editor}: PageSelectorProps) => {
 
     useEffect(() => {
         editor?.setCurrentPage(editor?.pageContainer.length)
+        const canvas = editor?.canvas
+        const pageContainer = editor?.pageContainer
+        if (canvas && pageContainer) {
+            getCanvasThumbnail({canvas, pageContainer})
+        }
         if (scrollToDiv.current) {
             scrollToDiv.current.scrollIntoView({
                 behavior: "smooth",
                 block: "nearest",
             });
         }
-    }, [editor?.pageContainer])
+    }, [editor, editor?.pageContainer, editor?.canvas])
 
     return (
         <div
