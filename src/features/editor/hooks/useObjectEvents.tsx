@@ -27,7 +27,7 @@ const useObjectEvents = ({
                          }: UseObjectEventsProps) => {
 
     const {activeTool, setActiveTool, setExpanded} = useObjectStore()
-    const HISTORY_LIMIT = 10
+    const HISTORY_LIMIT = 50
     const localSelectedObjectsRef = useRef<fabric.Object | null>(null);
     const {getCanvasThumbnail} = useCanvasThumbnail()
 
