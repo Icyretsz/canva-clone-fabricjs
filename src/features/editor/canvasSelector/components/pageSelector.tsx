@@ -77,7 +77,7 @@ const PageSelector = ({editor}: PageSelectorProps) => {
             className='h-[130px] top-[calc(100%-170px)] items-center absolute z-50 bg-gray-200 flex p-2 gap-5 overflow-x-scroll'
             style={style}>
             {editor?.pageContainer?.map((pageNum) => {
-                const url = canvasThumbnails[pageNum - 1]
+                const url = canvasThumbnails[pageNum -1]
                 return <TooltipProvider key={pageNum}>
                     <Tooltip delayDuration={200}>
                         <TooltipTrigger className={`h-[80%] min-w-[140px] flex justify-center items-center`}>
