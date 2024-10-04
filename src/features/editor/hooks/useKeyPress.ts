@@ -14,9 +14,7 @@ interface UseKeyPressProps {
     setHistoryRedo: React.Dispatch<React.SetStateAction<string[]>>;
     autoZoom: () => void,
     currentPage: number,
-    setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
-    currentPageHistory: number[],
-    setCurrentPageHistory: React.Dispatch<React.SetStateAction<number[]>>;
+    pageContainer: number[],
 }
 
 const useKeyPress = ({
@@ -29,9 +27,7 @@ const useKeyPress = ({
                          setHistoryRedo,
                          autoZoom,
                          currentPage,
-                         setCurrentPage,
-                         currentPageHistory,
-                         setCurrentPageHistory
+                         pageContainer,
                      }: UseKeyPressProps) => {
 
     const {isExpanded, setExpanded, activeTool, setActiveTool} = useObjectStore()
@@ -44,7 +40,7 @@ const useKeyPress = ({
                 if (activeObject && (event.ctrlKey || event.metaKey) && event.key === 'c') {
                     activeObject.clone((cloned: fabric.Object) => {
                         setClipboard(cloned)
-                    });
+                    }, ['name']);
                 }
             }
         };
@@ -78,7 +74,7 @@ const useKeyPress = ({
                         })
                         canvas.setActiveObject(cloned);
                         canvas.requestRenderAll();
-                    });
+                    }, ['name']);
                 }
             }
         };
@@ -145,22 +141,35 @@ const useKeyPress = ({
                                         activeIdArray.push(name)
                                     }
                                 })
-                                const currentTool = activeTool
+                                //const currentTool = activeTool
+                                //console.log(currentTool)
                                 //const currentExpandedStatus = isExpanded
                                 setHistoryRedo((prevState) => [...prevState, previousState]);
                                 const lastState = historyUndoClone[historyUndoClone.length - 1];
                                 canvas.loadFromJSON(lastState, () => {
                                     const newObjects = canvas.getObjects()
+                                    newObjects?.forEach((object) => {
+                                            if (object.name === 'clip') return
+                                            if (object.name === currentPage.toString()) {
+                                                object.set({
+                                                    opacity: 1,
+                                                    selectable: true,
+                                                    hasControls: true,
+                                                    evented: true,
+                                                })
+                                            }
+                                            if (object.name !== currentPage.toString()) {
+                                                object.set({
+                                                    opacity: 0,
+                                                    selectable: false,
+                                                    hasControls: false,
+                                                    evented: false,
+                                                })
+                                            }
+                                        }
+                                    )
                                     let newSelectedObjects: fabric.Object[] = newObjects.filter((object) => {
                                         return object.name === currentPage.toString() && activeIdArray.includes(object.name)
-                                    });
-                                    newSelectedObjects.forEach(object => {
-                                        if (object.name !== 'clip')
-                                            object.set({
-                                                selectable: true,
-                                                evented: true,
-                                                hasControls: true,
-                                            });
                                     });
                                     if (newSelectedObjects.length > 1) {
                                         const activeSelection = new fabric.ActiveSelection(newSelectedObjects, {canvas: canvas});
@@ -168,37 +177,29 @@ const useKeyPress = ({
                                     } else if (newSelectedObjects.length === 1) {
                                         canvas.setActiveObject(newSelectedObjects[0]);
                                     }
-                                    setActiveTool(currentTool[0], currentTool[1])
+                                    //setActiveTool(currentTool[0], currentTool[1])
                                     //setExpanded(currentExpandedStatus)
                                     canvas.renderAll();
                                 });
-                                const currentPageHistoryClone = [...currentPageHistory]
-                                const previousPage = currentPageHistoryClone.pop()!
-                                if (previousPage) {
-                                    setCurrentPage(previousPage)
-                                    setCurrentPageHistory(currentPageHistoryClone)
-                                    console.log('hey')
-                                }
                             }
                         }
                     }
                 }
+                autoZoom()
+                getCanvasThumbnail({canvas, pageContainer})
             }
-            autoZoom()
-            getCanvasThumbnail()
         };
 
-        const resetHistory = (event: KeyboardEvent) => {
-            if (canvas && (event.ctrlKey || event.metaKey) && event.key === 'r') {
-                setHistoryUndo([INITIAL_CANVAS_STATE])
-                setHistoryRedo([])
-                canvas.loadFromJSON(INITIAL_CANVAS_STATE, () => {
-                    canvas.renderAll();
-                })
-                console.log('History reset')
-                autoZoom()
-            }
-        }
+        // const resetHistory = (event: KeyboardEvent) => {
+        //     if (canvas && (event.ctrlKey || event.metaKey) && event.key === 'r') {
+        //         setHistoryUndo([INITIAL_CANVAS_STATE])
+        //         setHistoryRedo([])
+        //         canvas.loadFromJSON(INITIAL_CANVAS_STATE, () => {
+        //             canvas.renderAll();
+        //         })
+        //         autoZoom()
+        //     }
+        // }
 
         const getObjects = (event: KeyboardEvent) => {
             if (canvas && (event.ctrlKey || event.metaKey) && event.key === 'u') {
@@ -209,14 +210,14 @@ const useKeyPress = ({
         window.addEventListener('keydown', handleCtrlC);
         window.addEventListener('keydown', handleCtrlV);
         window.addEventListener('keydown', handleUndoRedo);
-        window.addEventListener('keydown', resetHistory)
+        //window.addEventListener('keydown', resetHistory)
         window.addEventListener('keydown', getObjects)
 
         return () => {
             window.removeEventListener('keydown', handleCtrlC);
             window.removeEventListener('keydown', handleCtrlV);
             window.removeEventListener('keydown', handleUndoRedo);
-            window.removeEventListener('keydown', resetHistory);
+            //window.removeEventListener('keydown', resetHistory);
             window.removeEventListener('keydown', getObjects);
         };
     }, [canvas, clipboard, setClipboard, historyUndo, historyRedo, setHistoryRedo, setHistoryUndo]);

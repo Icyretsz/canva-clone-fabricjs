@@ -9,8 +9,6 @@ interface MenuStore {
     setActiveTool: (primaryActiveTool : PrimaryActiveTool, secondaryActiveTool : SecondaryActiveTool) => void;
     clipboard: fabric.Object[] | undefined;
     setClipboard: (clipboard: fabric.Object[]) => void;
-    canvasContainer: fabric.Canvas[];
-    setCanvasContainer: (canvasContainer: fabric.Canvas[]) => void;
     canvasThumbnails: string[];
     setCanvasThumbnails: (canvasThumbnails: string[]) => void;
     originalWorkspaceDimension: [number, number];
@@ -24,8 +22,6 @@ const useObjectStore = create<MenuStore>((set) => ({
     setActiveTool: (primaryActiveTool : PrimaryActiveTool, secondaryActiveTool : SecondaryActiveTool) => set({ activeTool: [primaryActiveTool, secondaryActiveTool] }),
     clipboard: [],
     setClipboard: (clipboard: fabric.Object[]) => set({clipboard: clipboard}),
-    canvasContainer: [] as fabric.Canvas[],
-    setCanvasContainer: (canvasContainer: fabric.Canvas[]) => set({canvasContainer: canvasContainer}),
     canvasThumbnails: [],
     setCanvasThumbnails: (canvasThumbnails: string[]) => set({canvasThumbnails: canvasThumbnails}),
     originalWorkspaceDimension: [0, 0],

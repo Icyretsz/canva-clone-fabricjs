@@ -15,7 +15,8 @@ const Editor = () => {
     const canvasRef = useRef(null);
     const containerRef = useRef<HTMLDivElement>(null)
     const {init, editor} = useEditor()
-    const {isExpanded, activeTool, canvasContainer, setCanvasContainer} = useObjectStore()
+    const {isExpanded, activeTool} = useObjectStore()
+
 
     useEffect(() => {
         const canvas = new fabric.Canvas(canvasRef.current, {
@@ -26,8 +27,6 @@ const Editor = () => {
         })
 
         init({initialCanvas: canvas, initialContainer: containerRef.current!});
-
-        setCanvasContainer([... canvasContainer, canvas]);
 
         return () => {
             editor?.canvas.getObjects().forEach((object) => {

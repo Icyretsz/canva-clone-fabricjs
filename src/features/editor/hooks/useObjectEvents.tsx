@@ -4,7 +4,7 @@ import useObjectStore from "@/features/editor/stores/store"
 import {flushSync} from "react-dom";
 import useCanvasThumbnail from "@/features/editor/canvasSelector/utils";
 
-interface UseCanvasEventsProps {
+interface UseObjectEventsProps {
     canvas: fabric.Canvas | null,
     selectedObjects: fabric.Object[],
     setSelectedObjects: (selectedObject: fabric.Object[]) => void,
@@ -12,11 +12,10 @@ interface UseCanvasEventsProps {
     setHistoryUndo: React.Dispatch<React.SetStateAction<string[]>>;
     historyRedo: string[],
     setHistoryRedo: React.Dispatch<React.SetStateAction<string[]>>;
-    currentPageHistory: number[],
-    setCurrentPageHistory: React.Dispatch<React.SetStateAction<number[]>>,
+    pageContainer: number[],
 }
 
-const useCanvasEvents = ({
+const useObjectEvents = ({
                              canvas,
                              selectedObjects,
                              setSelectedObjects,
@@ -24,9 +23,8 @@ const useCanvasEvents = ({
                              historyRedo,
                              setHistoryUndo,
                              setHistoryRedo,
-                             currentPageHistory,
-                             setCurrentPageHistory
-                         }: UseCanvasEventsProps) => {
+                             pageContainer,
+                         }: UseObjectEventsProps) => {
 
     const {activeTool, setActiveTool, setExpanded} = useObjectStore()
     const HISTORY_LIMIT = 10
@@ -34,7 +32,7 @@ const useCanvasEvents = ({
     const {getCanvasThumbnail} = useCanvasThumbnail()
 
 
-    const saveHistory = useCallback((object?: fabric.Object) => {
+    const saveHistory = useCallback(() => {
         if (!canvas) return;
 
         const state = JSON.stringify(canvas.toJSON(['selectable', 'hasControls', 'evented', 'hoverCursor', 'name']));
@@ -46,12 +44,8 @@ const useCanvasEvents = ({
             return [...historyUndoClone, state];
         });
         setHistoryRedo([]);
-        setCurrentPageHistory(prev => [...prev, Number(object?.name)])
+        console.log('history saved')
     }, [canvas, setHistoryRedo, setHistoryUndo]);
-
-    useEffect(() => {
-        console.log(currentPageHistory)
-    }, [currentPageHistory])
 
     useEffect(() => {
         saveHistory()
@@ -93,13 +87,8 @@ const useCanvasEvents = ({
                 }
             })
             canvas.on('object:modified', (event) => {
-                const lastObject = canvas.getObjects()[canvas.getObjects().length - 1]
-                const currentActiveObjects = canvas.getActiveObjects()[canvas.getActiveObjects().length - 1]
-                if (currentActiveObjects)
-                    saveHistory(currentActiveObjects)
-                else
-                    saveHistory(lastObject)
-                getCanvasThumbnail()
+                getCanvasThumbnail({canvas, pageContainer})
+                saveHistory()
             });
 
             canvas.on('text:changed', (event) => {
@@ -114,4 +103,4 @@ const useCanvasEvents = ({
     }, [canvas, activeTool, setActiveTool, setExpanded, setSelectedObjects, historyRedo, historyUndo, saveHistory])
 };
 
-export default useCanvasEvents;
+export default useObjectEvents;

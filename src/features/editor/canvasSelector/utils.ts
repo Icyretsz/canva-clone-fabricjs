@@ -1,31 +1,47 @@
 import useObjectStore from '@/features/editor/stores/store';
 import {fabric} from 'fabric';
 
-function useCanvasThumbnail() {
-    const {canvasContainer, canvasThumbnails, setCanvasThumbnails, originalWorkspaceDimension} = useObjectStore();
 
-    const getCanvasThumbnail = () => {
-        if (canvasContainer.length > 0) {
+interface GetCanvasThumbnailProps {
+    canvas: fabric.Canvas | null
+    pageContainer: number[]
+}
+
+function useCanvasThumbnail() {
+    const {setCanvasThumbnails, originalWorkspaceDimension} = useObjectStore();
+
+    const getCanvasThumbnail = ({canvas, pageContainer} : GetCanvasThumbnailProps) => {
+        if (pageContainer.length > 0 && canvas) {
             const thumbnails: string[] = [];
 
-            canvasContainer.forEach((canvas) => {
+            pageContainer.forEach((page) => {
                 canvas.clone((canvasClone: fabric.Canvas) => {
                     canvasClone.setWidth(originalWorkspaceDimension[0])
                     canvasClone.setHeight(originalWorkspaceDimension[1])
+                    canvasClone.getObjects().forEach(object => {
+                        if (Number(object.name) !== page && object.name !== 'clip') {
+                            object.set({
+                                opacity: 0
+                            })
+                        } else {
+                            object.set({
+                                opacity: 1
+                            })
+                        }
+                    })
                     const url = canvasClone.toDataURL({
                         format: 'jpeg',
                         quality: 0.5,
-                    });
-                    thumbnails.push(url);
-
-                    if (thumbnails.length === canvasContainer.length) {
-                        setCanvasThumbnails([...thumbnails]);
-                    }
-                });
+                    })
+                    thumbnails.push(url)
+                }, ['name'])
             });
+            if (thumbnails.length === pageContainer.length) {
+                setCanvasThumbnails([...thumbnails])
+                console.log('thumbnail just refresh')
+            }
         }
     };
-
 
     return {getCanvasThumbnail};
 }

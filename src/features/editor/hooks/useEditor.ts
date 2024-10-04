@@ -11,7 +11,7 @@ import {
     STROKE_PATTERNS,
     BuildEditor, fontStyle, positionControlType
 } from "@/features/editor/sidebar/types";
-import useCanvasEvents from "@/features/editor/hooks/useObjectEvents";
+import useObjectEvents from "@/features/editor/hooks/useObjectEvents";
 import useGetActiveFill from "@/features/editor/hooks/useGetActiveFill";
 import useGetStrokeWidth from "@/features/editor/hooks/useGetStrokeWidth";
 import useGetStrokeType from "@/features/editor/hooks/useGetStrokeType";
@@ -44,13 +44,12 @@ export const useEditor = () => {
     const [linethrough, setLinethrough] = useState<boolean>(false)
     const [historyUndo, setHistoryUndo] = useState<string[]>([])
     const [historyRedo, setHistoryRedo] = useState<string[]>([])
-    const [currentPage, setCurrentPage] = useState<number>(0)
-    const [pageContainer, setPageContainer] = useState<number[]>([0])
-    const [currentPageHistory, setCurrentPageHistory] = useState<number[]>([])
-    const { setOriginalWorkspaceDimension} = useObjectStore()
+    const [currentPage, setCurrentPage] = useState<number>(1)
+    const [pageContainer, setPageContainer] = useState<number[]>([1])
+    const {setOriginalWorkspaceDimension} = useObjectStore()
 
     const autoZoom = useAutoResize({canvas, container})
-    useCanvasEvents({
+    useObjectEvents({
         canvas,
         selectedObjects,
         setSelectedObjects,
@@ -58,10 +57,9 @@ export const useEditor = () => {
         historyRedo,
         setHistoryUndo,
         setHistoryRedo,
-        currentPageHistory,
-        setCurrentPageHistory
+        pageContainer
     })
-    useKeyPress({canvas, clipboard, setClipboard, historyUndo, historyRedo, setHistoryUndo, setHistoryRedo, autoZoom, currentPage, setCurrentPage, currentPageHistory, setCurrentPageHistory})
+    useKeyPress({canvas, clipboard, setClipboard, historyUndo, historyRedo, setHistoryUndo, setHistoryRedo, autoZoom, currentPage, pageContainer})
 
     useGetActiveFill(selectedObjects, setFillColor)
     useGetStrokeWidth(selectedObjects, setStrokeWidth)
@@ -481,8 +479,8 @@ export const useEditor = () => {
             cornerStrokeColor: "#3b82f6"
         })
         const initialWorkspace = new fabric.Rect({
-            width: 1600,
-            height: 900,
+            width: initialCanvas.width,
+            height: initialCanvas.height,
             name: 'clip',
             fill: 'white',
             selectable: false,
@@ -503,7 +501,7 @@ export const useEditor = () => {
             initialContainer.offsetHeight
         )
 
-        setOriginalWorkspaceDimension([initialCanvas.width!, initialCanvas.height!])
+        setOriginalWorkspaceDimension([initialWorkspace.width!, initialWorkspace.height!])
 
         initialCanvas.add(initialWorkspace)
         initialCanvas.centerObject(initialWorkspace)
