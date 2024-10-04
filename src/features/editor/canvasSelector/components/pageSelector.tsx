@@ -12,13 +12,23 @@ interface PageSelectorProps {
 
 const PageSelector = ({editor}: PageSelectorProps) => {
 
-    const {isExpanded, canvasThumbnails} = useObjectStore()
+    const {isExpanded} = useObjectStore()
     const {getCanvasThumbnail} = useCanvasThumbnail()
     const scrollToDiv = useRef<HTMLDivElement>(null)
 
     const style = isExpanded ? {width: 'calc(100% - 72px - 350px)', left: 'calc(72px + 350px)'} :
         {width: 'calc(100% - 72px)', left: '72px'}
     ;
+
+    useEffect(() => {
+        const canvas = editor?.canvas
+        const pageContainer = editor?.pageContainer
+        const pageThumbnails = editor?.pageThumbnails
+        const setPageThumbnails = editor?.setPageThumbnails
+        if (canvas && pageContainer && pageThumbnails  && setPageThumbnails) {
+            getCanvasThumbnail({editor})
+        }
+    }, [editor?.canvas, editor?.pageContainer])
 
     const handleChangePage = (pageNo: number) => {
         editor?.setCurrentPage(pageNo)
@@ -52,29 +62,24 @@ const PageSelector = ({editor}: PageSelectorProps) => {
 
     const addPage = () => {
         editor?.setPageContainer(prev => [...prev, editor?.pageContainer.length + 1])
+        editor?.setCurrentPage(editor?.pageContainer.length + 1)
     }
 
     useEffect(() => {
-        editor?.setCurrentPage(editor?.pageContainer.length)
-        const canvas = editor?.canvas
-        const pageContainer = editor?.pageContainer
-        if (canvas && pageContainer) {
-            getCanvasThumbnail({canvas, pageContainer})
-        }
         if (scrollToDiv.current) {
             scrollToDiv.current.scrollIntoView({
                 behavior: "smooth",
                 block: "nearest",
             });
         }
-    }, [editor, editor?.pageContainer, editor?.canvas])
+    }, [editor?.pageContainer, editor?.canvas])
 
     return (
         <div
             className='h-[130px] top-[calc(100%-170px)] items-center absolute z-50 bg-gray-200 flex p-2 gap-5 overflow-x-scroll'
             style={style}>
             {editor?.pageContainer?.map((pageNum) => {
-                const url = canvasThumbnails[pageNum -1]
+                const url = editor?.pageThumbnails[pageNum -1]
                 return <TooltipProvider key={pageNum}>
                     <Tooltip delayDuration={200}>
                         <TooltipTrigger className={`h-[80%] min-w-[140px] flex justify-center items-center`}>

@@ -115,6 +115,8 @@ export interface Editor {
     setCurrentPage: React.Dispatch<React.SetStateAction<number>>,
     pageContainer: number[],
     setPageContainer: React.Dispatch<React.SetStateAction<number[]>>,
+    pageThumbnails: string[],
+    setPageThumbnails: React.Dispatch<React.SetStateAction<string[]>>,
 }
 
 export interface BuildEditor {
@@ -152,5 +154,7 @@ export interface BuildEditor {
     setCurrentPage: React.Dispatch<React.SetStateAction<number>>,
     pageContainer: number[],
     setPageContainer: React.Dispatch<React.SetStateAction<number[]>>,
+    pageThumbnails: string[],
+    setPageThumbnails: React.Dispatch<React.SetStateAction<string[]>>,
 }
 

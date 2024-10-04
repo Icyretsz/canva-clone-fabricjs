@@ -1,6 +1,6 @@
 import {useEffect} from 'react';
 import {fabric} from 'fabric';
-import {INITIAL_CANVAS_STATE} from '@/features/editor/sidebar/types'
+import {Editor, INITIAL_CANVAS_STATE} from '@/features/editor/sidebar/types'
 import useObjectStore from '@/features/editor/stores/store'
 import useCanvasThumbnail from "@/features/editor/canvasSelector/utils";
 
@@ -15,6 +15,9 @@ interface UseKeyPressProps {
     autoZoom: () => void,
     currentPage: number,
     pageContainer: number[],
+    pageThumbnails: string[],
+    setPageThumbnails: React.Dispatch<React.SetStateAction<string[]>>,
+    editor: Editor | undefined
 }
 
 const useKeyPress = ({
@@ -28,6 +31,9 @@ const useKeyPress = ({
                          autoZoom,
                          currentPage,
                          pageContainer,
+                         pageThumbnails,
+                         setPageThumbnails,
+                         editor
                      }: UseKeyPressProps) => {
 
     const {isExpanded, setExpanded, activeTool, setActiveTool} = useObjectStore()
@@ -184,9 +190,9 @@ const useKeyPress = ({
                             }
                         }
                     }
+                    autoZoom()
+                    getCanvasThumbnail({editor})
                 }
-                autoZoom()
-                getCanvasThumbnail({canvas, pageContainer})
             }
         };
 

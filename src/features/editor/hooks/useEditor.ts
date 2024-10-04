@@ -46,20 +46,11 @@ export const useEditor = () => {
     const [historyRedo, setHistoryRedo] = useState<string[]>([])
     const [currentPage, setCurrentPage] = useState<number>(1)
     const [pageContainer, setPageContainer] = useState<number[]>([1])
+    const [pageThumbnails, setPageThumbnails] = useState<string[]>([])
     const {setOriginalWorkspaceDimension} = useObjectStore()
 
     const autoZoom = useAutoResize({canvas, container})
-    useObjectEvents({
-        canvas,
-        selectedObjects,
-        setSelectedObjects,
-        historyUndo,
-        historyRedo,
-        setHistoryUndo,
-        setHistoryRedo,
-        pageContainer
-    })
-    useKeyPress({canvas, clipboard, setClipboard, historyUndo, historyRedo, setHistoryUndo, setHistoryRedo, autoZoom, currentPage, pageContainer})
+
 
     useGetActiveFill(selectedObjects, setFillColor)
     useGetStrokeWidth(selectedObjects, setStrokeWidth)
@@ -97,7 +88,9 @@ export const useEditor = () => {
                              currentPage,
                              setCurrentPage,
                              pageContainer,
-                             setPageContainer
+                             setPageContainer,
+                             pageThumbnails,
+                             setPageThumbnails
                          }: BuildEditor) => {
         const getWorkspace = () => {
             return canvas.getObjects().find((object) => object.name === "clip");
@@ -167,6 +160,8 @@ export const useEditor = () => {
             setCurrentPage,
             pageContainer,
             setPageContainer,
+            pageThumbnails,
+            setPageThumbnails,
             changeFillColor: (value: string) => {
                 setFillColor([value])
                 canvas.getActiveObjects().forEach((object) => {
@@ -343,20 +338,23 @@ export const useEditor = () => {
                 canvas.renderAll()
             },
             addRect: () => {
-                const rect = new fabric.Rect({...SHAPES_OPTIONS.RECTANGLE, name : currentPage.toString()});
+                const rect = new fabric.Rect({...SHAPES_OPTIONS.RECTANGLE, name: currentPage.toString()});
                 addProc(rect);
                 return rect
             },
             addCircle: () => {
-                const circle = new fabric.Circle({...SHAPES_OPTIONS.CIRCLE, name : currentPage.toString()});
+                const circle = new fabric.Circle({...SHAPES_OPTIONS.CIRCLE, name: currentPage.toString()});
                 addProc(circle);
             },
             addTriangle: () => {
-                const triangle = new fabric.Triangle({...SHAPES_OPTIONS.TRIANGLE, name : currentPage.toString()});
+                const triangle = new fabric.Triangle({...SHAPES_OPTIONS.TRIANGLE, name: currentPage.toString()});
                 addProc(triangle);
             },
             addPolygon: () => {
-                const octagon = new fabric.Polygon(OCTAGON_POINTS, {...SHAPES_OPTIONS.OCTAGON, name : currentPage.toString()});
+                const octagon = new fabric.Polygon(OCTAGON_POINTS, {
+                    ...SHAPES_OPTIONS.OCTAGON,
+                    name: currentPage.toString()
+                });
                 addProc(octagon);
             },
             addTextbox: (type?: 'heading' | 'subheading' | 'content', userContent?: string) => {
@@ -371,7 +369,7 @@ export const useEditor = () => {
                         fill: '#000',
                         strokeWidth: STROKE_WIDTH,
                         stroke: STROKE_COLOR,
-                        name : currentPage.toString()
+                        name: currentPage.toString()
                     });
                     addProc(textbox);
                 } else if (type === 'content' && userContent) {
@@ -385,7 +383,7 @@ export const useEditor = () => {
                         fill: '#000',
                         strokeWidth: STROKE_WIDTH,
                         stroke: STROKE_COLOR,
-                        name : currentPage.toString()
+                        name: currentPage.toString()
                     });
                     addProc(textbox);
                 }
@@ -394,7 +392,6 @@ export const useEditor = () => {
             addMedia: (url: string) => {
                 fabric.Image.fromURL(url, function (oImg) {
                     console.log(url)
-                    // const currentId: string = String(canvas.getObjects().length - 1)
                     oImg.set('name', currentPage.toString())
                     oImg.scale(0.1)
                     canvas.add(oImg);
@@ -453,11 +450,42 @@ export const useEditor = () => {
                     setCurrentPage,
                     pageContainer,
                     setPageContainer,
+                    pageThumbnails,
+                    setPageThumbnails
                 }
             )
         }
         return undefined
-    }, [canvas, fillColor, strokeColor, strokeWidth, selectedObjects, strokeType, fontSize, textAlignment, fontFamily, fontWeight, fontStyle, isUnderlined, linethrough, clipboard, historyRedo, historyUndo, currentPage, pageContainer])
+    }, [canvas, fillColor, strokeColor, strokeWidth, selectedObjects, strokeType, fontSize, textAlignment, fontFamily, fontWeight, fontStyle, isUnderlined, linethrough, clipboard, historyRedo, historyUndo, currentPage, pageContainer, pageThumbnails])
+
+    useObjectEvents({
+        canvas,
+        selectedObjects,
+        setSelectedObjects,
+        historyUndo,
+        historyRedo,
+        setHistoryUndo,
+        setHistoryRedo,
+        pageContainer,
+        pageThumbnails,
+        setPageThumbnails,
+        editor
+    })
+    useKeyPress({
+        canvas,
+        clipboard,
+        setClipboard,
+        historyUndo,
+        historyRedo,
+        setHistoryUndo,
+        setHistoryRedo,
+        autoZoom,
+        currentPage,
+        pageContainer,
+        pageThumbnails,
+        setPageThumbnails,
+        editor
+    })
 
     const init = useCallback((
         {

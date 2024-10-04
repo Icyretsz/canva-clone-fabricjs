@@ -3,6 +3,7 @@ import {fabric} from "fabric";
 import useObjectStore from "@/features/editor/stores/store"
 import {flushSync} from "react-dom";
 import useCanvasThumbnail from "@/features/editor/canvasSelector/utils";
+import {Editor} from "@/features/editor/sidebar/types";
 
 interface UseObjectEventsProps {
     canvas: fabric.Canvas | null,
@@ -13,6 +14,9 @@ interface UseObjectEventsProps {
     historyRedo: string[],
     setHistoryRedo: React.Dispatch<React.SetStateAction<string[]>>;
     pageContainer: number[],
+    pageThumbnails: string[],
+    setPageThumbnails: React.Dispatch<React.SetStateAction<string[]>>,
+    editor: Editor | undefined
 }
 
 const useObjectEvents = ({
@@ -24,9 +28,12 @@ const useObjectEvents = ({
                              setHistoryUndo,
                              setHistoryRedo,
                              pageContainer,
+                             pageThumbnails,
+                             setPageThumbnails,
+                             editor
                          }: UseObjectEventsProps) => {
 
-    const {activeTool, setActiveTool, setExpanded, canvasThumbnails} = useObjectStore()
+    const {activeTool, setActiveTool, setExpanded} = useObjectStore()
     const HISTORY_LIMIT = 50
     const localSelectedObjectsRef = useRef<fabric.Object | null>(null);
     const {getCanvasThumbnail} = useCanvasThumbnail()
@@ -87,8 +94,7 @@ const useObjectEvents = ({
             })
             canvas.on('object:modified', (event) => {
                 saveHistory()
-                getCanvasThumbnail({canvas, pageContainer})
-                console.log(canvasThumbnails)
+                getCanvasThumbnail({editor})
             });
 
             canvas.on('text:changed', (event) => {
