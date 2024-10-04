@@ -44,7 +44,6 @@ const useObjectEvents = ({
             return [...historyUndoClone, state];
         });
         setHistoryRedo([]);
-        console.log('history saved')
     }, [canvas, setHistoryRedo, setHistoryUndo]);
 
     useEffect(() => {
@@ -87,8 +86,9 @@ const useObjectEvents = ({
                 }
             })
             canvas.on('object:modified', (event) => {
-                getCanvasThumbnail({canvas, pageContainer})
+                console.log('2')
                 saveHistory()
+                getCanvasThumbnail({canvas, pageContainer})
             });
 
             canvas.on('text:changed', (event) => {

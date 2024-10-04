@@ -23,6 +23,7 @@ const PageSelector = ({editor}: PageSelectorProps) => {
     useEffect(() => {
         const canvas = editor?.canvas
         const pageContainer = editor?.pageContainer
+        console.log('1')
         if (canvas && pageContainer) {
             getCanvasThumbnail({canvas, pageContainer})
         }

@@ -38,7 +38,6 @@ function useCanvasThumbnail() {
             });
             if (thumbnails.length === pageContainer.length) {
                 setCanvasThumbnails([...thumbnails])
-                console.log('thumbnail just refresh')
             }
         }
     };
