@@ -30,8 +30,7 @@ function useCanvasThumbnail() {
                         }
                     })
                     const url = canvasClone.toDataURL({
-                        format: 'jpeg',
-                        quality: 0.5,
+                        format: 'png',
                     })
                     thumbnails.push(url)
                 }, ['name'])
