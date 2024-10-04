@@ -451,7 +451,7 @@ export const useEditor = () => {
                     currentPage,
                     setCurrentPage,
                     pageContainer,
-                    setPageContainer
+                    setPageContainer,
                 }
             )
         }

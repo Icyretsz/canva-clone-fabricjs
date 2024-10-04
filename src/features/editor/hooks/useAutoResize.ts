@@ -8,7 +8,6 @@ interface UseAutoResizeProps {
 }
 
 const UseAutoResize = ({canvas, container}: UseAutoResizeProps) => {
-    const {currentCanvas, setCurrentCanvas, originalWorkspaceDimension, setOriginalWorkspaceDimension} = useObjectStore()
 
     const autoZoom = useCallback(() => {
         if (!canvas || !container) return;
