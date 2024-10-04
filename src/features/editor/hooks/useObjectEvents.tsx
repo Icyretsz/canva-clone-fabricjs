@@ -26,7 +26,7 @@ const useObjectEvents = ({
                              pageContainer,
                          }: UseObjectEventsProps) => {
 
-    const {activeTool, setActiveTool, setExpanded} = useObjectStore()
+    const {activeTool, setActiveTool, setExpanded, canvasThumbnails} = useObjectStore()
     const HISTORY_LIMIT = 50
     const localSelectedObjectsRef = useRef<fabric.Object | null>(null);
     const {getCanvasThumbnail} = useCanvasThumbnail()
@@ -86,9 +86,9 @@ const useObjectEvents = ({
                 }
             })
             canvas.on('object:modified', (event) => {
-                console.log('2')
                 saveHistory()
                 getCanvasThumbnail({canvas, pageContainer})
+                console.log(canvasThumbnails)
             });
 
             canvas.on('text:changed', (event) => {

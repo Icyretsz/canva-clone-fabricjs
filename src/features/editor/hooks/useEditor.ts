@@ -393,6 +393,7 @@ export const useEditor = () => {
             },
             addMedia: (url: string) => {
                 fabric.Image.fromURL(url, function (oImg) {
+                    console.log(url)
                     // const currentId: string = String(canvas.getObjects().length - 1)
                     oImg.set('name', currentPage.toString())
                     oImg.scale(0.1)

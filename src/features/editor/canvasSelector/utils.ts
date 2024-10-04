@@ -30,13 +30,15 @@ function useCanvasThumbnail() {
                         }
                     })
                     const url = canvasClone.toDataURL({
-                        format: 'png',
+                        format: 'jpeg',
+                        quality: 0.5,
                     })
                     thumbnails.push(url)
                 }, ['name'])
             });
             if (thumbnails.length === pageContainer.length) {
-                setCanvasThumbnails([...thumbnails])
+                setCanvasThumbnails(thumbnails)
+                console.log('hey')
             }
         }
     };
