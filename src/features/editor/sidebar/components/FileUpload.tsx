@@ -5,7 +5,7 @@ import {v4} from 'uuid';
 import {useUser} from '@clerk/nextjs';
 import {useMutation, useQueryClient, useQuery} from "@tanstack/react-query";
 import {insertMediaToDb, fetchMediaFromDb, deleteMediaFromDb} from "@/app/db/mediaDbManipulate";
-import {MediaType} from "@/app/db/type"
+import { mediaSchema, mediaType } from "@/app/db/schema"
 import {Button} from "@/components/ui/button"
 import DisplayImage from "@/features/editor/sidebar/components/display-image";
 import {Editor} from "@/features/editor/sidebar/types";
@@ -15,7 +15,7 @@ import Resizer from "react-image-file-resizer";
 const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
 
 interface DataType {
-    data : MediaType[]
+    data : mediaType[]
 }
 
 interface UploadProps {
@@ -39,8 +39,7 @@ const FileUpload = ({ editor } : UploadProps) => {
 
     useEffect(() => {
         if (data) {
-            const dbUrls = data.data.map((media: MediaType) => media.fileName)
-            console.log(dbUrls)
+            const dbUrls = data.data.map((media: mediaType) => media.fileName)
             dbUrls.map((fileName : string) => {
                 getImgUrlFromName(fileName)
             })

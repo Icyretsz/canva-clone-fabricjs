@@ -1,12 +1,10 @@
 import {Hono} from 'hono';
 import {db} from '@/app/db/db';
-import {z} from 'zod'
 import {zValidator} from '@hono/zod-validator'
 import {mediaTable} from "@/app/db/schema";
 import {and, eq} from "drizzle-orm";
 import {clerkMiddleware, getAuth} from "@hono/clerk-auth";
 import { mediaSchema, mediaType } from "@/app/db/schema"
-import {every} from "hono/combine";
 
 const mediaDbApp = new Hono()
     .post('/add_img_db', clerkMiddleware(), zValidator('json', mediaSchema), async (c) => {
