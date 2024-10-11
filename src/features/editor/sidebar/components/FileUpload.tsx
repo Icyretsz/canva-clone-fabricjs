@@ -11,6 +11,7 @@ import DisplayImage from "@/features/editor/sidebar/components/display-image";
 import {Editor} from "@/features/editor/sidebar/types";
 import {Loader2} from "lucide-react";
 import Resizer from "react-image-file-resizer";
+import {client} from '@/app/api/[[...route]]/hono'
 
 const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
 
@@ -136,16 +137,12 @@ const FileUpload = ({ editor } : UploadProps) => {
             const fileName = `${v4()}-${selectedFile.name}`
 
             try {
-                const PUTURLResponse = await fetch('/api/media/put', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': selectedFile.type,
-                    },
-                    body: JSON.stringify({fileName: fileName}),
-                });
+                const PUTURLResponse = await client.api.media.$post({
+                    json : {fileName}
+                })
 
                 const PUTSignedURL = await PUTURLResponse.json();
-                if (PUTURLResponse.ok && PUTSignedURL.url) {
+                if (PUTURLResponse.ok && 'url' in PUTSignedURL && PUTSignedURL.url) {
                     const uploadResponse = await fetch(PUTSignedURL.url, {
                         method: 'PUT',
                         headers: {
@@ -161,10 +158,10 @@ const FileUpload = ({ editor } : UploadProps) => {
                         })
                         setS3Url([])
                     } else {
-                        console.error('Add to database failed');
+                        console.error('Add to s3 failed');
                     }
-                } else {
-                    console.error('Failed to upload ', PUTSignedURL.error);
+                } else if ('error' in PUTSignedURL) {
+                    console.error('Failed to fetch PUTSignedURL ', PUTSignedURL.error);
                 }
             } catch (error) {
                 console.error('An error occurred during the upload:', error);
@@ -183,32 +180,37 @@ const FileUpload = ({ editor } : UploadProps) => {
 
     };
 
-    const deleteOnS3 = async (fileSelected : string[]) => {
+    const deleteOnS3 = async (fileSelected : string[]) : Promise<string> => {
+        let status : string = 'ok'
 
         await Promise.all(fileSelected.map(async (fileName) => {
             try {
-                const DELURLResponse = await fetch(`/api/media/delete?fileName=${encodeURIComponent(fileName)}`, {
-                    method: 'POST',
-                });
+                const DELURLResponse = await client.api.media.delete.$post({
+                    json : {fileName}
+                })
 
                 const DELSignedURL = await DELURLResponse.json();
-                if (DELURLResponse.ok && DELSignedURL.url) {
+                if (DELURLResponse.ok && 'url' in DELSignedURL && DELSignedURL.url) {
                     const deleteResponse = await fetch(DELSignedURL.url, {
                         method: 'DELETE',
                     });
                     if (deleteResponse.ok) {
-                        console.log('delete successful')
                         mutationDelMediaDb.mutate(fileName)
                     } else {
-                        console.log('error on deletion')
+                        console.error('Error on deletion')
+                        status = 'error'
                     }
-                } else {
-                    console.error('Failed to delete, something wrong with delete presigned URL', DELSignedURL.error);
+                } else if ('error' in DELSignedURL) {
+                    console.error('Failed to delete, something wrong fetching delete presigned URL: ', DELSignedURL.error);
+                    status = 'error'
                 }
             } catch (error) {
                 console.error('An error occurred during the deletion:', error);
+                status = 'error'
             }
         }))
+
+        return status
     };
 
     const handleImageLoad = (index: number) => {

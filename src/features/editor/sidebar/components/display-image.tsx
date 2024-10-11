@@ -14,7 +14,7 @@ interface DisplayImageProps {
     loadingStates: boolean[];
     handleImageLoad: (i: number) => void;
     editor: Editor | undefined;
-    deleteOnS3: (fileSelected: string[]) => void
+    deleteOnS3: (fileSelected: string[]) => Promise<string>
 }
 
 const DisplayImage: React.FC<DisplayImageProps> = ({
@@ -47,7 +47,6 @@ const DisplayImage: React.FC<DisplayImageProps> = ({
     useEffect(() => {
         setChecked(new Array(s3Url.length).fill(false));
         setFileSelected(new Array(s3Url.length).fill(''));
-        console.log(s3Url)
     }, [s3Url]);
 
     const extractFileNames = () => {
@@ -74,7 +73,8 @@ const DisplayImage: React.FC<DisplayImageProps> = ({
         const updatedFileSelected = fileSelected.filter((_, i) => !isChecked[i]);
         const updatedS3UrlClone = s3Url.filter((_, i) => !isChecked[i]);
 
-        deleteOnS3(fileSelected)
+        let status = await deleteOnS3(fileSelected)
+        if (status === 'error') return
 
         setChecked(updatedIsChecked);
         setFileSelected(updatedFileSelected);

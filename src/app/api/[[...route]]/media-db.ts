@@ -53,7 +53,7 @@ const mediaDbApp = new Hono()
             return c.json({error: 'Unauthorized'}, 401);
         } else {
             try {
-                const fileName = c.req.query('fileName');
+                const { fileName } = await c.req.json();
 
                 const result = await db.delete(mediaTable)
                     .where(

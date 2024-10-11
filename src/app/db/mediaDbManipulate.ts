@@ -23,7 +23,7 @@ export const fetchMediaFromDb = async () => {
 
 export async function deleteMediaFromDb(fileName : string) {
     const DELImgDbResponse = await client.api.media_interact.delete_img_db.$post({
-        json : fileName
+        json : {fileName}
     })
 
     if (!DELImgDbResponse.ok) {
