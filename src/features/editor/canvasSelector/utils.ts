@@ -34,7 +34,7 @@ function useCanvasThumbnail() {
                         object.set({ opacity: isCurrentPageObject ? 1 : 0 });
                     });
                     canvasClone.renderAll();
-                    const url = canvasClone.toDataURL({ format: 'jpeg', quality: 0.5 });
+                    const url = canvasClone.toDataURL({ format: 'jpeg', quality: 0.2 });
                     thumbnails.push(url);
                     resolve();
                 };

@@ -12,7 +12,8 @@ interface ImageDisplayImageProps {
     setChecked: Dispatch<SetStateAction<boolean[]>>
 }
 
-const ImageDisplayImage = ({editor, url, handleImageLoad, i, isChecked, setChecked}: ImageDisplayImageProps) => {
+// eslint-disable-next-line react/display-name
+const ImageDisplayImage = React.memo(({editor, url, handleImageLoad, i, isChecked, setChecked}: ImageDisplayImageProps) => {
 
     const [isHovered, setHovered] = useState(false);
     const [isMenuHovered, setMenuHovered] = useState(false);
@@ -60,6 +61,6 @@ const ImageDisplayImage = ({editor, url, handleImageLoad, i, isChecked, setCheck
             }
         </div>
     );
-};
+});
 
 export default ImageDisplayImage;
