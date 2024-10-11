@@ -32,7 +32,7 @@ const FileUpload = ({ editor } : UploadProps) => {
     const [loadingStates, setLoadingStates] = useState<boolean[]>([]);
     const {user} = useUser();
 
-    const { isPending, isError, data, error, refetch } = useQuery<DataType>({
+    const { data, refetch } = useQuery<DataType>({
         queryKey: ['media', user?.id],
         queryFn: () => fetchMediaFromDb(),
         enabled: !!user,
