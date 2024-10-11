@@ -9,13 +9,13 @@ import { mediaSchema, mediaType } from "@/app/db/schema"
 const mediaDbApp = new Hono()
     .post('/add_img_db', clerkMiddleware(), zValidator('json', mediaSchema), async (c) => {
         const auth = getAuth(c)
-        const userId = auth?.userId
-        if (!userId) {
+        const user_id = auth?.userId
+        if (!user_id) {
             return c.json({error: 'Unauthorized'}, 401);
         }
         try {
             const body = c.req.valid('json');
-            const {user_id, fileName} = body;
+            const {fileName} = body;
 
             await db.insert(mediaTable).values({
                 user_id,
