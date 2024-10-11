@@ -40,6 +40,7 @@ const FileUpload = ({ editor } : UploadProps) => {
     useEffect(() => {
         if (data) {
             const dbUrls = data.data.map((media: MediaType) => media.fileName)
+            console.log(dbUrls)
             dbUrls.map((fileName : string) => {
                 getImgUrlFromName(fileName)
             })
@@ -200,7 +201,7 @@ const FileUpload = ({ editor } : UploadProps) => {
                         console.log('delete successful')
                         mutationDelMediaDb.mutate(fileName)
                     } else {
-                        console.log('error on deletetion')
+                        console.log('error on deletion')
                     }
                 } else {
                     console.error('Failed to delete, something wrong with delete presigned URL', DELSignedURL.error);

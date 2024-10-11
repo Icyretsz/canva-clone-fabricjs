@@ -1,24 +1,18 @@
 import {InsertMedia} from "@/app/db/schema";
+import {client} from '@/app/api/[[...route]]/hono'
 
 export async function insertMediaToDb(newMedia : InsertMedia) {
-    const response = await fetch('/api/media-interact/add-img-db', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(newMedia),
-    });
-
-    if (!response.ok) {
+    const POSTImgDbResponse = await client.api.media_interact.add_img_db.$post({
+        json : newMedia
+    })
+    if (!POSTImgDbResponse.ok) {
         throw new Error('Failed to add media to database');
     }
-    return response.json();
+    return POSTImgDbResponse.json();
 }
 
 export const fetchMediaFromDb = async () => {
-    const GETImgDbResponse = await fetch(`/api/media-interact/get-img-db`, {
-        method: 'GET',
-    });
+    const GETImgDbResponse = await client.api.media_interact.get_img_db.$get()
     if (!GETImgDbResponse.ok) {
         throw new Error('Failed to fetch media URLs from database');
     }
@@ -26,9 +20,9 @@ export const fetchMediaFromDb = async () => {
 }
 
 export async function deleteMediaFromDb(fileName : string) {
-    const response = await fetch(`/api/media-interact/delete-img-db?fileName=${fileName}`, {
-        method: 'POST',
-    });
+    const response = await client.api.media_interact.delete_img_db.$post({
+        json : fileName
+    })
 
     if (!response.ok) {
         throw new Error('Failed to delete media from database');

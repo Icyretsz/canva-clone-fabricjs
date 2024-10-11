@@ -47,6 +47,7 @@ const DisplayImage: React.FC<DisplayImageProps> = ({
     useEffect(() => {
         setChecked(new Array(s3Url.length).fill(false));
         setFileSelected(new Array(s3Url.length).fill(''));
+        console.log(s3Url)
     }, [s3Url]);
 
     const extractFileNames = () => {

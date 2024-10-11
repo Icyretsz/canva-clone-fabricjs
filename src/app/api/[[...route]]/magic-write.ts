@@ -1,18 +1,20 @@
 import {Hono} from 'hono';
 import {auth} from '@clerk/nextjs/server'
+import {clerkMiddleware, getAuth} from "@hono/clerk-auth";
 
 
 const magicWrite = new Hono()
-    .post('/default', async (c) => {
+    .post('/default', clerkMiddleware(), async (c) => {
 
-        if (!auth().userId) {
-            return c.json({success: false, message: 'Unauthorized'}, 401);
+        const auth = getAuth(c)
+        if (!auth?.userId) {
+            return c.json({error: 'Unauthorized'}, 401)
         }
 
         const {textContent} = await c.req.json();
 
         if (!textContent) {
-            return c.json({success: false, message: 'No text provided'}, 400);
+            return c.json({error : 'No text provided'}, 400);
         }
 
         const APIBody = {
@@ -46,26 +48,27 @@ const magicWrite = new Hono()
 
             if (data.choices && data.choices[0].message.content) {
                 console.log(data.choices[0].message.content);
-                return c.json({AIResponse: data.choices[0].message.content}, 200);
+                return c.json({AIResponse: data.choices[0].message.content});
             } else {
-                return c.json({success: false, message: 'No response from OpenAI'}, 500);
+                return c.json({error : 'No response from OpenAI'}, 500);
             }
         } catch (error) {
             console.error('Error calling OpenAI:', error);
-            return c.json({success: false, message: 'Server error'}, 500);
+            return c.json({error : 'Server error'}, 500);
         }
     })
 
-    .post('/casual', async (c) => {
+    .post('/casual', clerkMiddleware(), async (c) => {
 
-        if (!auth().userId) {
-            return c.json({success: false, message: 'Unauthorized'}, 401);
+        const auth = getAuth(c)
+        if (!auth?.userId) {
+            return c.json({error: 'Unauthorized'}, 401)
         }
 
         const {textContent} = await c.req.json();
 
         if (!textContent) {
-            return c.json({success: false, message: 'No text provided'}, 400);
+            return c.json({error : 'No text provided'}, 400);
         }
 
         const APIBody = {
@@ -99,25 +102,26 @@ const magicWrite = new Hono()
 
             if (data.choices && data.choices[0].message.content) {
                 console.log(data.choices[0].message.content);
-                return c.json({AIResponse: data.choices[0].message.content}, 200);
+                return c.json({AIResponse: data.choices[0].message.content});
             } else {
-                return c.json({success: false, message: 'No response from OpenAI'}, 500);
+                return c.json({error : 'No response from OpenAI'}, 500);
             }
         } catch (error) {
             console.error('Error calling OpenAI:', error);
-            return c.json({success: false, message: 'Server error'}, 500);
+            return c.json({error : 'Server error'}, 500);
         }
     })
-    .post('/funny', async (c) => {
+    .post('/funny', clerkMiddleware(), async (c) => {
 
-        if (!auth().userId) {
-            return c.json({success: false, message: 'Unauthorized'}, 401);
+        const auth = getAuth(c)
+        if (!auth?.userId) {
+            return c.json({error: 'Unauthorized'}, 401)
         }
 
         const {textContent} = await c.req.json();
 
         if (!textContent) {
-            return c.json({success: false, message: 'No text provided'}, 400);
+            return c.json({error : 'No text provided'}, 400);
         }
 
         const APIBody = {
@@ -151,25 +155,26 @@ const magicWrite = new Hono()
 
             if (data.choices && data.choices[0].message.content) {
                 console.log(data.choices[0].message.content);
-                return c.json({AIResponse: data.choices[0].message.content}, 200);
+                return c.json({AIResponse: data.choices[0].message.content});
             } else {
-                return c.json({success: false, message: 'No response from OpenAI'}, 500);
+                return c.json({error : 'No response from OpenAI'}, 500);
             }
         } catch (error) {
             console.error('Error calling OpenAI:', error);
-            return c.json({success: false, message: 'Server error'}, 500);
+            return c.json({error : 'Server error'}, 500);
         }
     })
-    .post('/spelling', async (c) => {
+    .post('/spelling', clerkMiddleware(), async (c) => {
 
-        if (!auth().userId) {
-            return c.json({success: false, message: 'Unauthorized'}, 401);
+        const auth = getAuth(c)
+        if (!auth?.userId) {
+            return c.json({error: 'Unauthorized'}, 401)
         }
 
         const {textContent} = await c.req.json();
 
         if (!textContent) {
-            return c.json({success: false, message: 'No text provided'}, 400);
+            return c.json({error : 'No text provided'}, 400);
         }
 
         const APIBody = {
@@ -203,13 +208,13 @@ const magicWrite = new Hono()
 
             if (data.choices && data.choices[0].message.content) {
                 console.log(data.choices[0].message.content);
-                return c.json({AIResponse: data.choices[0].message.content}, 200);
+                return c.json({AIResponse: data.choices[0].message.content});
             } else {
-                return c.json({success: false, message: 'No response from OpenAI'}, 500);
+                return c.json({error : 'No response from OpenAI'}, 500);
             }
         } catch (error) {
             console.error('Error calling OpenAI:', error);
-            return c.json({success: false, message: 'Server error'}, 500);
+            return c.json({error : 'Server error'}, 500);
         }
     });
 
