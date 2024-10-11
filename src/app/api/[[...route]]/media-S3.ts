@@ -1,10 +1,12 @@
 import {Hono} from 'hono';
 import {getSignedURL} from '../s3-actions'
 import {auth} from '@clerk/nextjs/server'
+import { clerkMiddleware, getAuth } from '@hono/clerk-auth'
 
 const mediaS3App = new Hono()
-    .post('/put', async (c) => {
-        if (!auth().userId) {
+    .post('/put', clerkMiddleware(), async (c) => {
+        const auth = getAuth(c)
+        if (!auth?.userId) {
             return c.json({error: 'Unauthorized'}, 401)
         }
         try {
@@ -21,8 +23,9 @@ const mediaS3App = new Hono()
             return c.json({error: 'An unexpected error occurred.', details: error.message}, 500);
         }
     })
-    .get('/get', async (c) => {
-        if (!auth().userId) {
+    .get('/get', clerkMiddleware(), async (c) => {
+        const auth = getAuth(c)
+        if (!auth?.userId) {
             return c.json({error: 'Unauthorized'}, 401)
         }
         try {
@@ -43,8 +46,9 @@ const mediaS3App = new Hono()
             return c.json({error: 'An unexpected error occurred.', details: error.message}, 500);
         }
     })
-    .post('/delete', async (c) => {
-        if (!auth().userId) {
+    .post('/delete', clerkMiddleware(), async (c) => {
+        const auth = getAuth(c)
+        if (!auth?.userId) {
             return c.json({error: 'Unauthorized'}, 401)
         }
         try {
