@@ -47,7 +47,6 @@ const magicWrite = new Hono()
             const data = await response.json();
 
             if (data.choices && data.choices[0].message.content) {
-                console.log(data.choices[0].message.content);
                 return c.json({AIResponse: data.choices[0].message.content});
             } else {
                 return c.json({error : 'No response from OpenAI'}, 500);
@@ -101,7 +100,6 @@ const magicWrite = new Hono()
             const data = await response.json();
 
             if (data.choices && data.choices[0].message.content) {
-                console.log(data.choices[0].message.content);
                 return c.json({AIResponse: data.choices[0].message.content});
             } else {
                 return c.json({error : 'No response from OpenAI'}, 500);
@@ -154,7 +152,6 @@ const magicWrite = new Hono()
             const data = await response.json();
 
             if (data.choices && data.choices[0].message.content) {
-                console.log(data.choices[0].message.content);
                 return c.json({AIResponse: data.choices[0].message.content});
             } else {
                 return c.json({error : 'No response from OpenAI'}, 500);
@@ -207,7 +204,6 @@ const magicWrite = new Hono()
             const data = await response.json();
 
             if (data.choices && data.choices[0].message.content) {
-                console.log(data.choices[0].message.content);
                 return c.json({AIResponse: data.choices[0].message.content});
             } else {
                 return c.json({error : 'No response from OpenAI'}, 500);

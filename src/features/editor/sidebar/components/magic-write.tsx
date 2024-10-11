@@ -21,6 +21,7 @@ import {Editor} from "@/features/editor/sidebar/types";
 import splitString from "@/utils/splitString";
 import {motion} from 'framer-motion'
 import { Textarea } from "@/components/ui/textarea"
+import {client} from '@/app/api/[[...route]]/hono'
 
 const frameworks = [
     {
@@ -39,13 +40,6 @@ const frameworks = [
         value: "Spelling",
         label: "Fix spelling (GPT-4o-mini)",
     }]
-
-const tones = [
-    {tone: 'Default', api: '/api/magic-write/default'},
-    {tone: 'Casual', api: '/api/magic-write/casual'},
-    {tone: 'Funny', api: '/api/magic-write/funny'},
-    {tone: 'Spelling', api: '/api/magic-write/spelling'}
-]
 
 const charVariants = {
     hidden: {opacity: 0},
@@ -85,41 +79,43 @@ const MagicWrite = ({editor}: MagicWriteProps) => {
 
         setIsLoading(true)
 
-        let toneAPI
-
-        switch (value) {
-            case 'Default':
-                toneAPI = (tones[0].api)
-                break
-            case 'Casual':
-                toneAPI = (tones[1].api)
-                break
-            case 'Funny':
-                toneAPI = (tones[2].api)
-                break
-            case 'Spelling':
-                toneAPI = (tones[3].api)
-                break
-            default:
-                toneAPI = (tones[0].api);
-                break;
-        }
-
         try {
-            const response = await fetch(`${toneAPI}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({textContent}),
-            });
+            let response
+
+            switch (value) {
+                case 'Default':
+                    response = await client.api.magic_write.default.$post({
+                        json: { textContent }
+                    })
+                    break
+                case 'Casual':
+                    response = await client.api.magic_write.casual.$post({
+                        json: { textContent }
+                    })
+                    break
+                case 'Funny':
+                    response = await client.api.magic_write.funny.$post({
+                        json: { textContent }
+                    })
+                    break
+                case 'Spelling':
+                    response = await client.api.magic_write.spelling.$post({
+                        json: { textContent }
+                    })
+                    break
+                default:
+                    response = await client.api.magic_write.default.$post({
+                        json: { textContent }
+                    })
+                    break;
+            }
 
             const responseJSON = await response.json();
 
-            if (response.ok) {
+            if (response.ok && 'AIResponse' in responseJSON) {
                 setAIResponse(responseJSON.AIResponse);
-            } else {
-                console.error('Failed to retrieve response:', responseJSON.message || response.statusText);
+            } else if (!response.ok && 'error' in responseJSON) {
+                console.error('Failed to retrieve response:', responseJSON.error, response.statusText);
             }
         } catch (error) {
             console.error('Error while calling the API:', error);
