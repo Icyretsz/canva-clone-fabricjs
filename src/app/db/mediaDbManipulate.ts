@@ -1,10 +1,12 @@
-import {InsertMedia} from "@/app/db/schema";
+import {mediaType} from "@/app/db/schema";
 import {client} from '@/app/api/[[...route]]/hono'
 
-export async function insertMediaToDb(newMedia : InsertMedia) {
-    const POSTImgDbResponse = await client.api.media_interact.add_img_db.$post({
+
+export async function insertMediaToDb(newMedia : mediaType) {
+    const newMediaJson = {
         json : newMedia
-    })
+    }
+    const POSTImgDbResponse = await client.api.media_interact.add_img_db.$post(newMediaJson)
     if (!POSTImgDbResponse.ok) {
         throw new Error('Failed to add media to database');
     }
@@ -20,14 +22,14 @@ export const fetchMediaFromDb = async () => {
 }
 
 export async function deleteMediaFromDb(fileName : string) {
-    const response = await client.api.media_interact.delete_img_db.$post({
+    const DELImgDbResponse = await client.api.media_interact.delete_img_db.$post({
         json : fileName
     })
 
-    if (!response.ok) {
+    if (!DELImgDbResponse.ok) {
         throw new Error('Failed to delete media from database');
     }
-    return response.json();
+    return DELImgDbResponse.json();
 }
 
 

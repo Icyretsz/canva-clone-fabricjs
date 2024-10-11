@@ -3,37 +3,30 @@ import {db} from '@/app/db/db';
 import {z} from 'zod'
 import {zValidator} from '@hono/zod-validator'
 import {mediaTable} from "@/app/db/schema";
-import {auth} from '@clerk/nextjs/server'
 import {and, eq} from "drizzle-orm";
 import {clerkMiddleware, getAuth} from "@hono/clerk-auth";
-
-const mediaPostSchema = z.object({
-    user_id: z.string(),
-    fileName: z.string()
-})
-
-type MediaEntry = z.infer<typeof mediaPostSchema>;
+import { mediaSchema, mediaType } from "@/app/db/schema"
+import {every} from "hono/combine";
 
 const mediaDbApp = new Hono()
-    .post('/add_img_db', zValidator('json', mediaPostSchema), clerkMiddleware(), async (c) => {
+    .post('/add_img_db', clerkMiddleware(), zValidator('json', mediaSchema), async (c) => {
         const auth = getAuth(c)
         const userId = auth?.userId
         if (!userId) {
             return c.json({error: 'Unauthorized'}, 401);
-        } else {
-            try {
-                const body = c.req.valid('json');
-                const {user_id, fileName} = body;
+        }
+        try {
+            const body = c.req.valid('json');
+            const {user_id, fileName} = body;
 
-                await db.insert(mediaTable).values({
-                    user_id,
-                    fileName
-                }).execute();
+            await db.insert(mediaTable).values({
+                user_id,
+                fileName
+            }).execute();
 
-                return c.json({success: true});
-            } catch (error: any) {
-                return c.json({error: error.message}, 500);
-            }
+            return c.json({success: true});
+        } catch (error: any) {
+            return c.json({error: error.message}, 500);
         }
     })
     .get('/get_img_db', clerkMiddleware(), async (c) => {
@@ -43,7 +36,7 @@ const mediaDbApp = new Hono()
             return c.json({error: 'Unauthorized'}, 401);
         } else {
             try {
-                const result: MediaEntry[] = await db.select({
+                const result: mediaType[] = await db.select({
                     user_id: mediaTable.user_id,
                     fileName: mediaTable.fileName
                 }).from(mediaTable).where(eq(mediaTable.user_id, userId));
