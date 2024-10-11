@@ -8,7 +8,6 @@ import magicWrite from "@/app/api/[[...route]]/magic-write";
 export const runtime = 'edge'
 
 const app = new Hono().basePath('/api')
-
     .route("/media", mediaS3App)
     .route("/media-interact", mediaDbApp)
     .route("/magic-write", magicWrite)

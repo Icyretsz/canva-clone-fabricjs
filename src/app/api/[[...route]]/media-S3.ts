@@ -1,25 +1,30 @@
 import {Hono} from 'hono';
 import {getSignedURL} from '../s3-actions'
+import {auth} from '@clerk/nextjs/server'
 
 const mediaS3App = new Hono()
     .post('/put', async (c) => {
-
+        if (!auth().userId) {
+            return c.json({error: 'Unauthorized'}, 401)
+        }
         try {
             const {fileName} = await c.req.json()
 
             const result = await getSignedURL(fileName, 'PUT')
 
             if (result.failure) {
-                return c.json({error: result.failure}, 401)
+                return c.json({error: 'Error when fetching putSignedUrl from S3: ', details: result.failure}, 500)
             }
             return c.json({url: result.success?.url})
-        } catch (error : any) {
+        } catch (error: any) {
             console.error('Error in /put route:', error);
-            return c.json({ error: 'An unexpected error occurred.', details: error.message }, 500);
+            return c.json({error: 'An unexpected error occurred.', details: error.message}, 500);
         }
-
     })
     .get('/get', async (c) => {
+        if (!auth().userId) {
+            return c.json({error: 'Unauthorized'}, 401)
+        }
         try {
             const fileName = c.req.query('fileName');
 
@@ -30,14 +35,18 @@ const mediaS3App = new Hono()
             const result = await getSignedURL(fileName, 'GET')
 
             if (result.failure) {
-                return c.json({error: result.failure}, 401)
+                return c.json({error: 'Error when fetching getSignedUrl from S3: ', details: result.failure}, 500)
             }
             return c.json({url: result.success?.url})
-        } catch (error) {
-            return c.json({error: 'An unexpected error occurred.'}, 500)
+        } catch (error: any) {
+            console.error('Error in /get route:', error);
+            return c.json({error: 'An unexpected error occurred.', details: error.message}, 500);
         }
     })
     .post('/delete', async (c) => {
+        if (!auth().userId) {
+            return c.json({error: 'Unauthorized'}, 401)
+        }
         try {
             const fileName = c.req.query('fileName');
 
@@ -48,12 +57,12 @@ const mediaS3App = new Hono()
             const result = await getSignedURL(fileName, 'DELETE')
 
             if (result.failure) {
-                return c.json({error: result.failure}, 401)
+                return c.json({error: 'Error when fetching deleteSignedUrl from S3: ', details: result.failure}, 500)
             }
             return c.json({url: result.success?.url})
-        } catch (error) {
-            console.error('Server error:', error);
-            return c.json({error: 'An unexpected error occurred.'}, 500)
+        } catch (error: any) {
+            console.error('Error in /delete route:', error);
+            return c.json({error: 'An unexpected error occurred.', details: error.message}, 500);
         }
     })
 
