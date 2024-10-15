@@ -2,7 +2,7 @@
 import React, {useEffect, useRef} from 'react';
 import {useEditor} from "@/features/editor/hooks/useEditor";
 import {fabric} from "fabric";
-import Header from '@/features/editor/components/header'
+import Header from '@/features/editor/header/components/header'
 import Sidebar from '@/features/editor/sidebar/components/sidebar'
 import Toolbar from "@/features/editor/toolbar/components/toolbar";
 import Footer from "@/features/editor/components/footer";
@@ -50,7 +50,7 @@ const Editor = () => {
 
     return (
         <div className='flex flex-col h-full'>
-            <Header/>
+            <Header editor={editor}/>
             <Sidebar editor={editor}/>
             <Toolbar editor={editor}/>
             <Footer/>

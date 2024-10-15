@@ -5,9 +5,11 @@ import {
     ALargeSmall,
     Upload
 } from 'lucide-react'
+import { LuLayoutTemplate } from "react-icons/lu";
 import useObjectStore from "@/features/editor/stores/store";
 import ShapeMenu from "@/features/editor/sidebar/components/shape-menu";
 import ColorMenu from "@/features/editor/sidebar/components/color-menu"
+import TemplatesMenu from "@/features/editor/sidebar/components/templates-menu"
 import {Editor} from "@/features/editor/sidebar/types";
 import TextMenu from "@/features/editor/sidebar/components/textbox-menu";
 import FontMenu from "@/features/editor/sidebar/components/font-menu";
@@ -24,6 +26,16 @@ const Sidebar = ({editor} : SidebarProps) => {
     return (
         <div className='h-full'>
             <div className='absolute w-[72px] h-[calc(100%-68px)] top-[68px] flex flex-col bg-[#18191a]'>
+                <SidebarButton
+                    icon={LuLayoutTemplate}
+                    label='Templates'
+                    isActive={activeTool[0] === 'Templates'}
+                    onClick={() => {
+                        setActiveTool('Templates', "")
+                        setExpanded(true)
+                    }}
+
+                />
                 <SidebarButton
                     icon={Shapes}
                     label='Shapes'
@@ -54,6 +66,7 @@ const Sidebar = ({editor} : SidebarProps) => {
                 />
             </div>
             {isExpanded && <div className='left-[72px] absolute w-[350px] top-[68px] h-[calc(100%-68px)] bg-[#252627]'>
+                {activeTool[0] === 'Templates' && <TemplatesMenu editor={editor}/>}
                 {activeTool[0] === 'Shapes' && <ShapeMenu editor={editor}/>}
                 {(activeTool[1] === 'ShapeFill') && <ColorMenu editor={editor} type='Fill'/>}
                 {(activeTool[1] === 'StrokeColor') &&  <ColorMenu editor={editor} type='Stroke Color'/>}

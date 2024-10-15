@@ -5,6 +5,7 @@ export type PrimaryActiveTool =
     | "Shapes"
     | "Text"
     | "Upload"
+    | "Templates"
 
 
 export type SecondaryActiveTool =
@@ -24,27 +25,27 @@ export const STROKE_PATTERNS = {
 }
 
 export const SHAPES_OPTIONS = {
-    RECTANGLE : {
+    RECTANGLE: {
         width: 140,
         height: 120,
         fill: FILL_COLOR,
         stroke: STROKE_COLOR,
         strokeWidth: STROKE_WIDTH
     },
-    CIRCLE : {
+    CIRCLE: {
         radius: 60,
         fill: FILL_COLOR,
         stroke: STROKE_COLOR,
         strokeWidth: STROKE_WIDTH
     },
-    TRIANGLE : {
+    TRIANGLE: {
         width: 120,
         height: 120,
         fill: FILL_COLOR,
         stroke: STROKE_COLOR,
         strokeWidth: STROKE_WIDTH
     },
-    OCTAGON : {
+    OCTAGON: {
         fill: FILL_COLOR,
         stroke: STROKE_COLOR,
         strokeWidth: STROKE_WIDTH
@@ -68,7 +69,6 @@ export const OCTAGON_POINTS = [
     new fabric.Point(-37.29, 37.29),
     new fabric.Point(-20, 52.73),
 ];
-
 
 
 export type StrokeType = "stroke-none" | "stroke-solid" | "stroke-dash" | "stroke-dot";
@@ -104,13 +104,13 @@ export interface Editor {
     changeUnderline: (value: boolean) => void,
     changeLinethrough: (value: boolean) => void,
     deleteObject: () => void,
-    positionControl: (positionControl : positionControlType) => void,
+    positionControl: (positionControl: positionControlType) => void,
     addRect: () => fabric.Object,
     addCircle: () => void,
     addTriangle: () => void,
     addPolygon: () => void,
     addTextbox: (type?: 'heading' | 'subheading' | 'content', userContent?: string) => void,
-    addMedia: (url : string) => void,
+    addMedia: (url: string) => void,
     currentPage: number,
     setCurrentPage: React.Dispatch<React.SetStateAction<number>>,
     pageContainer: number[],
@@ -138,11 +138,11 @@ export interface BuildEditor {
     setHistoryUndo: React.Dispatch<React.SetStateAction<string[]>>,
     historyRedo: string[],
     setHistoryRedo: React.Dispatch<React.SetStateAction<string[]>>,
-    setClipboard: (clipboard : fabric.Object) => void,
-    setFontWeight: (value : number | string) => void,
-    setFontStyle: (value : fontStyle) => void,
-    setUnderlined: (value : boolean) => void,
-    setLinethrough: (value : boolean) => void,
+    setClipboard: (clipboard: fabric.Object) => void,
+    setFontWeight: (value: number | string) => void,
+    setFontStyle: (value: fontStyle) => void,
+    setUnderlined: (value: boolean) => void,
+    setLinethrough: (value: boolean) => void,
     setFontSize: (value: number[]) => void,
     setStrokeType: (value: StrokeType) => void,
     setFillColor: (value: string[]) => void,
