@@ -69,7 +69,7 @@ const DisplayImage: React.FC<DisplayImageProps> = ({
 
 
     const deleteFile = async () => {
-        const updatedIsChecked = isChecked.filter((check, i) => !check);
+        const updatedIsChecked = isChecked.filter((check) => !check);
         const updatedFileSelected = fileSelected.filter((_, i) => !isChecked[i]);
         const updatedS3UrlClone = s3Url.filter((_, i) => !isChecked[i]);
 
@@ -167,9 +167,7 @@ const DisplayImage: React.FC<DisplayImageProps> = ({
                                 </TooltipContent>
                             </Tooltip>
                         </TooltipProvider>
-
                     </div>
-
                 </div>
             )}
         </div>
