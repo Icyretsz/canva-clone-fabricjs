@@ -21,22 +21,18 @@ interface UseObjectEventsProps {
 
 const useObjectEvents = ({
                              canvas,
-                             selectedObjects,
                              setSelectedObjects,
                              historyUndo,
                              historyRedo,
                              setHistoryUndo,
                              setHistoryRedo,
-                             pageContainer,
-                             pageThumbnails,
-                             setPageThumbnails,
                              editor
                          }: UseObjectEventsProps) => {
 
     const {activeTool, setActiveTool, setExpanded} = useObjectStore()
     const HISTORY_LIMIT = 50
     const localSelectedObjectsRef = useRef<fabric.Object | null>(null);
-    const {getCanvasThumbnail} = useCanvasThumbnail()
+    const {getCanvasThumbnail} = useCanvasThumbnail({editor})
 
 
     const saveHistory = useCallback(() => {
@@ -92,9 +88,32 @@ const useObjectEvents = ({
                     setSelectedObjects([])
                 }
             })
-            canvas.on('object:modified', (event) => {
+            canvas.on('object:modified', (event : fabric.IEvent) => {
+                let page : number
+                if (event) { //reason for ts-ignore: TS don't recognize event.name, event array and _object even though they are certainly there.
+                    // @ts-ignore
+                    if (event.name) {
+                    // @ts-ignore
+                        page = event.name
+                    // @ts-ignore
+                    } else if (event[0] && event[0].name) {
+                    // @ts-ignore
+                        page = event[0].name
+                    // @ts-ignore
+                    } else if (event.target && event.target._objects && event.target._objects[0]) {
+                    // @ts-ignore
+                        page = event.target._objects[0].name
+                    } else if (event.target && event.target.name) {
+                        page = Number(event.target.name)
+                    } else {
+                        page = -1
+                    }
+                } else {
+                    page = -1
+                }
+                getCanvasThumbnail({page})
                 saveHistory()
-                getCanvasThumbnail({editor})
+
             });
 
             canvas.on('text:changed', (event) => {

@@ -30,14 +30,11 @@ const useKeyPress = ({
                          setHistoryRedo,
                          autoZoom,
                          currentPage,
-                         pageContainer,
-                         pageThumbnails,
-                         setPageThumbnails,
                          editor
                      }: UseKeyPressProps) => {
 
     const {isExpanded, setExpanded, activeTool, setActiveTool} = useObjectStore()
-    const {getCanvasThumbnail} = useCanvasThumbnail()
+    const {getCanvasThumbnail} = useCanvasThumbnail({editor})
 
     useEffect(() => {
         const handleCtrlC = (event: KeyboardEvent) => {
@@ -191,7 +188,7 @@ const useKeyPress = ({
                         }
                     }
                     autoZoom()
-                    getCanvasThumbnail({editor})
+                    getCanvasThumbnail()
                 }
             }
         };

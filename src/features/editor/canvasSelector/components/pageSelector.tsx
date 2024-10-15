@@ -13,7 +13,7 @@ interface PageSelectorProps {
 const PageSelector = ({editor}: PageSelectorProps) => {
 
     const {isExpanded} = useObjectStore()
-    const {getCanvasThumbnail} = useCanvasThumbnail()
+    const {getCanvasThumbnail} = useCanvasThumbnail({editor})
     const scrollToDiv = useRef<HTMLDivElement>(null)
 
     const style = isExpanded ? {width: 'calc(100% - 72px - 350px)', left: 'calc(72px + 350px)'} :
@@ -26,7 +26,7 @@ const PageSelector = ({editor}: PageSelectorProps) => {
         const pageThumbnails = editor?.pageThumbnails
         const setPageThumbnails = editor?.setPageThumbnails
         if (canvas && pageContainer && pageThumbnails  && setPageThumbnails) {
-            getCanvasThumbnail({editor})
+            getCanvasThumbnail()
         }
     }, [editor?.canvas, editor?.pageContainer])
 
