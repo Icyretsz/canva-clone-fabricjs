@@ -1,5 +1,5 @@
 'use client'
-import React, {useEffect, useRef, useState} from 'react';
+import React, {FormEvent, useEffect, useRef, useState} from 'react';
 import {UserButton} from '@clerk/nextjs'
 import {Button} from "@/components/ui/button";
 import {Editor} from "@/features/editor/sidebar/types";
@@ -36,12 +36,28 @@ const Header = ({ editor } : HeaderProps) => {
         a?.click()
     }
 
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (event) {
+                const json = event.target?.result;
+                if (json) {
+                    editor?.canvas.loadFromJSON(json, () => {
+                        editor?.canvas.renderAll();
+                    });
+                }
+            };
+            reader.readAsText(file); // Read the file as text
+        }
+    };
+
     return (
         <div
             className=' w-full h-[68px] text-white absolute px-4 flex items-center justify-between text-3xl bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% ...'>
             Canza
             <div className='relative flex gap-2 justify-center items-center'>
-                <input id="inputId" type="file" style={{position: 'fixed', top: '-100em'}}/>
+                <input id="inputId" type="file" style={{position: 'fixed', top: '-100em'}} onChange={(e) => handleFileChange(e)}/>
                 <Button variant='ghost' onClick={() => openFileBrowser()}>Import</Button>
                 <Button variant='ghost' onClick={exportCanvas}>Export</Button>
                 {rendered && <UserButton/>}</div>
