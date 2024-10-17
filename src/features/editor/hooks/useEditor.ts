@@ -90,7 +90,8 @@ export const useEditor = () => {
                              pageContainer,
                              setPageContainer,
                              pageThumbnails,
-                             setPageThumbnails
+                             setPageThumbnails,
+                             autoZoom
                          }: BuildEditor) => {
         const getWorkspace = () => {
             return canvas.getObjects().find((object) => object.name === "clip");
@@ -160,6 +161,7 @@ export const useEditor = () => {
             setPageContainer,
             pageThumbnails,
             setPageThumbnails,
+            autoZoom,
             changeFillColor: (value: string) => {
                 setFillColor([value])
                 const activeObjects = canvas.getActiveObjects()
@@ -462,7 +464,8 @@ export const useEditor = () => {
                     pageContainer,
                     setPageContainer,
                     pageThumbnails,
-                    setPageThumbnails
+                    setPageThumbnails,
+                    autoZoom
                 }
             )
         }

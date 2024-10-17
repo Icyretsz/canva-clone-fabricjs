@@ -117,6 +117,7 @@ export interface Editor {
     setPageContainer: React.Dispatch<React.SetStateAction<number[]>>,
     pageThumbnails: string[],
     setPageThumbnails: React.Dispatch<React.SetStateAction<string[]>>,
+    autoZoom: () => void,
 }
 
 export interface BuildEditor {
@@ -156,5 +157,6 @@ export interface BuildEditor {
     setPageContainer: React.Dispatch<React.SetStateAction<number[]>>,
     pageThumbnails: string[],
     setPageThumbnails: React.Dispatch<React.SetStateAction<string[]>>,
+    autoZoom: () => void,
 }
 

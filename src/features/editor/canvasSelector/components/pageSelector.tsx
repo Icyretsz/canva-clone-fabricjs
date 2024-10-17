@@ -5,7 +5,6 @@ import useCanvasThumbnail from "@/features/editor/canvasSelector/utils";
 import {Button} from "@/components/ui/button"
 import {Editor} from "@/features/editor/sidebar/types";
 import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip";
-import Image from "next/image";
 
 interface PageSelectorProps {
     editor: Editor | undefined;
@@ -87,7 +86,7 @@ const PageSelector = ({editor}: PageSelectorProps) => {
                             <Button variant='outline'
                                     className={`h-full min-w-[100%] ${editor?.currentPage === pageNum && 'border-2 border-[#3b82f6]'} p-0`}
                                     onClick={() => handleChangePage(pageNum)}>
-                                <Image src={url} alt='canvas thumbnail' width={100} height={100}
+                                <img src={url} alt='canvas thumbnail'
                                      className='rounded-md h-full min-w-[100%]'
                                 />
                             </Button>

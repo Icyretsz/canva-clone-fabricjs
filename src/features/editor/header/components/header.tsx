@@ -1,21 +1,25 @@
 'use client'
-import React, {FormEvent, useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {UserButton} from '@clerk/nextjs'
 import {Button} from "@/components/ui/button";
 import {Editor} from "@/features/editor/sidebar/types";
+import useCanvasThumbnail from "@/features/editor/canvasSelector/utils";
 
 interface HeaderProps {
     editor : Editor | undefined
 }
 
 const Header = ({ editor } : HeaderProps) => {
+    const {getCanvasThumbnail} = useCanvasThumbnail({editor})
     const [rendered, setRendered] = useState(false)
     useEffect(() => {
         setRendered(true)
     }, [])
 
+
+
     const exportCanvas = () => {
-        const state = JSON.stringify(editor?.canvas.toJSON(['selectable', 'hasControls', 'evented', 'hoverCursor', 'name']));
+        const state = JSON.stringify(editor?.canvas.toJSON(['selectable', 'hasControls', 'evented', 'hoverCursor', 'name'])) + '###' + editor?.pageContainer.length;
         // Create a Blob from the JSON string
         const blob = new Blob([state], { type: 'application/json' });
 
@@ -42,15 +46,27 @@ const Header = ({ editor } : HeaderProps) => {
             const reader = new FileReader();
             reader.onload = function (event) {
                 const json = event.target?.result;
-                if (json) {
-                    editor?.canvas.loadFromJSON(json, () => {
-                        editor?.canvas.renderAll();
+                if (json && typeof json === 'string') {
+                    const [jsonString, appendedNumber] = json.split('###');
+                    editor?.canvas.loadFromJSON(jsonString, () => {
+                        editor?.canvas.renderAll()
+                        let newPageContainer : number[] = []
+                        for (let i = 1; i <= Number(appendedNumber); i++) {
+                            newPageContainer = [...newPageContainer, i]
+                        }
+                        editor?.setPageContainer(newPageContainer)
+                        editor?.setCurrentPage(1)
                     });
                 }
             };
-            reader.readAsText(file); // Read the file as text
+            reader.readAsText(file)
+            editor?.autoZoom()
         }
     };
+
+    useEffect(() => {
+        getCanvasThumbnail({page : -1})
+    }, [editor?.pageContainer])
 
     return (
         <div

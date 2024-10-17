@@ -89,7 +89,7 @@ const useObjectEvents = ({
                 }
             })
             canvas.on('object:modified', (event : fabric.IEvent) => {
-                let page : number
+                let page : number | undefined
                 if (event) { //reason for ts-ignore: TS don't recognize event.name, event array and _object even though they are certainly there.
                     // @ts-ignore
                     if (event.name) {
@@ -106,14 +106,13 @@ const useObjectEvents = ({
                     } else if (event.target && event.target.name) {
                         page = Number(event.target.name)
                     } else {
-                        page = -1
+                        page = undefined
                     }
                 } else {
-                    page = -1
+                    page = undefined
                 }
-                getCanvasThumbnail({page})
+                getCanvasThumbnail({page : Number(page)})
                 saveHistory()
-
             });
 
             canvas.on('text:changed', (event) => {

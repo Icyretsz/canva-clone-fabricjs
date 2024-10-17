@@ -14,7 +14,6 @@ function useCanvasThumbnail({editor} : UseCanvasThumbnailProps) {
     const cloneCanvasAndGenerateThumbnail = (
         editor: Editor,
         originalWorkspaceDimension: [number, number],
-        //thumbnails: string[],
         page?: number,
     ) => {
         return new Promise<void>((resolve) => {
@@ -22,26 +21,29 @@ function useCanvasThumbnail({editor} : UseCanvasThumbnailProps) {
                 canvasClone.setWidth(originalWorkspaceDimension[0]);
                 canvasClone.setHeight(originalWorkspaceDimension[1]);
 
-                let objects: fabric.Object[] = page
-                    ? canvasClone.getObjects().filter(object => Number(object.name) === page)
-                    : canvasClone.getObjects();
+                let objects: fabric.Object[] = canvasClone.getObjects();
+                console.log('objects of canvasClone: ', objects)
 
                 let imagesToLoad: fabric.Image[] = objects.filter(object =>
                     object.type === 'image' && object instanceof HTMLImageElement && !(object as HTMLImageElement).complete
                 ) as fabric.Image[];
 
                 const setObjectVisibility = () => {
-                    objects.forEach(object => {
-                        if (!page) {
-                            const isCurrentPageObject = Number(object.name) === editor?.currentPage || object.name === 'clip';
-                            object.set({opacity: isCurrentPageObject ? 1 : 0});
-                        } else {
-                            object.set({ opacity: 1})
-                        }
-                    });
+                    if (page && page >= 1) {
+                        objects.forEach(object => {
+                                const isCurrentPageObject = Number(object.name) === page || object.name === 'clip';
+                                object.set({opacity: isCurrentPageObject ? 1 : 0});
+                        });
+                    } else if (!page) {
+                        objects.forEach((object) => {
+                            if (object.name !== 'clip')
+                            object.set({opacity : 0})
+                        })
+                    }
+
                     canvasClone.renderAll();
                     const url = canvasClone.toDataURL({ format: 'jpeg', quality: 0.2 });
-                    if (page) {
+                    if (page && page >= 1) {
                         editor?.setPageThumbnails(prev => {
                             const clone = [...prev]
                             clone[page - 1] = url
@@ -83,19 +85,17 @@ function useCanvasThumbnail({editor} : UseCanvasThumbnailProps) {
     // Main function to generate thumbnails
     const getCanvasThumbnail = async ({ page }: { page?: number } = {}) => {
         if (editor && editor.pageContainer.length > 0 && editor.canvas) {
-            //const thumbnails : string[] = [...editor.pageThumbnails]
-            if (page) {
+            if (page && page >= 1) {
                 await cloneCanvasAndGenerateThumbnail(editor, originalWorkspaceDimension, page);
-                // flushSync(() => {
-                //     editor.setPageThumbnails(thumbnails);
-                // });
+            } else if (page && page === -1) {
+                console.log('page = ', page)
+                for (const page1 of editor.pageContainer) {
+                    console.log('page1 = ', page1);
+                    await cloneCanvasAndGenerateThumbnail(editor, originalWorkspaceDimension, page1)
+                }
             } else {
                 await cloneCanvasAndGenerateThumbnail(editor, originalWorkspaceDimension)
-                // flushSync(() => {
-                //     editor.setPageThumbnails(thumbnails);
-                // });
             }
-
         }
     };
 
